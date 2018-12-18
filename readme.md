@@ -5,7 +5,7 @@ A keyboard centric, feature rich, responsive design homepage!
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 ![Github last commit](https://img.shields.io/github/last-commit/boettner-eric/tiles.svg)
 
-## **[Live Demo](https://boettner-eric.github.io/Tiles/index.html)**
+## [**Live Demo**](https://boettner-eric.github.io/Tiles/index.html)
 
 
 ![Skeletor theme](Screenshots/skeletor.png)
