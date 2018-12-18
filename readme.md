@@ -3,7 +3,7 @@ A keyboard centric, feature rich, responsive design homepage!
 
 [![GitHub Issues](https://img.shields.io/github/issues/boettner-eric/tiles.svg)](https://github.com/boettner-eric/homepage/issues)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
-![Github last commit](https://img.shields.io/github/last-commit/boettner-eric/homepage.svg)
+![Github last commit](https://img.shields.io/github/last-commit/boettner-eric/tiles.svg)
 
 ## **[Live Demo](https://boettner-eric.github.io/Tiles/)**
 
