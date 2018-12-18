@@ -112,7 +112,7 @@ Theme | Bg | Main | Comp| Sub | Txt | Credit |
 ## Credits
 1. Icons from icons8
 2. Theme colors from sources listed in table
-3. Original code from my other [`repo`](https://github.com/Boettner-eric/Homepage)
+3. Original code from my other [`repo`](https://github.com/Boettner-eric/Homepage) which started as [`Decaux`](https://github.com/Boettner-eric/Decaux) which has been abandoned and deleted
 4. Snippets referenced from exterior sources
   - [`Iphone scaling fixes`](https://stackoverflow.com/questions/6483425/prevent-iphone-from-zooming-in-on-select-in-web-app)
   - [`Overscrolling bug`](https://stackoverflow.com/questions/12046315/prevent-overscrolling-of-web-page)
