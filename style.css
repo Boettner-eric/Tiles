@@ -202,7 +202,7 @@ input::-webkit-input-placeholder{
 }
 
 @media only screen and (max-height: 400px) { /* For short devices*/
-  body {
+  html, body {
     overflow: hidden;
   }
   div#grid {
