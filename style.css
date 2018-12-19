@@ -86,47 +86,6 @@ div#grid table tr td a:focus img, div#grid table tr td a:hover img {
 	filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
 }
 
-.dropdown {
-    position: absolute;
-    bottom: 2%;
-    right: 1vh;
-    display: inline;
-    z-index: 5;
-}
-.night {
-  -webkit-filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
-	filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
-	background-color: var(--background);
-  position: fixed;
-  display: block;
-	border: none;
-  outline: 0;
-  z-index: 5;
-  right: 2vh;
-  bottom: 2vh;
-}
-
-.night-content {
-    -webkit-filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
-	  filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
-    right: 0;
-    opacity: 1;
-    display:none;
-    background-color: var(--background);
-    min-width: 40px;
-    z-index: 5;
-    position:relative;
-}
-
-.night-content button {
-    color: var(--sub-txt);
-    background-color: var(--background);
-    border: 0;
-    padding: 12px 16px;
-    display: block;
-    z-index: 5;
-}
-
 div#grid table tr td a:focus, div#grid table tr td a:hover {
 	box-shadow: 3px 3px 0 var(--main-cl), -3px -3px 0 var(--comp-cl);
 	outline: 0;
@@ -145,7 +104,7 @@ footer form input[type="text"] {
 	padding: 5px;
 	z-index: 1;
 	bottom: 2vh;
-	width: 80%;
+	width: 90%;
 	left: 5%;
 }
 
@@ -206,11 +165,6 @@ input::-webkit-input-placeholder{
   	width: 22vw;
   	padding-top: 5%;
   }
-  footer form input[type="text"] {
-  	bottom: 2vh;
-  	width: 60vw;
-  	left: 4vw;
-  }
 }
 
 @media only screen and (max-width: 550px) and (min-height: 400px) { /* For narrow devices
@@ -219,12 +173,9 @@ input::-webkit-input-placeholder{
 
   ? Add anouther column?
   */
-  .dropdown {
-    position: absolute;
-    bottom: 2%;
-    right: 2%;
-    display: inline-right;
-    z-index: 5;
+  .button img {
+    display:inline-block;
+  	left: 10%;
   }
   div#grid {
     padding-left: 0vw;
@@ -236,10 +187,6 @@ input::-webkit-input-placeholder{
   div#grid table tr td {
   	height: 15vh;
   	width: 20vw;
-  }
-  .button img {
-    display:inline-block;
-  	left: 10%;
   }
   div#grid h3 {
     display: inline-block;
@@ -255,9 +202,6 @@ input::-webkit-input-placeholder{
 }
 
 @media only screen and (max-height: 400px) { /* For short devices*/
-  body {
-    overflow: hidden;
-  }
   div#grid {
     padding: 0vw;
     width: 98vw;
@@ -275,11 +219,6 @@ input::-webkit-input-placeholder{
     height: 19vh;
     padding: 0px;
   }
-  .button img {
-    display: fixed;
-  	padding-right: 60%;
-    padding-top: 0vh;
-  }
   h3 {
     padding-top: 2vh;
   	padding-left: 45%;
@@ -289,5 +228,10 @@ input::-webkit-input-placeholder{
     padding-top: -2vh;
   	padding-left: 45%;
   	font-size: 10px;
+  }
+  .button img {
+    display: fixed;
+  	padding-right: 60%;
+    padding-top: 0vh;
   }
 }

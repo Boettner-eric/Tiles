@@ -31,6 +31,7 @@ var pages = {
     // Put Pages here
     ["https://github.com","gh","Github","Open Source"],
     // Put folders here
+    ["#Themes","go","Themes","Colors"],
     ["#Keys","ct","Keyboards","Ctrl Alt Del"],
     ["#Media","me","Media","Stream"],
     ["#Code","mt","Code","~/hack.sh"],
@@ -43,11 +44,11 @@ var pages = {
     ["https://pcpartpicker.com","pc","PcParts","Pcpartpicker"],
     ["https://news.ycombinator.com","yc","Ycombinator","Tech News"],
     ["https://www.reddit.com","re","Reddit","r/startpages"],
-    ["https://www.wikipedia.org","wi","Wikipedia","Encylopedia"],
     ["https://icons8.com","ic","Icons8","Icon Set"],
     ["~Media"],
     ["~Code"],
     ["~Keyboards"],
+    ["~Themes"],
   ],
   "Keys":[ // example folder
     ["#Home","esc","Back","Endgame Achieved?","*"],
@@ -90,6 +91,15 @@ var pages = {
     ["https://play.hbogo.com/search","hb","HBO GO","\"VAR\"",term], // partial url : no api for external search
     ["https://www.hulu.com/search","hu","Hulu","\"VAR\"",term],
     ["https://en.wikipedia.org/wiki/VAR","wi","Wiki","\"VAR\"",term]
+  ],
+  "Themes":[ // put tiles for each theme here
+    ["$Discord","ds","Discord","Purple, Black, Grey"],
+    ["$Skeletor","sk","Skeletor","Green, Purple, Green"],
+    ["$Terminal","tm","Terminal","Green Black"],
+    ["$Gogh","pnr","Gogh","Blue Green Yellow"],
+    ["$Todoist","td","Todoist","Grey Red Yellow"],
+    ["$Switch","me","Switch","Grey Red Blue"],
+    ["$Lava","lv","Lava","Red Black"]
   ]
 };
 

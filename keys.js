@@ -17,9 +17,6 @@ window.onload = function(){
   tmp = tmp[0].split("="); // splits key/value pair
   set_theme(tmp[1]); // sets theme from cookie data
   console.log("\"" + tmp[1] + "\" theme loaded on page load");
-  for(var i = 0;i < themes.length;i++){
-    themes_dropdown(themes[i][0], i+1); // adds each theme to dropdown
-  };
   page_gen();  // defaults to pages["Home"]
   document.getElementById(focused).focus(); // Focus at start and when window is focused again.
 };
@@ -39,6 +36,7 @@ function image_load() {
   images["ab"] = "src/ab.png";
   for (key in pages) {
     page = pages[key];
+    console.log(page);
     for (var i=0; i< page.length; i++) {
       tile = page[i];
       if (tile.length >= 2){ // ignores references
@@ -66,7 +64,7 @@ function page_gen(page) {
     page = pages["Home"];
   } else if (page[0][2] != "Back") { // checks for custom back button -> ignores if one exists
     page.unshift(["#Home","ba","Back","To the Future?","*"]);
-  }
+  };
   /*
     *** If more than 12 tile "next" key generates 12-24 tiles ***
   */
@@ -102,13 +100,16 @@ function page_gen(page) {
           document.getElementById(num).href = "javascript:page_gen(); javascript:document.getElementById(\"1\").focus(); javascript:focused=1; javascript:result=1; javascript:document.title=\"Home\"";
         } else if (url[0] == "#") { // checks for folder urls
           url = url.replace("#", "");
-          document.getElementById(num).href = "javascript:page_gen(pages[\""+url+"\"]); javascript:document.getElementById(\"2\").focus(); javascript:focused=2; javascript:result=2; javascript: document.title = \"" +url +"\";"; // Opens folder and sets cursor to 2
+          document.getElementById(num).href = "javascript:page_gen(pages[\""+url+"\"]); javascript:focused=2; javascript:result=2; javascript:document.getElementById(\"2\").focus(); javascript: document.title = \"" +url +"\";"; // Opens folder and sets cursor to 2
         /*
           I might implement "&", "@" here for more functions within tiles
           "@tv" -> quick search call i.e. "javascript:search_live("tv")"
           "&" -> quick function calls for debuging i.e. "&gen:home" : javascript:page_gen(pages["Home"])
         */
-        } else { // for normal url redirects
+      } else if (url[0] == "$") {
+        url = url.replace("$", "");
+        document.getElementById(num).href = "javascript:set_theme(\""+url+"\"); javascript:focused=1; javascript:result=1; javascript:document.getElementById(\"1\").focus(); javascript:page_gen()";
+      } else { // for normal url redirects
           document.getElementById(num).href = url.replace("VAR",document.getElementById("search").value.replace(term,""));
           /*
             VAR : used for variables in search url schemes
@@ -188,6 +189,8 @@ function search_live(curr) {
           tile[3] = tile[3];
         } else if (tile[0].includes("#")) { // "#" -> Folder url
           tile[3] = "Folder (" + String(value) + ")"; // changes subtitle to type of page and rank
+        } else if (tile[0].includes("$")) {
+          tile[3] = "Theme (" + String(value) + ")"; // changes subtitle to type of page and rank
         } else {
           tile[3] = "Tile (" + String(value) + ")";
         };
@@ -254,24 +257,7 @@ function set_theme(name) { // 4
   console.log("\"" + name + "\" theme not loaded from lib.js")
   return 1;
 };
-// Creates list of valid themes
-function themes_dropdown(name,i) {
-  var button = document.createElement("button");
-  button.innerHTML = String(i) + ". " + name;
-  button.type="button";
-  var parent = document.getElementById("night-content");
-  button.addEventListener("touchstart", function (){
-    set_theme(name); // button tap -> set to theme
-    document.getElementById("night").onblur();
-    document.getElementById(1).focus();
-  });
-  button.onclick = function (){
-    set_theme(name); // button click -> set to theme
-    document.getElementById("night").onblur();
-    document.getElementById(focused).focus();
-  };
-  parent.appendChild(button);
-};
+
 /*
   *************************************************
   Helper Functions
@@ -289,25 +275,6 @@ document.getElementById("search").onblur = function(){ // Unfocusing search bar
 document.getElementById("search").onfocus = function(){ // Focusing search bar
   document.getElementById(focused).blur();
   document.title = "Search";
-};
-
-document.getElementById("night").onfocus = function(){
-  document.getElementById("night-content").style.display = "block";
-  document.getElementById("night").style.display = "none";
-};
-
-document.getElementById("night").onblur = function(){
-  document.getElementById("night-content").style.display = "none";
-  document.getElementById("night").style.display = "block";
-};
-
-document.getElementById("dropdown").onmouseover = function(){
-  document.getElementById(focused).blur();
-  document.getElementById("night").onfocus();
-};
-document.getElementById("dropdown").onmouseout = function(){
-  document.getElementById("night").onblur();
-  document.getElementById(focused).focus();
 };
 /*
   *************************************************
@@ -356,27 +323,12 @@ document.onkeydown = function(e) {
       focused = 2;
     }
 		return;
-	} else if (document.activeElement.id == "night"){
-    if ( key == 27 || key == 220) { // esc or slash
-			document.activeElement.blur();
-			document.getElementById(focused).focus();
-		}
-    var max = Math.max(themes.length+49,57)
-    for (var i = 49; i < max; i++) { // 1-9 Keyshortcuts for themes
-      if (key == i) {
-        x = themes[i-49];
-        set_theme(x[0]);
-        document.activeElement.blur();
-  			document.getElementById(focused).focus();
-      }
-    }
-	  return;
-  }
+	}
 	if ( key == 32 ) { // Key space -> focus search bar but dont log a space in search
     document.getElementById(String("search")).focus();
     return false; // ignore space in search field
 	} else if (key == 220) { // "\" key -> theme menu
-    document.getElementById("night").focus();
+    page_gen(pages["Themes"]);
   }else if (key == 191) { // "/" key -> calls external search
     document.getElementById("search").value = term;
     document.getElementById(String("search")).focus();
@@ -433,7 +385,6 @@ document.onkeydown = function(e) {
   } else if (key == 187) {
     result = 12;
   };
-
   if (result) {
 		document.getElementById(String(result)).focus();
 	};
@@ -461,4 +412,23 @@ if (!document.activeElement.id) {
   }
   return;
 }
+
+// Removed this way of themeing
+function themes_dropdown(name,i) {
+  var button = document.createElement("button");
+  button.innerHTML = String(i) + ". " + name;
+  button.type="button";
+  var parent = document.getElementById("night-content");
+  button.addEventListener("touchstart", function (){
+    set_theme(name); // button tap -> set to theme
+    document.getElementById("night").onblur();
+    document.getElementById(1).focus();
+  });
+  button.onclick = function (){
+    set_theme(name); // button click -> set to theme
+    document.getElementById("night").onblur();
+    document.getElementById(focused).focus();
+  };
+  parent.appendChild(button);
+};
 */

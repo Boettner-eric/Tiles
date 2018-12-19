@@ -7,7 +7,6 @@ A keyboard centric, feature rich, responsive design homepage!
 
 ## [**Live Demo**](https://boettner-eric.github.io/Tiles/index.html)
 
-
 ![Skeletor theme](Screenshots/skeletor.png)
 
 ### Benefits over **[Homepage](https://github.com/Boettner-eric/Homepage)**
@@ -59,14 +58,17 @@ theme | `1...0`, `-`, `+` | one key switch for 12 themes
 There are 3 types of tile that all use similar syntax:
 1. Tiles represent static webpages. `["url","icn","title","subtitle"]`
 2. Folders represent a key for a array of tiles.
-`["#keyname","icn","title","subtitle"]`
-3. References represent simple tiles for duplicate entrys
+`["#key-name","icn","title","subtitle"]`
+3. Themes repersent tiles for a given theme name
+`["$theme-name","icn","title","colorscheme"]`
+4. References represent simple tiles for duplicate entries
 `["~Title"]` for a given tile in `pages["~"]`
 
 ```js
 Example
   tile = ["https://github.com","gh","Github","Code"]
   folder = ["#Code","mt","Code","~/hack.sh"]
+  theme = ["$Terminal","mt","Terminal","Green Grey"]
   reference = ["~Github"]
 ```
 
