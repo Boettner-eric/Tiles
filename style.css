@@ -202,6 +202,9 @@ input::-webkit-input-placeholder{
 }
 
 @media only screen and (max-height: 400px) { /* For short devices*/
+  body {
+    overflow: hidden;
+  }
   div#grid {
     padding: 0vw;
     width: 98vw;
