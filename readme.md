@@ -80,7 +80,7 @@ Both themes and tiles are stored in lib.js -> look there for more info and examp
 
 ### Icons8
 Icons taken from [Icons 8](https://icons8.com)
-![Discord theme](Screenshots/term.png)
+![Todoist theme](Screenshots/todoist.png)
 ### Themes
 ![Gogh theme](Screenshots/gogh.png)
 
