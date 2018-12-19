@@ -88,11 +88,12 @@ var pages = {
   "Search":[
     ["https://www.reddit.com/r/VAR/","re","Reddit","r/VAR",term],
     ["https://stackoverflow.com/search?q=VAR","st","Stack Overflow","\"VAR\"",term],
+    ["https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=VAR","tr","Translate","Translate: \"VAR\"",term],
+    ["https://en.wikipedia.org/wiki/VAR","wi","Wiki","\"VAR\"",term],
     ["https://www.youtube.com/results?search_query=VAR","yt","Youtube","\"VAR\"",term],
     ["https://www.netflix.com/search?q=VAR","nt","Netflix","\"VAR\"",term],
     ["https://play.hbogo.com/search","hb","HBO GO","\"VAR\"",term], // partial url : no api for external search
     ["https://www.hulu.com/search","hu","Hulu","\"VAR\"",term],
-    ["https://en.wikipedia.org/wiki/VAR","wi","Wiki","\"VAR\"",term]
   ],
   "Themes":[ // put tiles for each theme here
     ["$Discord","ds","Discord","Purple, Black, Grey"],
