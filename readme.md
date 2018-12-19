@@ -42,10 +42,9 @@ right | `l` / `right` | right one tile
 hop | `1...0`, `-`, `+` | hop to any tile #
 search | `[space]` | starts live search
 api search | `/` | searches external sources
+themes | `\` | opens theme menu  
 enter | `[enter]` | go to tile / exit search
 esc | `[esc]` | close search, return to homepage
-themes | `\` | opens theme menu
-theme | `1...0`, `-`, `+` | one key switch for 12 themes
 
 ### Mobile Support
 * Fixed css breakpoints and general layout improvements

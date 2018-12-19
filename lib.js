@@ -18,6 +18,8 @@ var pages = {
       ">" -> currently used for search_live and larger folders
       "<" -> same as next
       "~" -> used for references
+      "Home" -> for main page of tiles
+      "Themes" -> saves all of the themes
     - if you use a tile in more than one page, put it in reference to prevent duplicate search results
     - "~" is a useful place to put pages that you want searchable even if they arent on a speciic page (i.e. tv shows)
   */
