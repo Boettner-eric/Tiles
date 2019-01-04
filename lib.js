@@ -15,28 +15,31 @@ var pages = {
 
     ******** NOTES ********
     - do not redefine (or use as a key):
-      ">" -> currently used for search_live and larger folders
-      "<" -> same as next
+      "Next" -> currently used for search_live and larger folders
+      "Back" -> same as next
       "~" -> used for references
       "Home" -> for main page of tiles
       "Themes" -> saves all of the themes
     - if you use a tile in more than one page, put it in reference to prevent duplicate search results
     - "~" is a useful place to put pages that you want searchable even if they arent on a speciic page (i.e. tv shows)
   */
-  "<":[
+  "Back":[
     // Leave Blank (for search/page overflow only)
   ],
-  ">":[
+  "Next":[
     // Leave Blank (for search/page overflow only)
   ],
   "~":[ // References -> use exact string of title (mostly for duplicates)
+    ["@w","weather/01d","Weather","Updating..."],
+    ["#","ab","Next"," More Results","*"],
+    ["#Home","ba", "Back","To the Future","*"],
     // Put Pages here
     ["https://github.com","gh","Github","Open Source"],
     // Put folders here
-    ["#Themes","go","Themes","Colors"],
-    ["#Keys","ct","Keyboards","Ctrl Alt Del"],
-    ["#Media","me","Media","Stream"],
-    ["#Code","mt","Code","~/hack.sh"],
+    ["#","go","Themes","Colors"],
+    ["#","ct","Keyboards","Ctrl Alt Del"],
+    ["#","me","Media","Stream"],
+    ["#","mt","Code","~/hack.sh"],
   ],
   "Home":[ // Index page loads at and resets to on end of search or 'esc'
     ["https://github.com/Boettner-eric/Tiles","ba","Back","To Github"],
@@ -52,7 +55,7 @@ var pages = {
     ["~Keyboards"],
     ["~Themes"],
   ],
-  "Keys":[ // example folder
+  "Keyboards":[ // example folder
     ["#Home","esc","Back","Endgame Achieved?","*"],
     ["https://www.massdrop.com/mechanical-keyboards","ct","Massdrop","GBs"],
     ["https://www.reddit.com/r/MechanicalKeyboards/","re","r/mk","Reddit"],
@@ -86,40 +89,98 @@ var pages = {
     - Get -> `https://api.darksky.net/forecast/f672ff13193bfcc40427a678ebfdbc71/${lat},${long}` + `?format=jsonp&callback=displayWeather`;
   */
   "Search":[
+    ["@d","sc","Word","Definition",term],
     ["https://www.reddit.com/r/VAR/","re","Reddit","r/VAR",term],
     ["https://stackoverflow.com/search?q=VAR","st","Stack Overflow","\"VAR\"",term],
-    ["https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=VAR","tr","Translate","Translate: \"VAR\"",term],
     ["https://en.wikipedia.org/wiki/VAR","wi","Wiki","\"VAR\"",term],
+    ["https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=VAR","tr","Translate","Translate: \"VAR\"",term],
+    ["https://www.rottentomatoes.com/search/?search=VAR","rt","Rotten Tomatoes","\"VAR\"",term],
     ["https://www.youtube.com/results?search_query=VAR","yt","Youtube","\"VAR\"",term],
     ["https://www.netflix.com/search?q=VAR","nt","Netflix","\"VAR\"",term],
     ["https://play.hbogo.com/search","hb","HBO GO","\"VAR\"",term], // partial url : no api for external search
     ["https://www.hulu.com/search","hu","Hulu","\"VAR\"",term],
   ],
   "Themes":[ // put tiles for each theme here
-    ["$Discord","ds","Discord","Purple, Black, Grey"],
-    ["$Skeletor","sk","Skeletor","Green, Purple, Green"],
-    ["$Terminal","tm","Terminal","Green Black"],
-    ["$Gogh","pnr","Gogh","Blue Green Yellow"],
-    ["$Todoist","td","Todoist","Grey Red Yellow"],
-    ["$Switch","me","Switch","Grey Red Blue"],
-    ["$Lava","lv","Lava","Red Black"]
+    ["$","ds","Discord","Purple, Black, Grey",['#23272A','#2C2F33','#7289DA','#7289DA','#99AAB5']],
+    ["$","sk","Skeletor","Green, Purple, Green",  ["#2b2836","#93b4ff","#bd93f9","#84fba2","#ffffff"]],
+    ["$","tm","Terminal","Green Black",["#282828","#282828","#33FF33","#33FF33","#33FF33"]],
+    ["$","pnr","Gogh","Blue Green Yellow",["#0375B4","#007849","#FECE00","#FFFFFF","#FFFFFF"]],
+    ["$","td","Todoist","Grey Red Yellow",["#1f1f1f","#fccf1b","#cd5650","#ffffff","#ffffff"]],
+    ["$","me","Switch","Grey Red Blue",["#414548","#ff4554","#00c3e3","#ffffff","#ffffff"]],
+    ["$","lv","Lava","Red Black",["#000000","#D32F2F","#DD4132","#99AAB5","#99AAB5"]],
+    ["$","tt","Purple","Purple Red Blue",["#6B5B95","#FF383F","#223A5E","#F0EDE5","#F0EDE5"]]
   ]
 };
 
-var themes = [
-  /*
-    ******** FORMAT ********
-    [NAME, BACKGROUND, MAIN COLOR, COMP COLOR, SUBTXT COLOR, TXT COLOR]
+var zip = "95822"; // changes when searching valid zips / or when zip is saved
+var oldzip = "";
 
-    ******** NOTES ********
-    - Themes are in order they will be displayed in the theme menu
-  */
-  ["Skeletor","#2b2836","#93b4ff","#bd93f9","#84fba2","#ffffff"],
-  ["Switch","#414548","#ff4554","#00c3e3","#ffffff","#ffffff"],
-  ["Gogh","#0375B4","#007849","#FECE00","#FFFFFF","#FFFFFF"],
-  ["Todoist","#1f1f1f","#fccf1b","#cd5650","#ffffff","#ffffff"],
-  ["Terminal","#282828","#282828","#33FF33","#33FF33","#33FF33"],
-  ["Discord",'#23272A','#2C2F33','#7289DA','#7289DA','#99AAB5'],
-  ["Lava","#000000","#D32F2F","#DD4132","#99AAB5","#99AAB5"],
-  ["Purple","#6B5B95","#FF383F","#223A5E","#F0EDE5","#F0EDE5"],
-];
+function weather_tile(num) { // returns tile
+  var weather = {};
+  var api = ""; // put api key here
+  var url = "http://api.openweathermap.org/data/2.5/weather?zip="+ zip + ",us&appid=" + api;
+
+  if (zip != oldzip) {
+    tile = pages["~"][0]; // TODO change to new tile for multiple zips
+    var request = new Request(url);
+    fetch(request).then(function(request) {
+      return request.json();
+    }).then(function(json) {
+      tile[0] = "@w";
+      if (unixtime - json.sys.sunrise <= 30 * 60) {
+        tile[1] = "sunrise";
+      } else if (json.sys.sunset - unixtime >= 30 * 60) {
+        tile[1] = "sunset";
+      } else if (Math.round((json.main.temp - 273.15) * 9/5 + 32) < 32) {
+        tile[1] = "cold";
+      } else if (Math.round((json.main.temp - 273.15) * 9/5 + 32) > 95){
+        tile[1] = "hot";
+      } else {
+        tile[1] = json.weather[0].icon;
+      };
+      image = new Image();
+      image.src = "src/weather/" + tile[1] + ".png";
+      images[tile[1]] = image.src;
+      tile[2] = json.name;
+      tile[3] = json.weather[0].description + " " + Math.round((json.main.temp - 273.15) * 9/5 + 32) + "F, " + json.main.humidity + "% humidity " + (weather.rain == undefined ? "" : json.rain);
+      tile[4] = zip;
+      pages["~"][0] = tile;
+
+      oldzip = zip;
+      console.log("updated weather for " + zip + " - " + tile);
+      set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en"].concat("50px",images[tile[1]],tile[2],tile[3]));
+    }).catch(function(error){
+      set_tile(num,["javascript:alert(\""+error+"\");","src/weather/error.png","Weather","Error"]);
+    });
+  } else {
+    tile = pages["~"][0]; // TODO change to new tile for multiple zips
+    set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en"].concat("50px",images[tile[1]],tile[2],tile[3]));
+    pages["~"][0] = tile;
+  };
+};
+
+var last = "";
+
+function dict_tile(num,current){
+  var url = "https://api.datamuse.com/words?sp=" + current + "&md=d";
+  var request = new Request(url);
+  if (current == last){
+    tile = pages["Search"][0];
+    set_tile(num,["@d","50px",images[tile[1]],tile[2],tile[3]]);
+    return null;
+  };
+  last = current;
+  fetch(request).then(function(request) {
+    return request.json();
+  }).then(function(json) {
+    tile = pages["Search"][0];
+    if (json != undefined) {
+      console.log(json);
+      tile[2] = json[0].word;
+      tile[3] = json[0].defs[0];
+    };
+    set_tile(num,["@d","50px",images[tile[1]],tile[2],tile[3]]);
+  }).catch(function(error){
+    set_tile(num,["@d","50px",images["sc"],"Word","Definition"]);
+  });
+}

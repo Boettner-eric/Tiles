@@ -1,5 +1,6 @@
 var focused = 1; // default to first tile
 var images = {}; // dict of image files to preload and reference
+var cached = pages["Home"]; // last visited page
 /*
   *************************************************
   Page load functions (in order)
@@ -13,11 +14,18 @@ var images = {}; // dict of image files to preload and reference
 */
 window.onload = function(){
   images = image_load(); // Load all images on page
-  var tmp = decodeURIComponent(document.cookie).split(';'); // Loads cookie w/ window and splits list of cookies
-  tmp = tmp[0].split("="); // splits key/value pair
-  set_theme(tmp[1]); // sets theme from cookie data
-  console.log("\"" + tmp[1] + "\" theme loaded on page load");
-  page_gen();  // defaults to pages["Home"]
+  var tmp = decodeURIComponent(document.cookie).split(';'); /* Loads cookie w/ window and splits list of cookies
+    external json order:
+      fetch(.json) from server
+      .then(json) =>
+      pages = json;
+      generate page_gen(pages["Home"];
+  */
+  pages["Back"] = pages["Home"] // default to home
+  tmp = tmp[0].split("=")[1]; // splits key/value pair
+  set_theme(tmp); // sets theme from cookie data
+  console.log("\"" + tmp + "\" theme loaded on page load");
+  page_gen(1);  // defaults to pages["Home"]
   document.getElementById(focused).focus(); // Focus at start and when window is focused again.
 };
 /*
@@ -30,16 +38,11 @@ window.onload = function(){
 */
 function image_load() {
   image = new Image();
-  image.src = "src/ba.png"; // loads image from server
-  images["ba"] = "src/ba.png"; // saves to dict by name
-  image.src = "src/ab.png";
-  images["ab"] = "src/ab.png";
   for (key in pages) {
     page = pages[key];
-    console.log(page);
     for (var i=0; i< page.length; i++) {
       tile = page[i];
-      if (tile.length >= 2){ // ignores references
+      if (tile.length >= 2){ // ignores references and weather tiles
         image = new Image();
         image.src = "src/" + tile[1] + ".png"
         images[tile[1]] = image.src;
@@ -59,15 +62,23 @@ function image_load() {
   - '#...' in tile[0] denotes a page with name '...'
   *************************************************
 */
-function page_gen(page) {
+function set_tile(num,array) {
+  n = num.toString();
+  document.getElementById(num).href = array[0];
+  document.getElementById("i"+n).style.width = array[1];
+  document.getElementById("i"+n).src = array[2];
+  document.getElementById("t"+n).innerHTML = array[3];
+  document.getElementById("s"+n).innerHTML = array[4];
+};
+
+function page_gen(id, page) { // id for focus element
+  var array = [];
   if (page == undefined) { // page_gen() -> defaults to pages["Home"]
     page = pages["Home"];
-  } else if (page[0][2] != "Back") { // checks for custom back button -> ignores if one exists
+  } else if (page[0][2] != "Back" && page[0][1] != "ba") { // checks for custom back tile -> ignores if one exists
     page.unshift(["#Home","ba","Back","To the Future?","*"]);
   };
-  /*
-    *** If more than 12 tile "next" key generates 12-24 tiles ***
-  */
+  cached = page;
   if (page.length > 12) {
     /*
       TODO :: Implement for loop for more than 24 results
@@ -81,78 +92,78 @@ function page_gen(page) {
       - i denotes level of depth
     */
     next = Array.from(page); // de references array
-    page.splice(11, 11, ["#>","ab","Next",String(page.length - 11) + " More Results","*"]); // stores results 12+
-    next.splice(0,11,["#<","ba","Back","Previous Results","*"]); // stores current page (for back button)
-    pages[">"] = next; // stores temporary back page
-    pages["<"] = page; // stores temp next page
-  }
+    page.splice(11, 11, ["#","ab","Next",String(page.length - 11) + " More Results","*"]); // stores results 12+
+    next.splice(0,11,["#","ba","Back","Previous Results","*"]); // stores current page (for back button)
+    pages["Next"] = next; // stores temporary back page
+    pages["Back"] = page; // stores temp next page
+  };
   try {
     for (var num =1; num<13;num++) {
         tile = page[num-1];
         if (tile == undefined) { // less than 12 tiles
           tile = ["","","",""] // placeholder blank tile
-        }
+        };
         n = num.toString();
         tile = reference(tile); // see reference() below
         url = tile[0];
-        if (url == "#Home") {
-          url = url.replace("#", "");
-          document.getElementById(num).href = "javascript:page_gen(); javascript:document.getElementById(\"1\").focus(); javascript:focused=1; javascript:result=1; javascript:document.title=\"Home\"";
-        } else if (url[0] == "#") { // checks for folder urls
-          url = url.replace("#", "");
-          document.getElementById(num).href = "javascript:page_gen(pages[\""+url+"\"]); javascript:focused=2; javascript:result=2; javascript:document.getElementById(\"2\").focus(); javascript: document.title = \"" +url +"\";"; // Opens folder and sets cursor to 2
-        /*
-          I might implement "&", "@" here for more functions within tiles
-          "@tv" -> quick search call i.e. "javascript:search_live("tv")"
-          "&" -> quick function calls for debuging i.e. "&gen:home" : javascript:page_gen(pages["Home"])
-        */
-      } else if (url[0] == "$") {
-        url = url.replace("$", "");
-        document.getElementById(num).href = "javascript:set_theme(\""+url+"\"); javascript:focused=1; javascript:result=1; javascript:document.getElementById(\"1\").focus(); javascript:page_gen()";
-      } else { // for normal url redirects
-          document.getElementById(num).href = url.replace("VAR",document.getElementById("search").value.replace(term,""));
-          /*
-            VAR : used for variables in search url schemes
-            term : search command (ignored in actual search)
-            This does not alter normal urls as VAR (if it does, rename VAR with a name that is less used)
-          */
-        }
-        if (tile[1] == ""){ // Blank images have no outline box
-          document.getElementById("i"+n).style.width = 0;
-          document.getElementById("i"+n).src = "";
+        if (url == "@w"){ // weather function tile
+          weather_tile(num);
+        } else if (url == "@d") {
+          dict_tile(num,document.getElementById("search").value.replace(term,"").replace(" ",""));
         } else {
-          document.getElementById("i"+n).style.width = "50px";
-          document.getElementById("i"+n).src = images[tile[1]];
-        }
-        document.getElementById("t"+n).innerHTML = tile[2]; // Title
-        document.getElementById("s"+n).innerHTML = tile[3].replace("VAR",document.getElementById("search").value).replace(term,""); //potentially add easy search here
-    }
+          if (tile[2] == "Home" || tile[0] == "#Home") { // still supports custom back button
+            array[0] = "javascript:page_gen(1); javascript:document.title=\"Home\"";
+          } else if (url[0] == "#") { // checks for folder urls
+            array[0] = "javascript:page_gen(2,pages[\""+tile[2]+"\"]); javascript: document.title = \"" +url +"\";"; // Opens folder and sets cursor to 2
+          } else if (url[0] == "$") { // if theme
+            array[0] = "javascript:set_theme(\""+tile[2]+"\",2); javascript:page_gen(1)";
+          } else { // for normal url redirects
+            array[0] = url.replace("VAR",document.getElementById("search").value.replace(term,""));
+          };
+          if (tile[1] == ""){ // Blank images have no outline box
+            array[1] = 0;
+            array[2] = "";
+          } else {
+            array[1] = "50px";
+            array[2] = images[tile[1]];
+          };
+          array[3] = tile[2]; // Title
+          array[4] = tile[3].replace("VAR",document.getElementById("search").value).replace(term,"");
+          set_tile(num,array);
+        };
+      };
   } catch (err) {
     console.log("\"" + err + "\" error logged in page_gen of " + tile);
-  }
+  };
+  if (id != "none") {
+    document.getElementById(id).focus();
+    focused=id;
+    result=id;
+  };
 };
 /*
   *************************************************
   Reference
   - if a tile == ["~...."] -> check pages["~"] for the full tile
+  - if a tile == ["@..."] -> check pages["~"] for function tile
   - else return the original tile
   *************************************************
 */
 function reference(tile) {
-  if (tile[0][0] == "~") {
+  if (tile[0][0] == "~" || tile[0][0] == "@") {
     local = Array.from(pages["~"]);
     for (var x=0; x<local.length; x++) {
-      if (local[x][2] == tile[0].replace("~","")) { // If title == reference
+      if (local[x][2] == tile[0].replace("~","") || local[x][0] == tile[0]) { // If title or url == reference
         return local[x];
-      }
-    }
-  }
+      };
+    };
+  };
   return tile;
 };
 /*
   *************************************************
   Search Functions
-  - rank(string,string) -> finds number of matching charactors between two normalized strings
+  - rank(string,string) -> finds number of matching charactors between two normalized strings (ignores theme hex data)
   - search_live(string) -> finds best 11 pages for a given search term
   - pages_to_list() -> converts "pages" (in lib.js) from Dict(key:Array[tile]) to Array[tile] (allows for quicker search and optimal algorithms)
 
@@ -161,9 +172,9 @@ function reference(tile) {
   *************************************************
 */
 function rank(attempt, known) {
-  if (attempt == undefined || known == undefined) {
+  if (attempt == undefined || known == undefined || Array.isArray(attempt)) {
     return 0;
-  }
+  };
   attempt = attempt.replace(" ","").toLowerCase(); // converts strings to universal form
   known = known.replace(" ","").toLowerCase();
   var a = 0;
@@ -180,18 +191,22 @@ function search_live(curr) {
   var page = Array.from(pages_to_list());
   for (var j = 0; j< page.length; j++){
     tile = Array.from(page[j]); // make sure array is values not references (important for live tiles)
-    if (tile[4] == term && curr.includes(term)) {
+    if (tile[0] == "@w" && /^\d{5}(-\d{4})?$/.test(document.getElementById("search").value)) {
+      // https://stackoverflow.com/questions/160550/zip-code-us-postal-code-validation
+      zip = document.getElementById("search").value;
+      final.push({'match': tile,"rank":100}); // puts weather tile first
+    } else if (tile[4] == term && curr.includes(term)) { // if term -> only show external search tiles
       final.push({'match': tile,"rank":10});
-    } else if (tile[4] != "*" && !curr.includes(term) && tile[4] != term) { // "*" -> Hidden from search : term -> search external only : term -> ignore search tiles outside of search mode
-      value = Math.max(rank(tile[2],curr),rank(tile[4],curr)); // max of name and tag
-      if (value > 1) {
+    } else if (tile[4] != "*" && !curr.includes(term) && tile[4] != term) { // "*" -> Hidden from search term -> ignore search tiles outside of search mode
+      value = Math.max(rank(tile[2],curr),rank(tile[4],curr)); // max ranking of name and tag
+      if (value > 1.5) {
         if (tile[0].includes("VAR")) {
           tile[3] = tile[3];
-        } else if (tile[0].includes("#")) { // "#" -> Folder url
+        } else if (tile[0][0] == "#") { // "#" -> Folder url
           tile[3] = "Folder (" + String(value) + ")"; // changes subtitle to type of page and rank
-        } else if (tile[0].includes("$")) {
+        } else if (tile[0][0] == "$") {
           tile[3] = "Theme (" + String(value) + ")"; // changes subtitle to type of page and rank
-        } else {
+        } else if (tile[0][0] != "@"){ // don't change function tile descriptions
           tile[3] = "Tile (" + String(value) + ")";
         };
         final.push({'match': tile,"rank":value});
@@ -201,27 +216,27 @@ function search_live(curr) {
   final = final.sort(function(a, b) {   // Sorting of all results (tiles, folders and livetiles)
     return ((a.rank > b.rank) ? -1 : ((a.rank == b.rank) ? 0 : 1));});
   var ranking = [];
-  ranking.push(["#Home","ba", "Back","Exit Search"]); // Preappend back button
+  ranking.push(["#Home","ba", "Back","Exit Search","*"]); // Preappend back button
   for (var k = 0; k < Math.min(final.length,20); k++) { // add all matches in ranked order (max of two pages)
     ranking[k+1] = final[k].match;
   };
-  ranking[k+1] = ["https://www.google.com/search?q=" + curr.replace(term,""),"go","Google","\""+ curr.replace(term,"") +"\"","*"];
-  page_gen(Array.from(ranking));
+  ranking[k+1] = ["https://www.google.com/search?q=" + curr.replace(term,""),"go","Google","\""+ curr.replace(term,"") +"\"","*"]; // always add google tile last regardless of search mode
+  page_gen("none",Array.from(ranking));
   return ranking;
 };
 
 function pages_to_list() {
   list = [];
   for (key in pages) {
-    if (key != "<" && key != ">") { // ignores these search keys
+    if (key != "Back" && key != "Next") { // ignores these search keys
       page = Array.from(pages[key]);
       for (var i = 0; i< page.length; i++){
         if (page[i].length >= 4) { // ignores "~" tiles
           list.push(page[i]);
-        }
-      }
-    }
-  }
+        };
+      };
+    };
+  };
   return list;
 };
 /*
@@ -229,7 +244,6 @@ function pages_to_list() {
   Themeing
     - setCookie(theme) -> saves current theme to cookie
     - set_theme(name) -> styles the page with a theme array
-    - themes_dropdown(name,i) -> adds a theme to a dropdown menu
 
   Notes
     - set cookie overwrites previous theme cookie : do not change expiration
@@ -242,39 +256,21 @@ function set_cookie(theme) {
 };
 
 function set_theme(name) { // 4
+  themes = pages["Themes"];
   for(var i = 0;i < themes.length;i++){
-    if (themes[i][0] == name) {
-      x = themes[i];
-      document.documentElement.style.setProperty('--background', x[1]);
-      document.documentElement.style.setProperty('--main-cl', x[2]);
-      document.documentElement.style.setProperty('--comp-cl', x[3]);
-      document.documentElement.style.setProperty('--sub-txt', x[4]);
-      document.documentElement.style.setProperty('--base-txt', x[5]);
+    if (themes[i][2] == name) {
+      x = themes[i][4];
+      document.documentElement.style.setProperty('--background', x[0]);
+      document.documentElement.style.setProperty('--main-cl', x[1]);
+      document.documentElement.style.setProperty('--comp-cl', x[2]);
+      document.documentElement.style.setProperty('--sub-txt', x[3]);
+      document.documentElement.style.setProperty('--base-txt', x[4]);
       set_cookie(name);
       return 0;
     }
   }
   console.log("\"" + name + "\" theme not loaded from lib.js")
   return 1;
-};
-
-/*
-  *************************************************
-  Helper Functions
-    * Search
-      - highlights bottom bar and engadges live_search mode
-      - adds tab name "Search"
-    * Night
-      - hides the night icon and shows a list instead
-      - dropdown list is in beta*
-  *************************************************
-*/
-document.getElementById("search").onblur = function(){ // Unfocusing search bar
-	document.getElementById(focused).focus();
-};
-document.getElementById("search").onfocus = function(){ // Focusing search bar
-  document.getElementById(focused).blur();
-  document.title = "Search";
 };
 /*
   *************************************************
@@ -293,50 +289,46 @@ document.getElementById("search").onfocus = function(){ // Focusing search bar
 window.onclick = function(e){
 	if ( document.activeElement.id != "search" ) {
 		document.getElementById(focused).focus();
-	}
+	};
 };
-
 document.onkeyup = function(e){
   if ( document.activeElement.id == "search") {
     if (e.keyCode != 13 && e.keyCode != 27){
       current = document.getElementById("search").value;
       search_live(current);
-    }
-  }
+    };
+  };
 };
-
 document.onkeydown = function(e) {
 	var key = e.keyCode;
   var result = null;
 
 	if ( document.activeElement.id == "search") {
 		if (key == 27) { // esc
-			document.activeElement.blur();
-			document.getElementById(focused).focus();
       document.getElementById("search").value = "";
-      page_gen();
+      page_gen(1);
       document.title = "Home";
 		} else if (key == 13){ // enter
       document.activeElement.blur();
 			document.getElementById("2").focus();
       result = 2;
       focused = 2;
-    }
+    };
 		return;
-	}
+	};
+
 	if ( key == 32 ) { // Key space -> focus search bar but dont log a space in search
-    document.getElementById(String("search")).focus();
+    document.getElementById("search").focus();
     return false; // ignore space in search field
 	} else if (key == 220) { // "\" key -> theme menu
-    page_gen(pages["Themes"]);
+    page_gen(1,pages["Themes"]);
   }else if (key == 191) { // "/" key -> calls external search
     document.getElementById("search").value = term;
-    document.getElementById(String("search")).focus();
+    document.getElementById("search").focus();
     return false;
   } if (key == 27) { // esc -> back to home screen
-    page_gen();
-    focused = 1;
-    result = 1;
+    page_gen(1);
+    document.getElementById("search").value = "";
   } else if ( key == 38 || key == 75) { // Up key, go back 4 blocks (the one above).
 		result = parseInt(focused) - 4;
 		focused = parseInt(focused) - 4;
@@ -385,50 +377,18 @@ document.onkeydown = function(e) {
   } else if (key == 187) {
     result = 12;
   };
+  /* Currently doesnt work with hjkl only 1-12
+  if (result && page == pages["Themes"]) {
+    document.getElementById(String(result)).focus();
+    document.getElementById(String(result)).click();
+  }
+  */
   if (result) {
-		document.getElementById(String(result)).focus();
+    if (result != focused && cached == pages["Themes"]) { // changes themes
+      document.getElementById(String(result)).click();
+      result = focused;
+    } else {
+      document.getElementById(String(result)).focus();
+    };
 	};
 };
-
-
-/*
-Obsolete debug functions
-
-Debug Function for fixing missing cursor:
-Made obsolete by bug fixes
-
-window.onclick = function(e){
-	if ( document.activeElement.id != "search" ) {
-		document.getElementById(focused).focus();
-	}
-};
-
-if (!document.activeElement.id) {
-  // Keys for help and search still working even if no block selected, if it's another key, then select last block.
-  if ( key == 32 ) { // Key space, focus search bar and show [ESP] instruction.
-    document.getElementById("search").focus();
-  } else {
-    document.getElementById(focused).focus();
-  }
-  return;
-}
-
-// Removed this way of themeing
-function themes_dropdown(name,i) {
-  var button = document.createElement("button");
-  button.innerHTML = String(i) + ". " + name;
-  button.type="button";
-  var parent = document.getElementById("night-content");
-  button.addEventListener("touchstart", function (){
-    set_theme(name); // button tap -> set to theme
-    document.getElementById("night").onblur();
-    document.getElementById(1).focus();
-  });
-  button.onclick = function (){
-    set_theme(name); // button click -> set to theme
-    document.getElementById("night").onblur();
-    document.getElementById(focused).focus();
-  };
-  parent.appendChild(button);
-};
-*/

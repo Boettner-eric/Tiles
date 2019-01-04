@@ -15,12 +15,15 @@ A keyboard centric, feature rich, responsive design homepage!
 * Clearer data structure with one static index.html file
 * Support for preloading icons
 * Major bug fixes and stability improvements
-* Clearer code and documentation -> way easier customization
+* Clearer code and documentation -> much easier customization
 * Lib.js allows for easy addition and deletion of tiles and themes
 * Live search and external searches
 * Cool new themes
 * Better mobile support
 
+## Setup
+* Add any custom tiles to lib.js
+* Add your api key to the var "api" for open weather
 
 ## Features
 * Keyboard navigation and shortcuts
@@ -59,22 +62,16 @@ There are 3 types of tile that all use similar syntax:
 2. Folders represent a key for a array of tiles.
 `["#key-name","icn","title","subtitle"]`
 3. Themes repersent tiles for a given theme name
-`["$theme-name","icn","title","colorscheme"]`
+`["$theme-name","icn","title",["background","main color","alt color","main text","subtext"]]`
 4. References represent simple tiles for duplicate entries
 `["~Title"]` for a given tile in `pages["~"]`
 
 ```js
 Example
   tile = ["https://github.com","gh","Github","Code"]
-  folder = ["#Code","mt","Code","~/hack.sh"]
-  theme = ["$Terminal","mt","Terminal","Green Grey"]
+  folder = ["#","mt","Code","~/hack.sh"]
+  theme = ["$","ds","Discord","Purple, Black, Grey",['#23272A','#2C2F33','#7289DA','#7289DA','#99AAB5']]
   reference = ["~Github"]
-```
-
-#### Theme syntax
-```js
-[theme name, background, accent, compliment, title, subtitle]
-["Skeletor","#2b2836","#93b4ff","#bd93f9","#84fba2","#ffffff"]
 ```
 Both themes and tiles are stored in lib.js -> look there for more info and examples
 
