@@ -20,10 +20,15 @@ A keyboard centric, feature rich, responsive design homepage!
 * Live search and external searches
 * Cool new themes
 * Better mobile support
+* Live search and definitions
+
+![Dictionary Tile](Screenshots/definition.png)
 
 ## Setup
 * Add any custom tiles to lib.js
 * Add your api key to the var "api" for open weather
+
+![Weather Tile](Screenshots/weather.png)
 
 ## Features
 * Keyboard navigation and shortcuts
