@@ -32,7 +32,7 @@ var pages = {
   "~":[ // References -> use exact string of title (mostly for duplicates)
     ["@w","weather/01d","Weather","Updating..."],
     ["#","ab","Next"," More Results","*"],
-    ["#Home","ba", "Back","To the Future","*"],
+    ["#","ba", "Back","To the Future","*"],
     // Put Pages here
     ["https://github.com","gh","Github","Open Source"],
     // Put folders here
@@ -44,7 +44,7 @@ var pages = {
   "Home":[ // Index page loads at and resets to on end of search or 'esc'
     ["https://github.com/Boettner-eric/Tiles","ba","Back","To Github"],
     ["~Github"], // example of reference
-    ["https://gmail.com","gm","Gmail","email","google"],
+    ["https://gmail.com","gm","Gmail","Inbox","google"],
     ["https://todoist.com/app#start","td","Todoist","Tasks"],
     ["https://pcpartpicker.com","pc","PcParts","Pcpartpicker"],
     ["https://news.ycombinator.com","yc","Ycombinator","Tech News"],
@@ -56,19 +56,20 @@ var pages = {
     ["~Themes"],
   ],
   "Keyboards":[ // example folder
-    ["#Home","esc","Back","Endgame Achieved?","*"],
+    ["#","esc","Back","Endgame Achieved?","*"],
     ["https://www.massdrop.com/mechanical-keyboards","ct","Massdrop","GBs"],
     ["https://www.reddit.com/r/MechanicalKeyboards/","re","r/mk","Reddit"],
     ["https://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf","pi","Latex","Symbol Dictionary"],
     ["https://www.paypal.com/us/home","pp","Paypal","Market Buys"],
     ["http://www.keyboard-layout-editor.com","ke","Keylayout","QMK Editor"],
     ["https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes.md","qmk","QMK Keycodes","hyper(kc)"],
+    ["https://keycode.info","ct","Keycodes","Javascript"],
     ["https://geekhack.org/index.php","gk","Geekhack","IC GB Keebs"],
   ],
   "Media":[
     ["https://hbogo.com/","hb","HBO GO","Westworld"],
-    ["https://www.youtube.com/","yt","Youtube","Indie Content"],
-    ["https://netflix.com","nt","Netflix","US Proxy"],
+    ["https://www.youtube.com/","yt","Youtube","Tech Content"],
+    ["https://netflix.com","nt","Netflix","Originals"],
     ["https://www.hulu.com","hu","Hulu","Live Tv"],
     ["https://soundcloud.com","su","Soundcloud","Mixtape Madness"],
     ["https://twitch.com","tt","Twitch","Livestreams"]
@@ -80,7 +81,6 @@ var pages = {
     ["https://atom.io","at","Atom.io","IDE"],
     ["https://internetingishard.com/html-and-css/","go","Interneting is hard","HTML Guide"],
     ["https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet","md","Markdown","Cheatsheet"],
-    ["https://keycode.info","ct","Keycodes","Javascript"],
     ["https://discordapp.com","ds","Discord","Chat Channels"]
   ],
   /*
