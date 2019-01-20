@@ -1,4 +1,7 @@
 var term = "? ";
+const time = new Date();
+var unixtime = time.getTime();
+
 var pages = {
   /*
     ******** FORMAT ********
@@ -111,19 +114,17 @@ var pages = {
     ["$","tt","Purple","Purple Red Blue",["#6B5B95","#FF383F","#223A5E","#F0EDE5","#F0EDE5"]]
   ]
 };
-
-var zip = "95822"; // changes when searching valid zips / or when zip is saved
+var zip = ""; // changes when searching valid zips / or when zip is saved
 var oldzip = "";
+var weather = ["@w","weather/01d","Weather","Updating..."];
 
 function weather_tile(num) { // returns tile
-  var weather = {};
-  var api = ""; // put api key here
+  var api = ""; // your key here
   var url = "http://api.openweathermap.org/data/2.5/weather?zip="+ zip + ",us&appid=" + api;
-  set_tile(num, ["@w","50px","src/weather/01d.png","Weather","Updating..."]); // placeholder tile
 
-
+  set_tile(num, [url,"50px",images[weather[1]],weather[2],weather[3]]); // placeholder tile
   if (zip != oldzip) {
-    tile = pages["~"][0]; // TODO change to new tile for multiple zips
+    tile = weather; // TODO change to new tile for multiple zips
     var request = new Request(url);
     fetch(request).then(function(request) {
       return request.json();
@@ -146,18 +147,15 @@ function weather_tile(num) { // returns tile
       tile[2] = json.name;
       tile[3] = json.weather[0].description + " " + Math.round((json.main.temp - 273.15) * 9/5 + 32) + "F, " + json.main.humidity + "% humidity " + (weather.rain == undefined ? "" : json.rain);
       tile[4] = zip;
-      pages["~"][0] = tile;
-
+      weather = tile;
       oldzip = zip;
       console.log("updated weather for " + zip + " - " + tile);
       set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en"].concat("50px",images[tile[1]],tile[2],tile[3]));
     }).catch(function(error){
-      set_tile(num,["javascript:alert(\""+error+"\");","src/weather/error.png","Weather","Error"]);
+      set_tile(num,["javascript:alert(\""+error+"\");","50px","src/weather/error.png","Weather","Error"]);
     });
   } else {
-    tile = pages["~"][0]; // TODO change to new tile for multiple zips
-    set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en"].concat("50px",images[tile[1]],tile[2],tile[3]));
-    pages["~"][0] = tile;
+    set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en","50px",images[weather[1]],weather[2],weather[3]]);
   };
 };
 
