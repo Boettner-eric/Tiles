@@ -119,6 +119,8 @@ function weather_tile(num) { // returns tile
   var weather = {};
   var api = ""; // put api key here
   var url = "http://api.openweathermap.org/data/2.5/weather?zip="+ zip + ",us&appid=" + api;
+  set_tile(num, ["@w","50px","src/weather/01d.png","Weather","Updating..."]); // placeholder tile
+
 
   if (zip != oldzip) {
     tile = pages["~"][0]; // TODO change to new tile for multiple zips
