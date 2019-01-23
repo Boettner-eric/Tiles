@@ -124,33 +124,33 @@ function weather_tile(num) { // returns tile
 
   set_tile(num, [url,"50px",images[weather[1]],weather[2],weather[3]]); // placeholder tile
   if (zip != oldzip) {
-    tile = weather; // TODO change to new tile for multiple zips
+    wtile = weather; // TODO change to new tile for multiple zips
     var request = new Request(url);
     fetch(request).then(function(request) {
       return request.json();
     }).then(function(json) {
-      tile[0] = "@w";
+      wwtile[0] = "@w";
       if (unixtime - json.sys.sunrise <= 30 * 60) {
-        tile[1] = "sunrise";
+        wtile[1] = "sunrise";
       } else if (json.sys.sunset - unixtime >= 30 * 60) {
-        tile[1] = "sunset";
+        wtile[1] = "sunset";
       } else if (Math.round((json.main.temp - 273.15) * 9/5 + 32) < 32) {
-        tile[1] = "cold";
+        wtile[1] = "cold";
       } else if (Math.round((json.main.temp - 273.15) * 9/5 + 32) > 95){
-        tile[1] = "hot";
+        wtile[1] = "hot";
       } else {
-        tile[1] = json.weather[0].icon;
+        wtile[1] = json.weather[0].icon;
       };
       image = new Image();
-      image.src = "src/weather/" + tile[1] + ".png";
-      images[tile[1]] = image.src;
-      tile[2] = json.name;
-      tile[3] = json.weather[0].description + " " + Math.round((json.main.temp - 273.15) * 9/5 + 32) + "F, " + json.main.humidity + "% humidity " + (weather.rain == undefined ? "" : json.rain);
-      tile[4] = zip;
-      weather = tile;
+      image.src = "src/weather/" + wtile[1] + ".png";
+      images[wtile[1]] = image.src;
+      wtile[2] = json.name;
+      wtile[3] = json.weather[0].description + " " + Math.round((json.main.temp - 273.15) * 9/5 + 32) + "F, " + json.main.humidity + "% humidity " + (weather.rain == undefined ? "" : json.rain);
+      wtile[4] = zip;
+      weather = wtile;
       oldzip = zip;
-      console.log("updated weather for " + zip + " - " + tile);
-      set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en"].concat("50px",images[tile[1]],tile[2],tile[3]));
+      console.log("updated weather for " + zip + " - " + wtile);
+      set_tile(num,["https://darksky.net/zipcode/"+zip+"/us12/en"].concat("50px",images[wtile[1]],wtile[2],wtile[3]));
     }).catch(function(error){
       set_tile(num,["javascript:alert(\""+error+"\");","50px","src/weather/error.png","Weather","Error"]);
     });
