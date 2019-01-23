@@ -29,7 +29,7 @@ div#grid {
   display: fixed;
 	padding-left: 3vw;
 	position: center;
-	width: 96vw;
+	width: 95vw;
 	height: 90vh;
 	top: 10vh;
 }
@@ -56,7 +56,7 @@ div#grid table tr td a {
 	display: block;
 	padding: 4px;
 	height: 12vh;
-	width: 20vw;
+	width: 18vw;
 }
 
 div#grid h3 {
@@ -157,7 +157,7 @@ input::-webkit-input-placeholder{
   }
   div#grid table tr td a{
   	height: 12vh;
-  	width: 22vw;
+  	width: 20vw;
   	padding-top: 5%;
   }
   div#grid table tr td {
