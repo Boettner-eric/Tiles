@@ -13,21 +13,17 @@ var cached = pages["Home"]; // last visited page
   *************************************************
 */
 window.onload = function(){
+  update_tiles(); // in lib.js
   images = image_load(); // Load all images on page
-  var tmp = decodeURIComponent(document.cookie).split(';'); /* Loads cookie w/ window and splits list of cookies
-    external json order:
-      fetch(.json) from server
-      .then(json) =>
-      pages = json;
-      generate page_gen(pages["Home"];
-  */
+  var tmp = decodeURIComponent(document.cookie).split(';'); /* Loads cookie w/ window and splits list of cookies */
   pages["Back"] = pages["Home"] // default to home
   tmp = tmp[0].split("=")[1]; // splits key/value pair
   set_theme(tmp); // sets theme from cookie data
   console.log("\"" + tmp + "\" theme loaded on page load");
   page_gen(1);  // defaults to pages["Home"]
-  document.getElementById(focused).focus(); // Focus at start and when window is focused again.
+  // TODO : fix search bar stealing focus
 };
+
 /*
   *************************************************
   Image Load
@@ -44,7 +40,11 @@ function image_load() {
       tile = page[i];
       if (tile.length >= 2){ // ignores references and weather tiles
         image = new Image();
-        image.src = "src/" + tile[1] + ".png"
+        if (tile[1].includes("~")){
+          image.src = "https://img.icons8.com/color/96/000000/" + tile[1].split("~")[1] + ".png";
+        } else {
+          image.src = "src/" + tile[1] + ".png"
+        }
         images[tile[1]] = image.src;
       };
     };
@@ -75,7 +75,7 @@ function page_gen(id, page) { // id for focus element
   var array = [];
   if (page == undefined) { // page_gen() -> defaults to pages["Home"]
     page = pages["Home"];
-  } else if (page[0][2] != "Back" && page[0][1] != "ba") { // checks for custom back tile -> ignores if one exists
+  } else if (page[0][2] != "Back" && page[0][1] != "ba" && page != pages["Home"]) { // checks for custom back tile -> ignores if one exists
     page.unshift(["#Home","ba","Back","To the Future?","*"]);
   };
   cached = page;
@@ -107,25 +107,28 @@ function page_gen(id, page) { // id for focus element
         tile = reference(tile); // see reference() below
         url = tile[0];
         if (url == "@w"){ // weather function tile
-          weather_tile(num);
-        } else if (url == "@d") {
+          update_weather(num);
+        } else if (url == "@f"){
+          set_tile(num,liverpool);
+        } else if (url == "@d"){
           dict_tile(num,document.getElementById("search").value.replace(term,"").replace(" ",""));
         } else {
           if (tile[2] == "Home" || tile[0] == "#Home") { // still supports custom back button
-            array[0] = "javascript:page_gen(1); javascript:document.title=\"Home\"";
+            array[0] = "javascript:page_gen(1, pages[\"Home\"]);";
+            //array[0] = "javascript:page_gen(1); javascript:document.title=\"Home\"";
           } else if (url[0] == "#") { // checks for folder urls
-            array[0] = "javascript:page_gen(2,pages[\""+tile[2]+"\"]); javascript: document.title = \"" +url +"\";"; // Opens folder and sets cursor to 2
+            array[0] = "javascript:page_gen(2,pages[\""+tile[2]+"\"])"; // Opens folder and sets cursor to 2
           } else if (url[0] == "$") { // if theme
             array[0] = "javascript:set_theme(\""+tile[2]+"\",2); javascript:page_gen(1)";
           } else { // for normal url redirects
-            array[0] = url.replace("VAR",document.getElementById("search").value.replace(term,""));
+            array[0] = url.replace("VAR",encodeURIComponent(document.getElementById("search").value.replace(term,""))); // searches only with correct symbols
           };
           if (tile[1] == ""){ // Blank images have no outline box
             array[1] = 0;
             array[2] = "";
           } else {
             array[1] = "50px";
-            array[2] = images[tile[1]];
+            array[2] = images[tile[1]]; // assumes all images have been preloaded
           };
           array[3] = tile[2]; // Title
           array[4] = tile[3].replace("VAR",document.getElementById("search").value).replace(term,"");
@@ -140,6 +143,13 @@ function page_gen(id, page) { // id for focus element
     focused=id;
     result=id;
   };
+  for (var i =1; i<=12;i++){
+    if (document.getElementById(i) != null && document.getElementById(i).href.includes("javascript:")){
+      document.getElementById(i).onclick = function(){
+        eval(document.getElementById(i).href.replace("javascript:",""));
+      };
+    };
+  };
 };
 /*
   *************************************************
@@ -152,7 +162,7 @@ function page_gen(id, page) { // id for focus element
 function reference(tile) {
   if (tile[0][0] == "~" || tile[0][0] == "@") {
     local = Array.from(pages["~"]);
-    for (var x=0; x<local.length; x++) {
+    for (var x=0; x< local.length; x++) {
       if (local[x][2] == tile[0].replace("~","") || local[x][0] == tile[0]) { // If title or url == reference
         return local[x];
       };
@@ -195,6 +205,7 @@ function search_live(curr) {
       // https://stackoverflow.com/questions/160550/zip-code-us-postal-code-validation
       zip = document.getElementById("search").value;
       final.push({'match': tile,"rank":100}); // puts weather tile first
+      break; // only tile
     } else if (tile[4] == term && curr.includes(term)) { // if term -> only show external search tiles
       final.push({'match': tile,"rank":10});
     } else if (tile[4] != "*" && !curr.includes(term) && tile[4] != term) { // "*" -> Hidden from search term -> ignore search tiles outside of search mode
@@ -260,14 +271,20 @@ function set_theme(name) { // 4
   for(var i = 0;i < themes.length;i++){
     if (themes[i][2] == name) {
       x = themes[i][4];
-      document.documentElement.style.setProperty('--background', x[0]);
+      if (x[0][0] != "#"){ // background image condition
+        document.body.style.backgroundImage = "url("+ x[0] +")";
+        document.documentElement.style.setProperty('--background', "#ccccc");
+      } else {
+        document.body.style.backgroundImage = "none";
+        document.documentElement.style.setProperty('--background', x[0]);
+      };
       document.documentElement.style.setProperty('--main-cl', x[1]);
       document.documentElement.style.setProperty('--comp-cl', x[2]);
       document.documentElement.style.setProperty('--sub-txt', x[3]);
       document.documentElement.style.setProperty('--base-txt', x[4]);
       set_cookie(name);
       return 0;
-    }
+    };
   }
   console.log("\"" + name + "\" theme not loaded from lib.js")
   return 1;
@@ -313,6 +330,9 @@ document.onkeydown = function(e) {
 			document.getElementById("2").focus();
       result = 2;
       focused = 2;
+    } else if (document.getElementById("search").value.includes("term=")){
+      term = document.getElementById("search").value.replace("term=","");
+      console.log("term -> "+ term);
     };
 		return;
 	};
@@ -329,7 +349,7 @@ document.onkeydown = function(e) {
   } if (key == 27) { // esc -> back to home screen
     page_gen(1);
     document.getElementById("search").value = "";
-  } else if ( key == 38 || key == 75) { // Up key, go back 4 blocks (the one above).
+  } else if ( key == 38 || key == 74) { // Up key, go back 4 blocks (the one above).
 		result = parseInt(focused) - 4;
 		focused = parseInt(focused) - 4;
 		if (result < 1) {
@@ -337,7 +357,7 @@ document.onkeydown = function(e) {
 			focused += 12;
 		}
 		result = !isNaN(document.activeElement.id) ? result : focused;
-	} else if ( key == 40 || key == 74) { // Down key, go forward 4 blocks (the one below).
+	} else if ( key == 40 || key == 75) { // Down key, go forward 4 blocks (the one below).
 		result = parseInt(focused) + 4;
 		focused = parseInt(focused) + 4;
 		if (result > 12) {
