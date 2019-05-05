@@ -29,7 +29,7 @@ div#grid {
   display: fixed;
 	padding-left: 3vw;
 	position: center;
-	width: 96vw;
+	width: 95vw;
 	height: 90vh;
 	top: 10vh;
 }
@@ -56,7 +56,7 @@ div#grid table tr td a {
 	display: block;
 	padding: 4px;
 	height: 12vh;
-	width: 20vw;
+	width: 18vw;
 }
 
 div#grid h3 {
@@ -65,15 +65,13 @@ div#grid h3 {
 }
 
 div#grid p {
-  margin-top: -1vh;
   padding-left: 45%;
 	font-size: 10px;
   color: var(--sub-txt);
-  overflow: hidden;
 }
 .button img {
   display: fixed;
-	padding-right: 62%;
+	padding-right: 60%;
 }
 
 div#grid table tr td a img {
@@ -159,7 +157,7 @@ input::-webkit-input-placeholder{
   }
   div#grid table tr td a{
   	height: 12vh;
-  	width: 22vw;
+  	width: 20vw;
   	padding-top: 5%;
   }
   div#grid table tr td {
@@ -169,7 +167,7 @@ input::-webkit-input-placeholder{
   }
 }
 
-@media only screen and (max-width: 450px) and (min-height: 400px) { /* For narrow devices
+@media only screen and (max-width: 550px) and (min-height: 400px) { /* For narrow devices
   - ios display settings
   - small windows
 
@@ -198,7 +196,7 @@ input::-webkit-input-placeholder{
   }
   div#grid p {
     padding-left: 15%;
-    margin-top: -10vh;
+    margin-top: -1vh;
   	font-size: 10px;
   }
 }
@@ -230,6 +228,7 @@ input::-webkit-input-placeholder{
   	font-size: 13px;
   }
   p {
+    padding-top: -2vh;
   	padding-left: 45%;
   	font-size: 10px;
   }
