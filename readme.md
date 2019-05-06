@@ -76,6 +76,7 @@ Example
   tile = ["https://github.com","gh","Github","Code"]
   folder = ["#","mt","Code","~/hack.sh"]
   theme = ["$","ds","Discord","Purple, Black, Grey",['#23272A','#2C2F33','#7289DA','#7289DA','#99AAB5']]
+  wallpaper = ["$","pnr","Starry Night","Blue Green Yellow",["src/wall/starry.jpg","#007849","#FECE00","#FFFFFF","#FFFFFF"]]
   reference = ["~Github"]
 ```
 Both themes and tiles are stored in lib.js -> look there for more info and examples
@@ -97,18 +98,6 @@ Theme | Bg | Main | Comp| Sub | Txt | Credit |
 *Lava* |![L1]|![L2]|![L3]|![L4]|![L5]|`None`
 *Purple* |![P1]|![P2]|![P3]|![P4]|![P5]|`None`
 (table generated with help from **[placehold.it](https://placehold.it)**)
-
-### Function Directory
-(in order of appearance)
-* image_load() -> preloads all images found in pages
-* page_gen(page) -> loads page from array of 0-12 tiles
-* reference(tile) -> finds reference tile to reduce duplicates
-* rank(string, string) -> ranks two strings (needs work)
-* search_live(string) -> searches all tiles for best matches : returns page array and calls page_gen(on result)
-* pages_to_list() -> collapses pages from dict to array, ignores tiles hidden from search
-* set_cookie(theme) -> saves theme name for reload
-* set_theme(theme) -> changes html based on theme array
-* themes_dropdown(name, i) -> adds a button for each theme
 
 ##### See code for detailed documentation for each function
 
