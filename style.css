@@ -123,7 +123,17 @@ input::-webkit-input-placeholder{
   - Needs alot of work /testing still
 */
 @supports (-webkit-overflow-scrolling: touch) {
-
+  div#grid table tr td a:focus,div#grid table tr td a:hover {
+    box-shadow: none;
+    outline: 0;
+  }
+  div#grid table tr td a:focus img, div#grid table tr td a:hover img {
+    -webkit-filter: none;
+    filter:none;
+  }
+  select:focus, textarea:focus, input:focus {
+    font-size: 16px;
+  }
 }
 
 @media only screen and (max-width: 650px) { /* For narrowish devices */
