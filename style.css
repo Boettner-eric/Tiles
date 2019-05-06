@@ -186,7 +186,7 @@ input::-webkit-input-placeholder{
   div#grid {
     padding-left: 0vw;
     padding: 0;
-    width: 100vw;
+    width: 99vw;
     height: 80vh;
   }
   div#grid table tr td a:focus img, div#grid table tr td a:hover img {
