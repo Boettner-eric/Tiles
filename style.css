@@ -158,11 +158,11 @@ input::-webkit-input-placeholder{
   }
   div#grid table tr td a {
     height: 15vh;
-    width: 22vw;
+    width: 20vw;
   }
   div#grid table tr td {
   	height: 15vh;
-  	width: 22vw;
+  	width: 20vw;
   }
   div#grid h3 {
     display: inline-block;
