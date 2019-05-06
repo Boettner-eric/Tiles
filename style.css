@@ -122,29 +122,8 @@ input::-webkit-input-placeholder{
   Short and Narrow device settings
   - Needs alot of work /testing still
 */
-
 @supports (-webkit-overflow-scrolling: touch) {
-  div#grid table tr td a:focus,div#grid table tr td a:hover {
-    box-shadow: none;
-    outline: 0;
-  }
-  body {
-    position: fixed;
-    width: 100vw;
-  }
-  div#grid {
-    padding-left: 0vw;
-    padding: 0;
-    width: 100vw;
-    height: 80vh;
-  }
-  div#grid table tr td a:focus img, div#grid table tr td a:hover img {
-    -webkit-filter: none;
-    filter:none;
-  }
-  select:focus, textarea:focus, input:focus {
-    font-size: 16px;
-  }
+
 }
 
 @media only screen and (max-width: 650px) { /* For narrowish devices */
@@ -177,16 +156,13 @@ input::-webkit-input-placeholder{
     display:inline-block;
   	left: 10%;
   }
-  div#grid {
-    padding-left: 0vw;
-  }
   div#grid table tr td a {
     height: 15vh;
-    width: 20vw;
+    width: 22vw;
   }
   div#grid table tr td {
   	height: 15vh;
-  	width: 20vw;
+  	width: 22vw;
   }
   div#grid h3 {
     display: inline-block;
@@ -198,6 +174,27 @@ input::-webkit-input-placeholder{
     padding-left: 15%;
     margin-top: -1vh;
   	font-size: 10px;
+  }
+  div#grid table tr td a:focus,div#grid table tr td a:hover {
+    box-shadow: none;
+    outline: 0;
+  }
+  body {
+    position: fixed;
+    width: 100vw;
+  }
+  div#grid {
+    padding-left: 0vw;
+    padding: 0;
+    width: 100vw;
+    height: 80vh;
+  }
+  div#grid table tr td a:focus img, div#grid table tr td a:hover img {
+    -webkit-filter: none;
+    filter:none;
+  }
+  select:focus, textarea:focus, input:focus {
+    font-size: 16px;
   }
 }
 
