@@ -37,8 +37,6 @@ var pages = {
     // links
     ["https://www.linkedin.com","~linkedin","Linkedn","Professional"],
     ["https://github.com","gh","Github","Repos"],
-    // search only
-    ["https://newsapi.org","n","News Api","Headlines"],
     // folders
     ["#","go","Themes","Colors"],
     ["#","~e_learning","News","Headlines"],
@@ -115,6 +113,7 @@ var pages = {
     ["the-verge","ver","The Verge","","news"],
     ["hacker-news","~hacker_news","Ycombinator","","news"],
     ["national-geographic","~world_map","Nat Geo","","news"],
+    ["https://newsapi.org","n","News Api","Headlines"],
   ],
   /*
     Dict of possible live tiles
