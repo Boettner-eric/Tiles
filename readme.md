@@ -26,9 +26,9 @@ A keyboard centric, feature rich, responsive design homepage!
 
 ## Setup
 * Add any custom tiles to lib.js
-* Add your api key to the var "api" for open weather
+* Add your api key to the var "api" for open weather and news updates
 
-![Weather Tile](Screenshots/weather.png)
+![Api news](Screenshots/apis.png)
 
 ## Features
 * Keyboard navigation and shortcuts
