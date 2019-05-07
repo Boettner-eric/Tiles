@@ -349,7 +349,7 @@ document.onkeydown = function(e) {
   } if (key == 27) { // esc -> back to home screen
     page_gen(1);
     document.getElementById("search").value = "";
-  } else if ( key == 38 || key == 75) { // Up key, go back 4 blocks (the one above).
+  } else if ( key == 38 || key == 74) { // Up key, go back 4 blocks (the one above).
 		result = parseInt(focused) - 4;
 		focused = parseInt(focused) - 4;
 		if (result < 1) {
@@ -357,7 +357,7 @@ document.onkeydown = function(e) {
 			focused += 12;
 		}
 		result = !isNaN(document.activeElement.id) ? result : focused;
-	} else if ( key == 40 || key == 74) { // Down key, go forward 4 blocks (the one below).
+	} else if ( key == 40 || key == 75) { // Down key, go forward 4 blocks (the one below).
 		result = parseInt(focused) + 4;
 		focused = parseInt(focused) + 4;
 		if (result > 12) {
