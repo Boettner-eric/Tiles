@@ -68,7 +68,9 @@ There are 3 types of tile that all use similar syntax:
 `["#key-name","icn","title","subtitle"]`
 3. Themes repersent tiles for a given theme name
 `["$theme-name","icn","title",["background","main color","alt color","main text","subtext"]]`
-4. References represent simple tiles for duplicate entries
+4. Themes can also have background images
+`["$theme-name","icn","title",["image_url","main color","alt color","main text","subtext"]]`
+5. References represent simple tiles for duplicate entries
 `["~Title"]` for a given tile in `pages["~"]`
 
 ```js
