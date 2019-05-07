@@ -43,8 +43,8 @@ A keyboard centric, feature rich, responsive design homepage!
 
 Function | Key | Description
 --- | --- | ---
-up | `j` / `up` | up one tile
-down | `k` / `down` | down one tile
+up | `k` / `up` | up one tile
+down | `j` / `down` | down one tile
 left | `h` / `left` | left one tile
 right | `l` / `right` | right one tile
 hop | `1...0`, `-`, `+` | hop to any tile #
