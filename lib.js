@@ -129,7 +129,7 @@ var pages = {
     ["https://www.rottentomatoes.com/search/?search=VAR","rt","Rotten Tomatoes","\"VAR\"",term],
     ["https://www.youtube.com/results?search_query=VAR","yt","Youtube","\"VAR\"",term],
     ["https://www.netflix.com/search?q=VAR","nt","Netflix","\"VAR\"",term],
-    ["https://stardewvalleywiki.com/mediawiki/index.php?search=VAR","sv","Stardew Valley","\"VAR\"",term],
+    ["https://duckduckgo.com/?q=VAR","~duckduckgo","DuckDuckGo","\"VAR\"",term],
     ["https://www.wolframalpha.com/input/?i=VAR","wp","Wolfram","\"VAR\"",term],
   ],
   "Themes":[ // put tiles for each theme here
