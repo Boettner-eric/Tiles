@@ -1,7 +1,8 @@
 var focused = 1; // default to first tile
 var images = {}; // dict of image files to preload and reference
 var cached = pages["Home"]; // last visited page
-var tile_count = 12;
+var tileCount = 12;
+var skipCount = 4;
 /*
   *************************************************
   Page load functions (in order)
@@ -15,7 +16,7 @@ var tile_count = 12;
   *************************************************
 */
 window.onload = function(){
-  for(var i=1; i<=tile_count; i++) {
+  for(var i=1; i<=tileCount; i++) {
     document.getElementById('grid').appendChild(tile_gen(i));
   }
   update_tiles(); // in lib.js
@@ -178,7 +179,7 @@ function page_gen(id, page) { // id for focus element
     focused=id;
     result=id;
   };
-  for (var i =1; i<=tile_count;i++){
+  for (var i =1; i<=tileCount;i++){
     if (document.getElementById(i) != null && document.getElementById(i).href.includes("javascript:")){
       document.getElementById(i).onclick = function(){
         eval(document.getElementById(i).href.replace("javascript:",""));
@@ -386,35 +387,35 @@ document.onkeydown = function(e) {
     page_gen(1);
     document.getElementById("search").value = "";
   } else if ( key == 38 || key == 75) { // Up key, go back 4 blocks (the one above).
-		result = parseInt(focused) - 4;
-		focused = parseInt(focused) - 4;
+		result = parseInt(focused) - skipCount;
+		focused = parseInt(focused) - skipCount;
 		if (result < 1) {
-			result += 12;
-			focused += 12;
+			result += tileCount;
+			focused += tileCount;
 		}
 		result = !isNaN(document.activeElement.id) ? result : focused;
 	} else if ( key == 40 || key == 74) { // Down key, go forward 4 blocks (the one below).
-		result = parseInt(focused) + 4;
-		focused = parseInt(focused) + 4;
-		if (result > 12) {
-			result -= 12;
-			focused -= 12;
+		result = parseInt(focused) + skipCount;
+		focused = parseInt(focused) + skipCount;
+		if (result > tileCount) {
+			result -= tileCount;
+			focused -= tileCount;
 		}
 		result = !isNaN(document.activeElement.id) ? result : focused;
 	} else if ( key == 39 || key == 76) { // Right key, go forward 1 block or reset row if end.
-		result = focused == 12 ? parseInt(focused) - 11 : parseInt(focused) + 1;
-		focused = focused == 12 ? parseInt(focused) - 11 : parseInt(focused) + 1;
-		if (result > 12) {
-			result -= 12;
-			focused -= 12;
+		result = focused == tileCount ? 1 : parseInt(focused) + 1;
+		focused = focused == tileCount ? 1 : parseInt(focused) + 1;
+		if (result > tileCount) {
+			result -= tileCount;
+			focused -= tileCount;
 		}
 		result = !isNaN(document.activeElement.id) ? result : focused;
 	} else if ( key == 37 || key == 72) { // left key, go back 1 block or reset row if end.
-		result = focused == 13 ? parseInt(focused) + 3 : parseInt(focused) - 1;
-		focused = focused == 13 ? parseInt(focused) + 3 : parseInt(focused) - 1;
+		result = focused == 1 ? tileCount : parseInt(focused) - 1;
+		focused = focused == 1 ? tileCount : parseInt(focused) - 1;
 		if (result < 1) {
-			result += 12;
-			focused += 12;
+			result += tileCount;
+			focused += tileCount;
 		}
 		result = !isNaN(document.activeElement.id) ? result : focused;
 	}
@@ -447,4 +448,13 @@ document.onkeydown = function(e) {
       document.getElementById(String(result)).focus();
     };
 	};
+};
+
+window.onresize = function() {
+  // skipCount update
+  var gridWidth = document.getElementById('grid').offsetWidth;
+  gridWidth = parseInt(gridWidth);
+  var tileWidth = document.getElementsByClassName('tile')[0].offsetWidth;
+  tileWidth = parseInt(tileWidth);
+  skipCount = Math.floor(gridWidth/tileWidth);
 };
