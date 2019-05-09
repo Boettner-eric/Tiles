@@ -1,9 +1,11 @@
 var focused = 1; // default to first tile
 var images = {}; // dict of image files to preload and reference
 var cached = pages["Home"]; // last visited page
+var tile_count = 12;
 /*
   *************************************************
   Page load functions (in order)
+  - generate the tiles
   - load all images
   - pull theme cookie and apply theme
   - log current theme
@@ -13,6 +15,9 @@ var cached = pages["Home"]; // last visited page
   *************************************************
 */
 window.onload = function(){
+  for(var i=1; i<=tile_count; i++) {
+    document.getElementById('grid').appendChild(tile_gen(i));
+  }
   update_tiles(); // in lib.js
   images = image_load(); // Load all images on page
   var tmp = decodeURIComponent(document.cookie).split(';'); /* Loads cookie w/ window and splits list of cookies */
@@ -23,6 +28,36 @@ window.onload = function(){
   page_gen(1);  // defaults to pages["Home"]
   // TODO : fix search bar stealing focus
 };
+
+function tile_gen(index) {
+  var img = document.createElement("img");
+  img.setAttribute("src", "");
+  img.setAttribute("id", "i" + index);
+
+  var btn = document.createElement("div");
+  btn.setAttribute("class", "button");
+  btn.appendChild(img);
+
+  var h3 = document.createElement("h3");
+  h3.setAttribute("id", "t" + index);
+
+  var p = document.createElement("p");
+  p.setAttribute("id", "s" + index);
+
+  var anchor = document.createElement("a");
+  anchor.setAttribute("href", "");
+  anchor.setAttribute("class", "lBox");
+  anchor.setAttribute("id", index);
+  anchor.appendChild(btn);
+  anchor.appendChild(h3);
+  anchor.appendChild(p);
+
+  var tile = document.createElement("div");
+  tile.setAttribute("class", "tile");
+  tile.appendChild(anchor);
+
+  return tile;
+}
 
 /*
   *************************************************
@@ -143,7 +178,7 @@ function page_gen(id, page) { // id for focus element
     focused=id;
     result=id;
   };
-  for (var i =1; i<=12;i++){
+  for (var i =1; i<=tile_count;i++){
     if (document.getElementById(i) != null && document.getElementById(i).href.includes("javascript:")){
       document.getElementById(i).onclick = function(){
         eval(document.getElementById(i).href.replace("javascript:",""));

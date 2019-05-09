@@ -16,77 +16,85 @@
 ::-moz-placeholder {
     opacity: 1 !important;
 }
+a, a:hover, a:focus, a:active, a:visited {
+	color: inherit;
+	text-decoration: none;
+	outline: none;
+}
+
 body, html {
   background-color: var(--background) !important;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	user-select: none;
-	padding: 0px;
   padding: 0px;
 }
-div#grid {
-  background-color: var(--background);
-  display: fixed;
-	padding-left: 3vw;
-	position: center;
-	width: 95vw;
-	height: 90vh;
-	top: 10vh;
-}
-div#grid table {
-  background-color: var(--background);
-	font-family: 'menlo', sans-serif;
-	border-collapse: separate;
-	border-spacing: 5px;
-	font-size: 10px;
+
+#grid {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-flow: row wrap;
+	box-sizing: border-box;
+	padding-top: 10vh;
+	padding-bottom: 10vh;
 }
 
-div#grid table tr td {
-  background-color: var(--background);
-	height: 25vh;
-	width: 200vw;
+.tile {
+	width: 400px;
 }
 
-div#grid table tr td a {
-	transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
+#grid a {
+	display: block;
 	background-color: var(--background);
 	color: var(--base-txt);
-	text-decoration: none;
-	position: relative;
-	display: block;
-	padding: 4px;
-	height: 12vh;
-	width: 18vw;
+	box-sizing: border-box;
+	width: 96%;
+	height: 96%;
+	margin: 1% auto 1%;
+	padding: 4vh 4vw;
+	text-align: center;
+	transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
 }
 
-div#grid h3 {
+#grid a .button {
+	float: left;
+	margin-top: 12px;
+	margin-right: 24px;
+}
+
+/* #grid h3 {
   padding-left: 45%;
   font-size: 13px;
-}
+} */
 
-div#grid p {
-  padding-left: 45%;
-	font-size: 10px;
+#grid p {
+  /* padding-left: 45%; */
+	/* font-size: 10px; */
   color: var(--sub-txt);
 }
-.button img {
+
+/* .button img {
   display: fixed;
 	padding-right: 60%;
-}
+} */
 
-div#grid table tr td a img {
+/* #grid table tr td a img {
 	position: absolute;
 	opacity: 1;
 	right: 1px;
 	z-index: 0;
 	top: 5px;
-}
-div#grid table tr td a:focus img, div#grid table tr td a:hover img {
+} */
+
+#grid a:focus img,
+#grid a:hover img {
 	-webkit-filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
-	filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
+	filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
 }
 
-div#grid table tr td a:focus, div#grid table tr td a:hover {
+#grid a:focus,
+#grid a:hover {
 	box-shadow: 3px 3px 0 var(--main-cl), -3px -3px 0 var(--comp-cl);
 	outline: 0;
 }
@@ -117,131 +125,4 @@ footer form input[type="text"]:focus {
 
 input::-webkit-input-placeholder{
   color:var(--base-txt);
-}
-/*
-  Short and Narrow device settings
-  - Needs alot of work /testing still
-*/
-@supports (-webkit-overflow-scrolling: touch) {
-  div#grid table tr td a:focus,div#grid table tr td a:hover {
-    box-shadow: none;
-    outline: 0;
-  }
-  div#grid table tr td a:focus img, div#grid table tr td a:hover img {
-    -webkit-filter: none;
-    filter:none;
-  }
-  select:focus, textarea:focus, input:focus {
-    font-size: 16px;
-  }
-}
-
-@media only screen and (max-width: 650px) { /* For narrowish devices */
-  div#grid {
-  	padding: 0vw;
-  	position: center;
-  	width: 96vw;
-  	height: 90vh;
-  	top: 10vh;
-  }
-  div#grid table tr td a{
-  	height: 12vh;
-  	width: 20vw;
-  	padding-top: 5%;
-  }
-  div#grid table tr td {
-  	height: 20vh;
-  	width: 22vw;
-  	padding-top: 5%;
-  }
-}
-
-@media only screen and (max-width: 550px) and (min-height: 400px) { /* For narrow devices
-  - ios display settings
-  - small windows
-
-  ? Add anouther column?
-  */
-  .button img {
-    display:inline-block;
-  	left: 10%;
-  }
-  div#grid table tr td a {
-    height: 15vh;
-    width: 20vw;
-  }
-  div#grid table tr td {
-  	height: 15vh;
-  	width: 20vw;
-  }
-  div#grid h3 {
-    display: inline-block;
-    padding-left: 15%;
-  	margin-top: 9vh;
-  	font-size: 13px;
-  }
-  div#grid p {
-    padding-left: 15%;
-    margin-top: -1vh;
-  	font-size: 10px;
-  }
-  div#grid table tr td a:focus,div#grid table tr td a:hover {
-    box-shadow: none;
-    outline: 0;
-  }
-  body {
-    position: fixed;
-    width: 100vw;
-  }
-  div#grid {
-    padding-left: 0vw;
-    padding: 0;
-    width: 99vw;
-    height: 80vh;
-  }
-  div#grid table tr td a:focus img, div#grid table tr td a:hover img {
-    -webkit-filter: none;
-    filter:none;
-  }
-  select:focus, textarea:focus, input:focus {
-    font-size: 16px;
-  }
-}
-
-@media only screen and (max-height: 400px) { /* For short devices*/
-  html, body {
-    overflow: hidden;
-  }
-  div#grid {
-    padding: 0vw;
-    width: 98vw;
-    height: 100vh;
-    top: 0vh;
-  }
-  div#grid table tr td a {
-    padding-top: 2vh;
-    width: 23vw;
-    height: 19vh;
-    padding: 0px;
-  }
-  div#grid table tr td {
-    width: 23vw;
-    height: 19vh;
-    padding: 0px;
-  }
-  h3 {
-    padding-top: 2vh;
-  	padding-left: 45%;
-  	font-size: 13px;
-  }
-  p {
-    padding-top: -2vh;
-  	padding-left: 45%;
-  	font-size: 10px;
-  }
-  .button img {
-    display: fixed;
-  	padding-right: 60%;
-    padding-top: 0vh;
-  }
 }
