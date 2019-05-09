@@ -365,6 +365,7 @@ document.onkeydown = function(e) {
 			document.getElementById("2").focus();
       result = 2;
       focused = 2;
+      return false; // Having issues without this, on Firefox
     } else if (document.getElementById("search").value.includes("term=")){
       term = document.getElementById("search").value.replace("term=","");
       console.log("term -> "+ term);
