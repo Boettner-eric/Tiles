@@ -50,8 +50,8 @@ body, html {
 	color: var(--base-txt);
 	box-sizing: border-box;
 	width: 96%;
-	height: 96%;
-	margin: 1% auto 1%;
+	height: 92%;
+	margin: 2% auto 2%;
 	padding: 4vh 4vw;
 	text-align: center;
 	transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
