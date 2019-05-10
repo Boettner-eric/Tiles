@@ -32,8 +32,8 @@ body, html {
 
 #grid {
 	display: flex;
-	justify-content: center;
-	align-content: center;
+	justify-content: space-around;
+	align-content: space-around;
 	flex-flow: row wrap;
 	box-sizing: border-box;
 	padding-top: 10vh;
@@ -41,41 +41,42 @@ body, html {
 }
 
 .tile {
-	width: 600px; // default for mobile screens
+	width: 500px; /* default for mobile screens */
+	margin: 4vh 4vw;
 }
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.tile {
-		width: 600px;
+		width: 500px;
 	}
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
 	.tile {
-		width: 480px;
+		width: 380px;
 	}
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 	.tile {
-		width: 400px;
+		width: 300px;
 	}
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
 	.tile {
-		width: 475px;
+		width: 350px;
 	}
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
 	.tile {
-		width: 400px;
+		width: 300px;
 	}
 }
 
@@ -84,10 +85,7 @@ body, html {
 	background-color: var(--background);
 	color: var(--base-txt);
 	box-sizing: border-box;
-	width: 96%;
-	height: 92%;
-	margin: 2% auto 2%;
-	padding: 4vh 4vw;
+	padding: 10px 50px 30px 50px;
 	text-align: center;
 	transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
 }
