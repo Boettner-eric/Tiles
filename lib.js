@@ -111,8 +111,8 @@ var pages = {
     ["cnn","cnn","CNN","","news"],
     ["ign","ign","ign","","news"],
     ["the-verge","ver","The Verge","","news"],
-    ["hacker-news","~hacker_news","Ycombinator","","news"],
-    ["national-geographic","~world_map","Nat Geo","","news"],
+    ["hacker-news","yc","Ycombinator","","news"],
+    ["national-geographic","pnr","Nat Geo","","news"],
     ["https://newsapi.org","n","News Api","Headlines"],
   ],
   /*
