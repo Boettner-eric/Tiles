@@ -39,7 +39,7 @@ var pages = {
     ["https://github.com","gh","Github","Repos"],
     // folders
     ["#","go","Themes","Colors"],
-    ["#","~e_learning","News","Headlines"],
+    ["#","~news","News","Headlines"],
     ["#","~ctrl","Keyboards","Ctrl Alt Del"],
     ["#","me","Media","Stream"],
     ["#","~twitter","Networks","Social Media"],
@@ -141,6 +141,10 @@ var pages = {
     ["$","me","Switch","Grey Red Blue",["#414548","#ff4554","#00c3e3","#ffffff","#ffffff"]],
     ["$","lv","Lava","Red Black",["#000000","#D32F2F","#DD4132","#99AAB5","#99AAB5"]],
     ["$","tt","Purple","Purple Red Blue",["#6B5B95","#FF383F","#223A5E","#F0EDE5","#F0EDE5"]],
+    ["$","bl","Blues","Blue, Grey",["#25274D","#2E9CCA","#29648A","#AAABB8","#ffffff"]],
+    ["$","bl","Blues","Blue, Grey",["#25274D","#2E9CCA","#29648A","#AAABB8","#ffffff"]],
+    ["$","bl","Blues","Blue, Grey",["#25274D","#2E9CCA","#29648A","#AAABB8","#ffffff"]],
+    ["$","bl","Blues","Blue, Grey",["#25274D","#2E9CCA","#29648A","#AAABB8","#ffffff"]],
     ["$","bl","Blues","Blue, Grey",["#25274D","#2E9CCA","#29648A","#AAABB8","#ffffff"]],
     ["$","pnr","Starry Night","Blue Green Yellow",["src/wall/starry.jpg","#007849","#FECE00","#FFFFFF","#FFFFFF"]],
   ]
@@ -245,7 +249,7 @@ function dict_tile(num,current){
 
 function update_news(tile){
   var start = "https://newsapi.org/v2/top-headlines?sources=";
-  var api = ""; // need to get an api key to use this feature
+  var api = "&apiKey=136cb894cf1645769184e7bf91842a06";
   if (api == ""){
     tile[2] = "No Api Key";
     console.log("need api key for this");

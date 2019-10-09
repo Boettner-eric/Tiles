@@ -9,6 +9,15 @@ A keyboard centric, feature rich, responsive design homepage!
 
 ![Skeletor theme](Screenshots/skeletor.png)
 
+## Features
+* Keyboard navigation and shortcuts
+* Full mobile support
+* Simple and clear data structure for customization
+* Dynamic approach towards page generation
+* Multiple themes and easy support for adding new ones
+* Live "tile" search as well as external api search
+* External api support for tiles (in progress)
+
 ### Benefits over **[Homepage](https://github.com/Boettner-eric/Homepage)**
 
 * Entire js rewrite
@@ -29,15 +38,6 @@ A keyboard centric, feature rich, responsive design homepage!
 * Add your api key to the var "api" for open weather and news updates
 
 ![Api news](Screenshots/apis.png)
-
-## Features
-* Keyboard navigation and shortcuts
-* Full mobile support
-* Simple and clear data structure for customization
-* Dynamic approach towards page generation
-* Multiple themes and easy support for adding new ones
-* Live "tile" search as well as external api search
-* External api support for tiles (in progress)
 
 ### Keyboard Shortcuts
 
