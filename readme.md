@@ -1,43 +1,85 @@
 # Tiles
-A keyboard centric, feature rich, responsive design homepage!
+A keyboard-centric, feature rich, responsive design homepage.
 
-[![GitHub Issues](https://img.shields.io/github/issues/boettner-eric/tiles.svg)](https://github.com/boettner-eric/homepage/issues)
-![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
-![Github last commit](https://img.shields.io/github/last-commit/boettner-eric/tiles.svg)
-![Website](https://img.shields.io/website/https/boettner-eric.github.io/Tiles/index.html.svg?down_color=red&down_message=offline&up_color=light%20green&up_message=online)
+[![GitHub Issues](https://img.shields.io/github/issues/boettner-eric/tiles.svg?style=flat-square)](https://github.com/boettner-eric/homepage/issues)
+![](https://img.shields.io/github/license/boettner-eric/tiles?style=flat-square)
+![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square)
+![Github last commit](https://img.shields.io/github/last-commit/boettner-eric/tiles.svg?style=flat-square)
+![Website](https://img.shields.io/website/https/boettner-eric.github.io/Tiles/index.html.svg?style=flat-square&down_color=red&down_message=offline&up_color=light%20green&up_message=online)
+
 ## [**Live Demo**](https://boettner-eric.github.io/Tiles/index.html)
 
 ![Skeletor theme](Screenshots/skeletor.png)
 
 ## Features
-* Keyboard navigation and shortcuts
-* Full mobile support
-* Simple and clear data structure for customization
-* Dynamic approach towards page generation
-* Multiple themes and easy support for adding new ones
-* Live "tile" search as well as external api search
-* External api support for tiles (in progress)
+* Keyboard navigation
+* Mobile support
+* Simple commands for page customization
+* Support for custom color schemes
+* Live tile search and search engine integration
 
-### Benefits over **[Homepage](https://github.com/Boettner-eric/Homepage)**
+### Version 2.0
+* Backend using Node/MongoDB and Heroku hosting
+* Database model for storing multiple user configurations
+* Updated structure and security
 
-* Entire js rewrite
-* Clearer data structure with one static index.html file
-* Support for preloading icons
-* Major bug fixes and stability improvements
-* Clearer code and documentation -> much easier customization
-* Lib.js allows for easy addition and deletion of tiles and themes
-* Live search and external searches
-* Cool new themes
-* Better mobile support
-* Live search and definitions
+### Commands
+Command | Parameters | Description
+--- | --- | --- |
+!reload | | reload user's page (for server errors)
+!register | `username` `password` | create a new user profile
+!login | `username` `password` | login to existing profile
+!logout | | logout current user
+!set | `theme` | sets default color scheme for user
+ | `grid` `width` `height` | change the dimensions of the page grid
+ | `font` `font-name` | change the users default font
+!tile | `url` `title` `subtitle` `~img` | adds a tile to current page
+!folder | `title` `subtitle` `~img` | adds a folder tile to current page
+!theme | `title` `subtitle` `~img` `colors` | adds a new color scheme to themes folder
+!search | `url` `title` `subtitle` `~img` | adds a new search tile
+!edit | `title` `field`=`value` | change any field of a tile
+!delete | `title` | deletes tile from user's page
+!swap | `title` `title` | swaps position of two tiles on page (works best if first tile is earlier on page)
 
-![Dictionary Tile](Screenshots/definition.png)
+### Command Examples
+```
+!set theme Gogh // changes user's default theme
 
-## Setup
-* Add any custom tiles to lib.js
-* Add your api key to the var "api" for open weather and news updates
+!set grid 4 3 // changes user's default grid to 4x3 and reloads page
 
-![Api news](Screenshots/apis.png)
+!tile www.google.com Google Search ~google-logo // create a tile for google on current page
+
+!search https://duckduckgo.com/?q= DuckDuckGo Privacy ~duckduckgo // creates a search tile for google
+
+!edit Github subtitle=repos img=~github--v1 // changes icon and subtitle for github tile on current page
+
+!edit Discord theme=#23272A,#2C2F33,#7289DA,#99AAB5,#7289DA // changes color scheme for discord theme (note commas here)
+```
+
+### Themes
+* Since this version of tiles customization focused I omitted the default themes.
+* To add them to your page I included commands for most of the old themes here. (just copy and paste each line into the search bar)
+
+```
+!theme Discord Purple-Black-Grey ~discord-logo #23272A #2C2F33 #7289DA #99AAB5 #7289DA
+
+!theme Skeletor Green-Purple-Green ~thriller #2b2836 #93b4ff #bd93f9 #ffffff #84fba2
+
+!theme Terminal Green-Black ~console #282828 #282828 #33FF33 #33FF33 #33FF33
+
+!theme Gogh Blue-Green-Yellow ~field #0375B4 #007849 #FECE00 #FFFFFF #FFFFFF
+
+!theme Todoist Grey-Red-Yellow ~reminders #1f1f1f #fccf1b #cd5650 #ffffff #ffffff
+
+!theme Switch Grey-Red-Blue ~nintendo-switch #414548 #ff4554 #00c3e3 #ffffff #ffffff
+
+!theme Lava Red-Black ~volcano #000000 #D32F2F #DD4132 #99AAB5 #99AAB5
+
+!theme Purple Purple-Red-Blue ~purple-man #6B5B95 #FF383F #223A5E #F0EDE5 #F0EDE5
+
+!theme Blues Blue-Grey ~sapphire #25274D #2E9CCA #29648A #ffffff #AAABB8
+```
+* The format for themes is `background/image, main color, complementary color, title text, subtitle text`
 
 ### Keyboard Shortcuts
 
@@ -50,105 +92,63 @@ right | `l` / `right` | right one tile
 hop | `1...0`, `-`, `+` | hop to any tile #
 search | `[space]` | starts live search
 api search | `/` | searches external sources
-themes | `\` | opens theme menu  
+themes | `\` | opens theme menu
 enter | `[enter]` | go to tile / exit search
 esc | `[esc]` | close search, return to homepage
 
-### Mobile Support
-* Fixed css breakpoints and general layout improvements
-* Full featured w/o different file base
 
-![Iphone screenshot](Screenshots/ipx.png)
+## Setup
+* `!register username password`
+* Customize page configuration and user settings with commands
 
-### Data structure
-#### Tile syntax
-There are 3 types of tile that all use similar syntax:
-1. Tiles represent static webpages. `["url","icn","title","subtitle"]`
-2. Folders represent a key for a array of tiles.
-`["#key-name","icn","title","subtitle"]`
-3. Themes repersent tiles for a given theme name
-`["$theme-name","icn","title",["background","main color","alt color","main text","subtext"]]`
-4. Themes can also have background images
-`["$theme-name","icn","title",["image_url","main color","alt color","main text","subtext"]]`
-5. References represent simple tiles for duplicate entries
-`["~Title"]` for a given tile in `pages["~"]`
+### Getting Started
+- On first login a user's page will only include the theme and search folders.
+- To make the process easier for a first time user I added the following commands for a default configuration.
 
-```js
-Example
-  tile = ["https://github.com","gh","Github","Code"]
-  folder = ["#","mt","Code","~/hack.sh"]
-  theme = ["$","ds","Discord","Purple, Black, Grey",['#23272A','#2C2F33','#7289DA','#7289DA','#99AAB5']]
-  wallpaper = ["$","pnr","Starry Night","Blue Green Yellow",["src/wall/starry.jpg","#007849","#FECE00","#FFFFFF","#FFFFFF"]]
-  reference = ["~Github"]
+```javascript
+!register username password // create a new user
+!search www.google.com/search?q= Google Search ~google-logo // create a tile for google on current page
+!folder Media Streaming ~3d-glasses // adds a media page
+!theme Gogh Blue-Green-Yellow ~field #0375B4 #007849 #FECE00 #FFFFFF #FFFFFF // adds a new theme
+!set theme Gogh // sets new theme as main theme
+!set grid 4 3 // sets a 4x3 grid for tiles
 ```
-Both themes and tiles are stored in lib.js -> look there for more info and examples
+
+## Hosting Notes
+- The server is set to be most responsive from 8-24 PST.
+- My hosting goes through a sleep schedule so initial response times will be delayed for requests outside of that time range.
+- Maintenance will occur during these evening periods.
 
 ### Icons8
-Icons taken from [Icons 8](https://icons8.com)
+To add an icon for a tile/page/theme:
+- Go to [icons8.com](icons8.com)
+- Search for the icon you want (set the style to color)
+
+![Icons8 search](Screenshots/search.png)
+- Click on the icon you want and find the icons real name
+
+![Icons8 search](Screenshots/icon.png)
+
+- Use this name in your command
+
+    `!tile https://google.com Google Search ~google-logo`
+- Make sure to use the tilde in front of the image name
+
+## Notes
+* Backend will be open-sourced in the next few weeks.
+* Spaces are replaced by `-` in commands.
+    * ex. `!tile url Bon-Apétit Recipes ~cooking`
+* There are still some bugs involving pages longer than the grid
+* If you run into some bug involving blank tiles reload the page and it should resolve.
+* I would recommend leaving the `Themes` and `Search` pages on your homepage to hold all theme and search tiles.
+
+ (If you don't themes and searches will still function but the page to edit them will be unreachable)
+* Feel free to reach out if you have any questions/bugs.
+
 ![Todoist theme](Screenshots/todoist.png)
-### Themes
-![Gogh theme](Screenshots/gogh.png)
-
-Theme | Bg | Main | Comp| Sub | Txt | Credit |
-  --- | --- | --- | --- | --- | --- | --- |
-*Skeletor* |![S1]|![S2]|![S3]|![S4]|![S5]|[`Syntax`](https://atom.io/themes/skeletor-syntax#color-palette)
-*Switch* |![W1]|![W2]|![W3]|![W4]|![W5]|[`Switch`](https://www.nintendo.com/switch/)
-*Gogh* |![G1]|![G2]|![G3]|![G4]|![G5]|[`Gogh`](https://colourlex.com/project/van-gogh-starry-night/)
-*Todoist* |![T1]|![T2]|![T3]|![T4]|![T5]|[`Todoist Dark`](https://todoist.com)
-*Discord* |![D1]|![D2]|![D3]|![D4]|![D5]|[`Discord`](https://discordapp.com/branding)
-*Terminal* |![E1]|![E2]|![E3]|![E4]|![E5]|`None`
-*Lava* |![L1]|![L2]|![L3]|![L4]|![L5]|`None`
-*Purple* |![P1]|![P2]|![P3]|![P4]|![P5]|`None`
-(table generated with help from **[placehold.it](https://placehold.it)**)
-
-##### See code for detailed documentation for each function
 
 ## Credits
-1. Icons from icons8
-2. Theme colors from sources listed in table
-3. Original code from my other [`repo`](https://github.com/Boettner-eric/Homepage) which started as [`Decaux`](https://github.com/Boettner-eric/Decaux) which has been abandoned and deleted
-4. Snippets referenced from exterior sources
-  - [`Iphone scaling fixes`](https://stackoverflow.com/questions/6483425/prevent-iphone-from-zooming-in-on-select-in-web-app)
-  - [`Overscrolling bug`](https://stackoverflow.com/questions/12046315/prevent-overscrolling-of-web-page)
-  - [`Array sorting logic`](https://stackoverflow.com/questions/11499268/sort-two-arrays-the-same-way)
-
-[S1]:https://placehold.it/100x50/2b2836/ffffff/?text=2b2836
-[S2]:https://placehold.it/100x50/93b4ff/ffffff/?text=93b4ff
-[S3]:https://placehold.it/100x50/bd93f9/ffffff/?text=bd93f9
-[S4]:https://placehold.it/100x50/84fba2/2b2836/?text=84fba2
-[S5]:https://placehold.it/100x50/ffffff/2b2836/?text=ffffff
-[W1]:https://placehold.it/100x50/414548/ffffff/?text=414548
-[W2]:https://placehold.it/100x50/ff4554/ffffff/?text=ff4554
-[W3]:https://placehold.it/100x50/00c3e3/ffffff/?text=00c3e3
-[W4]:https://placehold.it/100x50/ffffff/414548/?text=ffffff
-[W5]:https://placehold.it/100x50/ffffff/414548/?text=ffffff
-[G1]:https://placehold.it/100x50/0375B4/FFFFFF/?text=0375B4
-[G2]:https://placehold.it/100x50/007849/FFFFFF/?text=007849
-[G3]:https://placehold.it/100x50/FECE00/FFFFFF/?text=FECE00
-[G4]:https://placehold.it/100x50/FFFFFF/0375B4/?text=ffffff
-[G5]:https://placehold.it/100x50/FFFFFF/0375B4/?text=ffffff
-[T1]:https://placehold.it/100x50/1f1f1f/ffffff/?text=1f1f1f
-[T2]:https://placehold.it/100x50/fccf1b/ffffff/?text=fccf1b
-[T3]:https://placehold.it/100x50/cd5650/ffffff/?text=cd5650
-[T4]:https://placehold.it/100x50/ffffff/1f1f1f/?text=ffffff
-[T5]:https://placehold.it/100x50/ffffff/1f1f1f/?text=ffffff
-[E1]:https://placehold.it/100x50/282828/33FF33/?text=282828
-[E2]:https://placehold.it/100x50/282828/33FF33/?text=282828
-[E3]:https://placehold.it/100x50/33FF33/?text=33FF33
-[E4]:https://placehold.it/100x50/33FF33/282828/?text=33FF33
-[E5]:https://placehold.it/100x50/33FF33/282828/?text=33FF33
-[D1]:https://placehold.it/100x50/23272A/99AAB5/?text=23272A
-[D2]:https://placehold.it/100x50/2C2F33/99AAB5/?text=2C2F33
-[D3]:https://placehold.it/100x50/7289DA/99AAB5/?text=7289DA
-[D4]:https://placehold.it/100x50/7289DA/23272A/?text=7289DA
-[D5]:https://placehold.it/100x50/99AAB5/23272A/?text=99AAB5
-[L1]:https://placehold.it/100x50/000000/99AAB5/?text=000000
-[L2]:https://placehold.it/100x50/D32F2F/99AAB5/?text=D32F2F
-[L3]:https://placehold.it/100x50/DD4132/99AAB5/?text=DD4132
-[L4]:https://placehold.it/100x50/99AAB5/000000/?text=99AAB5
-[L5]:https://placehold.it/100x50/99AAB5/000000/?text=99AAB5
-[P1]:https://placehold.it/100x50/6B5B95/F0EDE5/?text=6B5B95
-[P2]:https://placehold.it/100x50/FF383F/F0EDE5/?text=FF383F
-[P3]:https://placehold.it/100x50/223A5E/F0EDE5/?text=223A5E
-[P4]:https://placehold.it/100x50/F0EDE5/6B5B95/?text=F0EDE5
-[P5]:https://placehold.it/100x50/F0EDE5/6B5B95/?text=F0EDE5
+1. Icons from [Icons 8](https://icons8.com)
+2. Theme hex colors from multiple brands and themes
+3. Original code from my other [`repo`](https://github.com/Boettner-eric/Homepage) which started as [`Decaux`](https://github.com/Boettner-eric/Decaux) which has been abandoned
+5. Kishlaya's fork for dynamic html generation

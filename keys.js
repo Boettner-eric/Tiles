@@ -1,414 +1,553 @@
-var focused = 1; // default to first tile
-var images = {}; // dict of image files to preload and reference
-var cached = pages["Home"]; // last visited page
-/*
-  *************************************************
-  Page load functions (in order)
-  - load all images
-  - pull theme cookie and apply theme
-  - log current theme
-  - call themes_dropdown() on all lib.themes to generate dropdown menu based on theme names
-  - generate index.html page with pages["Home"]
-  - focus first tile
-  *************************************************
-*/
-window.onload = function(){
-  update_tiles(); // in lib.js
-  images = image_load(); // Load all images on page
-  var tmp = decodeURIComponent(document.cookie).split(';'); /* Loads cookie w/ window and splits list of cookies */
-  pages["Back"] = pages["Home"] // default to home
-  tmp = tmp[0].split("=")[1]; // splits key/value pair
-  set_theme(tmp); // sets theme from cookie data
-  console.log("\"" + tmp + "\" theme loaded on page load");
-  page_gen(1);  // defaults to pages["Home"]
-  // TODO : fix search bar stealing focus
-};
+var result = 1; // default to first tile
+var url = "https://tiles-backend.herokuapp.com/";
+var user = {};
+var back = ["home"];
+var pages = {};
+var width = 4;
+var height = 3;
 
-/*
-  *************************************************
-  Image Load
-  - loads all images referenced in "lib.js/pages" on page load
-  - allows for much quicker hosting and prevents lag on new pages
-  * only con is potentially long "first" load times *
-  *************************************************
-*/
-function image_load() {
-  image = new Image();
-  for (key in pages) {
-    page = pages[key];
-    for (var i=0; i< page.length; i++) {
-      tile = page[i];
-      if (tile.length >= 2){ // ignores references and weather tiles
-        image = new Image();
-        if (tile[1].includes("~")){
-          image.src = "https://img.icons8.com/color/96/000000/" + tile[1].split("~")[1] + ".png";
-        } else {
-          image.src = "src/" + tile[1] + ".png"
-        }
-        images[tile[1]] = image.src;
-      };
+window.onload = async function() {
+    var theme = localStorage.getItem('theme');
+    if (theme != null) {
+        set_theme(theme.split(","));
     };
-  };
-  return images;
-};
-/*
-  *************************************************
-  Page Gen
-  - Creates new div#grid based off of a given page
-
-  Notes
-  - page : Array[12] of tiles
-  - tiles : Array[4] : [URL,ICN,TITLE,SUBTITLE,OPT] (see lib.js)
-  - '#...' in tile[0] denotes a page with name '...'
-  *************************************************
-*/
-function set_tile(num,array) {
-  n = num.toString();
-  document.getElementById(num).href = array[0];
-  document.getElementById("i"+n).style.width = array[1];
-  document.getElementById("i"+n).src = array[2];
-  document.getElementById("t"+n).innerHTML = array[3];
-  document.getElementById("s"+n).innerHTML = array[4];
-};
-
-function page_gen(id, page) { // id for focus element
-  var array = [];
-  if (page == undefined) { // page_gen() -> defaults to pages["Home"]
-    page = pages["Home"];
-  } else if (page[0][2] != "Back" && page[0][1] != "ba" && page != pages["Home"]) { // checks for custom back tile -> ignores if one exists
-    page.unshift(["#Home","ba","Back","To the Future?","*"]);
-  };
-  cached = page;
-  if (page.length > 12) {
-    /*
-      TODO :: Implement for loop for more than 24 results
-        for set of 12 {
-          next = Array.from(page);
-          page.splice(11, 11, ["#next"+String(i),"ab","Next",String(page.length -11) + " More Results","*"]); [page shrinks by 11 tiles]
-          next.splice(0,11,["#back"+String(i),"ba","Back","Previous Results","*"]);
-          pages["next" + i] = next
-          pages["back" + i] = page
-        }
-      - i denotes level of depth
-    */
-    next = Array.from(page); // de references array
-    page.splice(11, 11, ["#","ab","Next",String(page.length - 11) + " More Results","*"]); // stores results 12+
-    next.splice(0,11,["#","ba","Back","Previous Results","*"]); // stores current page (for back button)
-    pages["Next"] = next; // stores temporary back page
-    pages["Back"] = page; // stores temp next page
-  };
-  try {
-    for (var num =1; num<13;num++) {
-        tile = page[num-1];
-        if (tile == undefined) { // less than 12 tiles
-          tile = ["","","",""] // placeholder blank tile
-        };
-        n = num.toString();
-        tile = reference(tile); // see reference() below
-        url = tile[0];
-        if (url == "@w"){ // weather function tile
-          update_weather(num);
-        } else if (url == "@f"){
-          set_tile(num,liverpool);
-        } else if (url == "@d"){
-          dict_tile(num,document.getElementById("search").value.replace(term,"").replace(" ",""));
-        } else {
-          if (tile[2] == "Home" || tile[0] == "#Home") { // still supports custom back button
-            array[0] = "javascript:page_gen(1, pages[\"Home\"]);";
-            //array[0] = "javascript:page_gen(1); javascript:document.title=\"Home\"";
-          } else if (url[0] == "#") { // checks for folder urls
-            array[0] = "javascript:page_gen(2,pages[\""+tile[2]+"\"])"; // Opens folder and sets cursor to 2
-          } else if (url[0] == "$") { // if theme
-            array[0] = "javascript:set_theme(\""+tile[2]+"\",2); javascript:page_gen(1)";
-          } else { // for normal url redirects
-            array[0] = url.replace("VAR",encodeURIComponent(document.getElementById("search").value.replace(term,""))); // searches only with correct symbols
-          };
-          if (tile[1] == ""){ // Blank images have no outline box
-            array[1] = 0;
-            array[2] = "";
-          } else {
-            array[1] = "50px";
-            array[2] = images[tile[1]]; // assumes all images have been preloaded
-          };
-          array[3] = tile[2]; // Title
-          array[4] = tile[3].replace("VAR",document.getElementById("search").value).replace(term,"");
-          set_tile(num,array);
-        };
-      };
-  } catch (err) {
-    console.log("\"" + err + "\" error logged in page_gen of " + tile);
-  };
-  if (id != "none") {
-    document.getElementById(id).focus();
-    focused=id;
-    result=id;
-  };
-  for (var i =1; i<=12;i++){
-    if (document.getElementById(i) != null && document.getElementById(i).href.includes("javascript:")){
-      document.getElementById(i).onclick = function(){
-        eval(document.getElementById(i).href.replace("javascript:",""));
-      };
-    };
-  };
-};
-/*
-  *************************************************
-  Reference
-  - if a tile == ["~...."] -> check pages["~"] for the full tile
-  - if a tile == ["@..."] -> check pages["~"] for function tile
-  - else return the original tile
-  *************************************************
-*/
-function reference(tile) {
-  if (tile[0][0] == "~" || tile[0][0] == "@") {
-    local = Array.from(pages["~"]);
-    for (var x=0; x< local.length; x++) {
-      if (local[x][2] == tile[0].replace("~","") || local[x][0] == tile[0]) { // If title or url == reference
-        return local[x];
-      };
-    };
-  };
-  return tile;
-};
-/*
-  *************************************************
-  Search Functions
-  - rank(string,string) -> finds number of matching charactors between two normalized strings (ignores theme hex data)
-  - search_live(string) -> finds best 11 pages for a given search term
-  - pages_to_list() -> converts "pages" (in lib.js) from Dict(key:Array[tile]) to Array[tile] (allows for quicker search and optimal algorithms)
-
-  Notes
-  - normalized : no spaces and all lower case
-  *************************************************
-*/
-function rank(attempt, known) {
-  if (attempt == undefined || known == undefined || Array.isArray(attempt)) {
-    return 0;
-  };
-  attempt = attempt.replace(" ","").toLowerCase(); // converts strings to universal form
-  known = known.replace(" ","").toLowerCase();
-  var a = 0;
-  for (var i = 0; i < Math.min(attempt.length,known.length); i++) {
-      if (attempt[i] == known[i]){
-        a++; // # of matches
-      };
-  };
-  return a;
-};
-
-function search_live(curr) {
-  var final = [];
-  var page = Array.from(pages_to_list());
-  for (var j = 0; j< page.length; j++){
-    tile = Array.from(page[j]); // make sure array is values not references (important for live tiles)
-    if (tile[0] == "@w" && /^\d{5}(-\d{4})?$/.test(document.getElementById("search").value)) {
-      // https://stackoverflow.com/questions/160550/zip-code-us-postal-code-validation
-      zip = document.getElementById("search").value;
-      final.push({'match': tile,"rank":100}); // puts weather tile first
-      break; // only tile
-    } else if (tile[4] == term && curr.includes(term)) { // if term -> only show external search tiles
-      final.push({'match': tile,"rank":10});
-    } else if (tile[4] != "*" && !curr.includes(term) && tile[4] != term) { // "*" -> Hidden from search term -> ignore search tiles outside of search mode
-      value = Math.max(rank(tile[2],curr),rank(tile[4],curr)); // max ranking of name and tag
-      if (value > 1.5) {
-        if (tile[0].includes("VAR")) {
-          tile[3] = tile[3];
-        } else if (tile[0][0] == "#") { // "#" -> Folder url
-          tile[3] = "Folder (" + String(value) + ")"; // changes subtitle to type of page and rank
-        } else if (tile[0][0] == "$") {
-          tile[3] = "Theme (" + String(value) + ")"; // changes subtitle to type of page and rank
-        } else if (tile[0][0] != "@"){ // don't change function tile descriptions
-          tile[3] = "Tile (" + String(value) + ")";
-        };
-        final.push({'match': tile,"rank":value});
-      };
-    };
-  };
-  final = final.sort(function(a, b) {   // Sorting of all results (tiles, folders and livetiles)
-    return ((a.rank > b.rank) ? -1 : ((a.rank == b.rank) ? 0 : 1));});
-  var ranking = [];
-  ranking.push(["#Home","ba", "Back","Exit Search","*"]); // Preappend back button
-  for (var k = 0; k < Math.min(final.length,20); k++) { // add all matches in ranked order (max of two pages)
-    ranking[k+1] = final[k].match;
-  };
-  ranking[k+1] = ["https://www.google.com/search?q=" + curr.replace(term,""),"go","Google","\""+ curr.replace(term,"") +"\"","*"]; // always add google tile last regardless of search mode
-  page_gen("none",Array.from(ranking));
-  return ranking;
-};
-
-function pages_to_list() {
-  list = [];
-  for (key in pages) {
-    if (key != "Back" && key != "Next") { // ignores these search keys
-      page = Array.from(pages[key]);
-      for (var i = 0; i< page.length; i++){
-        if (page[i].length >= 4) { // ignores "~" tiles
-          list.push(page[i]);
-        };
-      };
-    };
-  };
-  return list;
-};
-/*
-  *************************************************
-  Themeing
-    - setCookie(theme) -> saves current theme to cookie
-    - set_theme(name) -> styles the page with a theme array
-
-  Notes
-    - set cookie overwrites previous theme cookie : do not change expiration
-    - set_theme(name) : searches themes var in lib.js for a theme of matching name
-  *************************************************
-*/
-function set_cookie(theme) {
-  document.cookie = "theme=" + theme + "; expires=Thu, 18 Dec 2021 12:00:00 UTC"; // saves the cookie
-  console.log("\"" + theme + "\" theme saved to cookie");
-};
-
-function set_theme(name) { // 4
-  themes = pages["Themes"];
-  for(var i = 0;i < themes.length;i++){
-    if (themes[i][2] == name) {
-      x = themes[i][4];
-      if (x[0][0] != "#"){ // background image condition
-        document.body.style.backgroundImage = "url("+ x[0] +")";
-        document.documentElement.style.setProperty('--background', "#ccccc");
-      } else {
-        document.body.style.backgroundImage = "none";
-        document.documentElement.style.setProperty('--background', x[0]);
-      };
-      document.documentElement.style.setProperty('--main-cl', x[1]);
-      document.documentElement.style.setProperty('--comp-cl', x[2]);
-      document.documentElement.style.setProperty('--sub-txt', x[3]);
-      document.documentElement.style.setProperty('--base-txt', x[4]);
-      set_cookie(name);
-      return 0;
-    };
-  }
-  console.log("\"" + name + "\" theme not loaded from lib.js")
-  return 1;
-};
-/*
-  *************************************************
-  Key up
-    - if live search is enabled it searches given the value after each key up
-
-  Key down
-    - 1-12 navigation keys for default binding (11 is -) (12 is =)
-    - 1-12 theme menu for selecting themes from dropdown
-    - left,right,up,down (hjkl) for navigation
-    - enter for searching and clicking on links
-    - esc for leaving search live and returning to homepage
-
-  *************************************************
-*/
-window.onclick = function(e){
-	if ( document.activeElement.id != "search" ) {
-		document.getElementById(focused).focus();
-	};
-};
-document.onkeyup = function(e){
-  if ( document.activeElement.id == "search") {
-    if (e.keyCode != 13 && e.keyCode != 27){
-      current = document.getElementById("search").value;
-      search_live(current);
-    };
-  };
-};
-document.onkeydown = function(e) {
-	var key = e.keyCode;
-  var result = null;
-
-	if ( document.activeElement.id == "search") {
-		if (key == 27) { // esc
-      document.getElementById("search").value = "";
-      page_gen(1);
-      document.title = "Home";
-		} else if (key == 13){ // enter
-      document.activeElement.blur();
-			document.getElementById("2").focus();
-      result = 2;
-      focused = 2;
-    } else if (document.getElementById("search").value.includes("term=")){
-      term = document.getElementById("search").value.replace("term=","");
-      console.log("term -> "+ term);
-    };
-		return;
-	};
-
-	if ( key == 32 ) { // Key space -> focus search bar but dont log a space in search
-    document.getElementById("search").focus();
-    return false; // ignore space in search field
-	} else if (key == 220) { // "\" key -> theme menu
-    page_gen(1,pages["Themes"]);
-  }else if (key == 191) { // "/" key -> calls external search
-    document.getElementById("search").value = term;
-    document.getElementById("search").focus();
-    return false;
-  } if (key == 27) { // esc -> back to home screen
-    page_gen(1);
-    document.getElementById("search").value = "";
-  } else if ( key == 38 || key == 75) { // Up key, go back 4 blocks (the one above).
-		result = parseInt(focused) - 4;
-		focused = parseInt(focused) - 4;
-		if (result < 1) {
-			result += 12;
-			focused += 12;
-		}
-		result = !isNaN(document.activeElement.id) ? result : focused;
-	} else if ( key == 40 || key == 74) { // Down key, go forward 4 blocks (the one below).
-		result = parseInt(focused) + 4;
-		focused = parseInt(focused) + 4;
-		if (result > 12) {
-			result -= 12;
-			focused -= 12;
-		}
-		result = !isNaN(document.activeElement.id) ? result : focused;
-	} else if ( key == 39 || key == 76) { // Right key, go forward 1 block or reset row if end.
-		result = focused == 12 ? parseInt(focused) - 11 : parseInt(focused) + 1;
-		focused = focused == 12 ? parseInt(focused) - 11 : parseInt(focused) + 1;
-		if (result > 12) {
-			result -= 12;
-			focused -= 12;
-		}
-		result = !isNaN(document.activeElement.id) ? result : focused;
-	} else if ( key == 37 || key == 72) { // left key, go back 1 block or reset row if end.
-		result = focused == 13 ? parseInt(focused) + 3 : parseInt(focused) - 1;
-		focused = focused == 13 ? parseInt(focused) + 3 : parseInt(focused) - 1;
-		if (result < 1) {
-			result += 12;
-			focused += 12;
-		}
-		result = !isNaN(document.activeElement.id) ? result : focused;
-	}
-  /*
-    Custom key shortcuts
-  */
-  for (var i = 49; i <= 57; i++) { // 1 to = -> tiles 1-12
-    if (key == i) {
-      result = i-48;
-    };
-  };
-  if (key == 48) {
-    result = 10;
-  } else if (key == 189) {
-    result = 11;
-  } else if (key == 187) {
-    result = 12;
-  };
-  /* Currently doesnt work with hjkl only 1-12
-  if (result && page == pages["Themes"]) {
-    document.getElementById(String(result)).focus();
-    document.getElementById(String(result)).click();
-  }
-  */
-  if (result) {
-    if (result != focused && cached == pages["Themes"]) { // changes themes
-      document.getElementById(String(result)).click();
-      result = focused;
+    var token = localStorage.getItem('token');
+    if (token == "null" || token == null) {
+        generate_table(4,3); // default config
+        set_tile(default_tiles["login_tile"], 1);
+        set_tile(default_tiles["register_tile"], 2);
+        set_tile(default_tiles["helper_tile"], 3);
     } else {
-      document.getElementById(String(result)).focus();
+        user_init() // user preferences
     };
-	};
 };
+
+async function login(username, password) {
+    var raw = await api_set("users", "login", {"user":username, "pass":password});
+    if (raw.token != null) {
+        console.log(username + " logged in");
+        localStorage.token = raw.token;
+        user_init();
+    } else {
+        alert("Invalid login");
+        console.log("Invalid login attempt");
+    };
+};
+
+async function user_init() {
+    var user_res = await api_get("users", "data", "")
+    if (user_res.error || !user_res) {
+        console.log(user_res.error);
+        console.log("Server Offline");
+        generate_table(4,3); // make user profile set width and height
+        set_tile(default_tiles["server_tile"]);
+        set_tile(default_tiles["reload_tile"]);
+    } else {
+        window.user = user_res
+        generate_table(user.dimensions[0], user.dimensions[1]); // make user profile set width and height
+        if (user.theme != "default" && localStorage.theme != null && JSON.stringify(user.theme) != JSON.stringify(localStorage.theme.split(","))) {
+            set_theme(user.theme);
+            localStorage.theme = user.theme;
+        };
+        set_font(user.font);
+        page_gen("home");
+    };
+};
+
+async function user_update() {
+    localStorage.theme = user.theme;
+    await api_set("users", "update", user);
+};
+
+async function tiles_update(tiles) { // push updates to server
+    for (var i=0; i<tiles.length; i++){
+        api_set("tiles", "edit", tiles[i]);
+        if (tiles[i].position > (width*height)){
+            var position = tiles[i].position - (width*height);
+        };
+        set_tile(tiles[i], position);
+    };
+};
+
+async function api_get(category, type, name) {
+    // tiles: (theme/page/search)
+    // users: (data/login/new)
+    var req = url + category +"/"+ type +"/"+ name;
+    var params = {
+        headers: {"content-type": "application/json; charset=UTF-8","Authorization": "Bearer " + localStorage.getItem('token')},
+        method: "GET"
+    };
+    let res = await fetch(req, params).then(response => {
+        return response.json();
+    }).then(json => {
+        return json;
+    }).catch(error => {
+        return {"error" : error};
+    });
+    return res;
+};
+
+async function api_set(category, type, data) {
+    // tiles: (new/edit/delete)
+    // users: (new/update)
+    var req = url + category +"/"+ type;
+    var params = {
+        headers: {"content-type": "application/json; charset=UTF-8","Authorization": "Bearer " + localStorage.getItem('token')},
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    let res = await fetch(req, params).then(response => {
+        return response.json();
+    }).then(json =>  {
+        return json;
+    }).catch(error => {
+        return {"error" : error};
+    });
+    return res;
+};
+
+function set_tile(tile, position) { // optional position for changing position w/o changing tile.position
+    var num = position ? position.toString(): tile.position.toString();
+    if (tile.type == "page") { // tile types
+        document.getElementById(num).href = "#";
+        document.getElementById(num).onclick = function() { page_gen(tile.url); return false; };
+    } else if (tile.type == "theme") {
+        document.getElementById(num).href = "#";
+        document.getElementById(num).onclick = function() { set_theme(tile.theme); return false; };
+    } else if (tile.type == "command") { // tiles for running commands (will be used for forms in next version)
+        document.getElementById(num).href = "#";
+        document.getElementById(num).onclick = function() { commands(tile.url); return false; };
+    }/* TODO: next version will add info tiles with popup forms and interactive data
+        else if (tile.type == "info") { // settings, apis, weather, etc
+        document.getElementById(n).href = "#";
+        document.getElementById(n).onclick = function() { open_form(tile.form); return false; };
+    }*/else if (tile.type == "blank") { // placeholder tiles used in page_gen
+        document.getElementById(num).href = "#";
+        document.getElementById(num).onclick = function() { return false; }; // do nothing
+    } else if (tile.type == "search") {
+        document.getElementById(num).href = tile.url + tile.subtitle.replaceAll("\"","");
+        document.getElementById(num).onclick = function() { return true; };
+    } else { // normal tile
+        document.getElementById(num).href = tile.url;
+        document.getElementById(num).onclick = function() { return true; }; // act like normal link
+    };
+    if (tile.img[0] == "~") { // api shortcut
+        document.getElementById("i"+num).width = 48;
+        document.getElementById("i"+num).src = (user.api || "https://img.icons8.com/color/96/000000/") + tile.img.replace("~","") + ".png";
+    } else {
+        document.getElementById("i"+num).width = 0;
+        document.getElementById("i"+num).src = "";
+    };
+    document.getElementById("t"+num).innerHTML = tile.title;
+    document.getElementById("s"+num).innerHTML = tile.subtitle;
+};
+
+// Cache page from server
+async function get_page(page_id) {
+    if (!pages[page_id.replace(" next","")]) {
+        pages[page_id] = await api_get("tiles", "page", page_id.replace(" next",""));
+    };
+    return pages[page_id.replace(" next","")];
+};
+
+async function page_gen(page_id, terms=null) {
+    document.title = page_id;
+    if (page_id.includes("search_")) {
+        if (terms[0] != "?") {
+            var page = await api_get("tiles", "search", terms + "/1");
+        } else {
+            var page = await get_page("search");
+            for (let x =0; x < page.length; x++) {
+                page[x].subtitle = "\"" + terms.replace("?","") + "\"";
+            };
+        };
+    } else {
+        var page = await get_page(page_id);
+    };
+    if (page_id != "home") {
+        var back_tile = default_tiles["back_tile"];
+        if (back[0] == page_id) { // if page is the same (!delete, !tile, etc)
+            back.splice(0,1);// just pop off current page
+        } else if (back.indexOf(page_id) != -1) {
+            back.splice(0,2);// get rid of loop of last two
+        };
+        back_tile.url = back[0]; // go to top of stack
+        back.unshift(page_id); // add current page to stack
+        set_tile(back_tile);
+    } else {
+        back = ["home"]; // reset back stack (home has no back button)
+    };
+    if (page.length > (width * height)) {
+        if (page_id.includes(" next")) { // second page
+            for (var i = (width*height); i < page.length; i++) {
+                set_tile(page[i], page[i].position - (width*height) + 1);
+            };
+            var blanks = Math.abs((width*height)-page.length)+2;
+        } else { // first page
+            for (var i = 0; i < (width*height)-1; i++) {
+                set_tile(page[i]);
+            };
+            var next_tile = default_tiles["next_tile"];
+            next_tile.url = page_id + " next";
+            set_tile(next_tile, (width*height));
+            var blanks = (width*height)+1; /// no blanks
+        };
+    } else { // pages with less than or equal to numTiles tiles
+        for (var i = 0; i < page.length; i++) {
+            set_tile(page[i]);
+        };
+        var blanks = page.length+2;
+    };
+    for (var i = blanks; i<=(width*height); i++) {
+        set_tile(default_tiles["blank_tile"], i); // fill rest of grid with empty tiles
+    };
+    result = 1;
+    document.getElementById("1").focus();
+};
+
+// background-color/image main-color complementary-color sub-text main-text
+function set_theme(theme) {
+    if (theme[0].includes("http")){ // background image condition
+        document.body.style.backgroundImage = "url("+ theme[0] +")";
+        document.body.style.backgroundSize = "cover";
+        document.documentElement.style.setProperty('--background', "#ccccc");
+    } else {
+        document.body.style.backgroundImage = "none";
+        document.documentElement.style.setProperty('--background', theme[0]);
+    };
+    document.documentElement.style.setProperty('--main-cl', theme[1]);
+    document.documentElement.style.setProperty('--comp-cl', theme[2]);
+    document.documentElement.style.setProperty('--base-txt', theme[3]);
+    document.documentElement.style.setProperty('--sub-txt', theme[4]);
+};
+
+async function set_font(font) {
+    for (var i=1; i<=(width*height); i++) {
+        document.getElementById(i.toString()).style.fontFamily = font;
+    };
+    document.getElementsByName("q")[0].style.fontFamily = font;
+};
+
+function find_tile(title, page) {
+    for (var i=0; i < page.length; i++){
+        if (page[i].title == title.replace("-"," ")){
+            return page[i];
+        };
+    };
+    return undefined;
+};
+
+async function new_tile(type, url, title, sub, img, page, position, theme=null) {
+    var tile = {
+        "url" : url.replace(/ /g,"-").toLowerCase(),
+        "title" : title.replace(/-/g," "),
+        "subtitle" : sub.replace(/-/g," "),
+        "img" : img,
+        "type" : type,
+        "page" : page.replace(" next", ""),
+        "position" : position
+    };
+    if (type == "theme") {
+        tile.theme = [theme[0], theme[1], theme[2], theme[3], theme[4]];
+        set_theme(tile.theme);
+    };
+    api_set("tiles","new", tile); // don't await this
+    new_page = await get_page(page);
+    new_page.push(tile);
+    if (page.replace("next ","") == document.title) { // only reload if tile is on current page
+        if (position <= (width*height) || page.includes("next")) {
+            set_tile(tile);
+        } else if (position == (width*height)+1) { // add new page
+            page_gen(page);
+        };
+    };
+    return tile;
+};
+
+async function delete_tile(tile, page, page_id) {
+    api_set("tiles","delete", tile);
+    page.splice(page.indexOf(tile),1); // get rid of tile in cache
+    if (tile.position != page.length) {
+        for (var i=0; i<page.length; i++) {
+            if (page[i].position > tile.position) { // modify cache
+                page[i].position -= 1;// shift later tiles back
+            };
+        };
+        tiles_update(page);
+    };
+    console.log(page);
+    if (tile.position <= (width*height) || ((page_id.includes("next") && page.length > (width*height)))) {
+        set_tile(default_tiles["blank_tile"], tile.page == "home" ? page.length+1: page.length+2);
+    };
+};
+
+async function commands(current) {
+    var terms = current.split(" ");
+    if (current.includes("!reload")) {
+        user_init();
+    } else if (current.includes("!login")) {
+        login(terms[1], terms[2]);
+    } else if (current.includes("!logout")) {
+        user = {};
+        localStorage.token = "";
+        user_init();
+    } else if (current.includes("register")) {
+        if (terms.length < 3) {
+            alert("usage: !register (1)username (2)password");
+        } else {
+            var new_user = {
+                "username" : terms[1],
+                "password" : terms[2],
+                "dimensions" : [4,3],
+                "theme" : ["#23272A", "#2C2F33", "#7289DA", "#7289DA", "#99AAB5"],
+                "admin" : false,
+                "api" : "https://img.icons8.com/color/96/000000/"
+            };
+            let res = await api_set("users", "new", new_user);
+            if (res.error){
+                alert("Username taken")
+            } else {
+                await login(terms[1], terms[2]); // TODO clean this up
+                var themes_tile = default_tiles["themes"];
+                themes_tile.user = terms[1];
+                var search_tile = default_tiles["search"];
+                search_tile.user = terms[1];
+                api_set("tiles","new", themes_tile);
+                api_set("tiles","new", search_tile);
+                set_tile(themes_tile, 1);
+                set_tile(search_tile, 2);
+                set_tile(default_tiles["helper_tile"], 3);
+            };
+        };
+    } else if (user.username) { // only allow logged in users to edit pages
+        var page_id = document.title;
+        var page = await get_page(page_id);
+        var position = page_id == "home" ? (page.length != 0 ? page.length+1 : 1) : page.length+2;
+        position = page_id.includes(" next") ? position + 1 : position;
+        if (current.includes("set")) {
+            if (current.includes("theme")) {
+                let tile = find_tile(terms[2], await get_page("themes"));
+                if (!tile) {
+                    alert("invalid theme name");
+                } else {
+                    set_theme(tile.theme);
+                    user.theme = tile.theme;
+                }
+            } else if (current.includes("font")) {
+                user.font = current.replace("!set font ","");
+                set_font(user.font);
+            } else if (current.includes("grid")) {
+                if (parseInt(terms[2],10) < 3 || parseInt(terms[2],10) < 3) {
+                    alert("Invalid dimensions (min 3x3)");
+                } else if (confirm("Reload page with new grid")) {
+                    generate_table(parseInt(terms[2],10),parseInt(terms[3],10));
+                    user.dimensions = [parseInt(terms[2],10), parseInt(terms[3],10)];
+                    page_gen("home");
+                };
+            };
+            user_update();
+        } else if (current.includes("!theme")){ // !theme title subtitle img [bg, sub, main, base-txt, comp] num
+            if (terms.length < 9) {
+                alert("usage: !theme (1)title (2)subtitle (3)img (4)bg (5)sub (6)main (7)base-txt (8)comp");
+            } else {
+                var theme_page = await get_page("themes");
+                var theme = [terms[4], terms[5], terms[6], terms[7], terms[8]];
+                new_tile("theme", "#", terms[1], terms[2], terms[3], "themes", theme_page.length+2, theme);
+            };
+        } else if (current.includes("!tile")) { // !tile url title subtitle img number
+            if (terms.length < 5) {
+                alert("usage: !tile (1)url (2)title (3)subtitle (4)~img");
+            } else {
+                new_tile("tile", terms[1], terms[2], terms[3], terms[4], page_id, position);
+            };
+        } else if (current.includes("!search")) { // !search url title subtitle img number
+            if (terms.length < 5) {
+                alert("usage: !search (1)url (2)title (3)subtitle (4)~img");
+            } else {
+                var search_page = await get_page("search");
+                new_tile("search", terms[1], terms[2], terms[3], terms[4], "search", search_page.length+2);
+            };
+        } else if (current.includes("!folder")) {
+            if (terms.length < 4) {
+                alert("usage: !folder (1)title (2)subtitle (3)img");
+            } else {
+                new_tile("page", terms[1], terms[1], terms[2], terms[3], page_id, position);
+            };
+        } else if (current.includes("!edit")) { // update tiles/pages/themes here (can't change title)
+            if (terms.length < 2) {
+                alert("usage: !edit (1)title");
+            } else {
+                var tile = find_tile(terms[1], page); // by reference not value
+                if (!tile){
+                    alert("Invalid tile name");
+                } else {
+                    for (var i = 2; i<terms.length; i++) {
+                        [field,value] = terms[i].split("=");
+                        if (field == "folder") {
+                            delete_tile(tile, page, page_id);
+                            const new_page = await get_page(value.toLowerCase());
+                            var new_pos = value == "home" ? (new_page.length != 0 ? new_page.length+1 : 1) : new_page.length+2
+                            var tile = new_tile(tile.type, tile.url, tile.title, tile.subtitle, tile.img, value.toLowerCase(), new_pos, tile.theme);
+                            return 0;
+                        } else if (field == "theme") {
+                            tile["theme"] = value.split(",");
+                        } else if (field == "position") {
+                            tile[field] = parseInt(value, 10);
+                        } else if (tile[field]) {
+                            tile[field] = field == "img" ? value : value.replace(/-/g," ");
+                        } else {
+                            console.log("Invalid field", field);
+                            return 0;
+                        };
+                    }; // add to cache and remove old tile here
+                    tiles_update([tile]);
+                };
+            };
+        } else if (current.includes("!delete")) {
+            if (terms.length < 2) {
+                alert("usage: !delete (1)title");
+            } else {
+                var tile = find_tile(terms[1], page);
+                if (!tile) {
+                    alert("Invalid tile")
+                } else if (confirm("Delete " + tile.title + "?")) {
+                    delete_tile(tile, page, page_id);
+                };
+            };
+        } else if (current.includes("!swap")) {
+            if (terms.length < 2) {
+                alert("usage: !edit (1)tile-name");
+            } else { // swap tiles around
+                var a = find_tile(terms[1], page);
+                var b = find_tile(terms[2], page);
+                if (!a || !b){
+                    alert("Invalid tile names");
+                } else {
+                    console.log(a.position, b.position);
+                    [a.position, b.position] = [b.position, a.position];
+                    tiles_update([a,b]); // swaping over pages needs a reload for now
+                };
+            };
+        } else if (current.includes("!help")) {
+            window.location.href = "https://github.com/Boettner-eric/Tiles#Commands";// readme url
+        };
+    };
+    document.getElementById("search").value = '';
+};
+
+window.onclick = function(e){
+    if ( document.activeElement.id != "search" ) {
+        document.getElementById(result).focus(); // if user clicks on background keep highlighting tile
+    };
+};
+
+document.onkeydown = function(e) {
+    var key = e.keyCode;
+    var numTiles = width * height;
+    if ( document.activeElement.id == "search") {
+        if (key == 27) { // esc
+            document.getElementById("search").value = "";
+            page_gen("home");
+        } else if (key == 13) { // enter
+            document.activeElement.blur();
+            document.getElementById("2").focus();
+            result = 2;
+            current = document.getElementById("search").value;
+            if (current == "") {
+                return true;
+            } else if (current[0].includes("!") && user != {}) { // custom command prefix
+                commands(current);
+            } else {
+                page_gen("search_", current);
+            };
+        };
+        return true;
+    };
+    if ( key == 32 ) { // Key space -> focus search bar but dont log a space in search
+        document.getElementById("search").focus();
+        return false; // ignore space in search field
+    } else if (key == 220) { // "\" key -> theme menu
+        page_gen("themes");
+    } else if (key == 13) {
+        return true;
+    } else if (key == 191) { // "/" key -> calls external search
+        document.getElementById("search").value = "?";
+        document.getElementById("search").focus();
+        return false;
+    } else if ( key == 38 || key == 75) { // Up key, go back 4 blocks (the one above).
+        result = parseInt(result) - width;
+        if (result < 1) {
+            result += numTiles;
+        };
+    } else if ( key == 40 || key == 74) { // Down key, go forward 4 blocks (the one below).
+        result = parseInt(result) + width;
+        if (result > numTiles) {
+            result -= numTiles;
+        };
+    } else if ( key == 39 || key == 76 || key == 9) { // Right key, go forward 1 block or reset row if end.
+        result = result == numTiles ? parseInt(result) - (numTiles-1) : parseInt(result) + 1;
+        if (result > numTiles) {
+            result -= numTiles;
+        };
+    } else if ( key == 37 || key == 72) { // Left key, go back 1 block or reset row if end.
+        result = result == (numTiles+1) ? parseInt(result) + height : parseInt(result) - 1;
+        if (result < 1) {
+            result += numTiles;
+        };
+    }
+    for (var i = 49; i <= 57; i++) { // 1 to 9
+        if (key == i) {
+            result = i-48;
+        };
+    };
+    if (key == 48) {// 0 -> 10
+        result = 10;
+    } else if (key == 189) { // - -> 11
+        result = 11;
+    } else if (key == 187) { // = -> 12
+        result = 12;
+    };
+    if (result && result <= numTiles) {
+        document.getElementById(String(result)).focus();
+        if (result != 1 && ![9,37,72,39,76,40,74,38,75].includes(key) && document.title == "themes") {
+            document.getElementById(String(result)).click(); //change theme
+        };
+    };
+};
+
+function generate_table(w, h) {
+    window.width = w;
+    window.height = h;
+    let table = document.querySelector("table");
+    if (table.rows.length != 0){
+        var x = table.rows.length;
+        for (var i=0; i < x; i++){
+            table.deleteRow(0);
+        }; // clear existing table if it exists
+    };
+    for (var i=0; i< h; i++) {
+        // credit goes to kishlaya for generating html dynamically in his fork
+        // see his fork of the previous version of tiles here: https://github.com/kishlaya/Tiles
+        let row = table.insertRow();
+        for (var j=1; j<w+1; j++) {
+            var index= i*(w)+j;
+            let cell = row.insertCell();
+            var img = document.createElement("img");
+            img.setAttribute("id", "i" + index);
+            var h3 = document.createElement("h3");
+            h3.setAttribute("id", "t" + index);
+            var btn = document.createElement("div");
+            btn.setAttribute("class", "button");
+            btn.appendChild(img);
+            var p = document.createElement("p");
+            p.setAttribute("id", "s" + index);
+            var anchor = document.createElement("a");
+            anchor.setAttribute("href", "#");
+            anchor.setAttribute("id", index);
+            anchor.appendChild(btn);
+            anchor.appendChild(h3);
+            anchor.appendChild(p);
+            cell.appendChild(anchor);
+        }
+    }
+}
