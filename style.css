@@ -3,13 +3,15 @@
 	font-family: 'menlo';
 	src:url('src/menlo.woff') format('woff'),
 }
+
 :root {
-	--background: #23272A;
-	--base-txt: #99AAB5;
-  --sub-txt: #7289DA;
-  --main-cl: #7289DA;
-  --comp-cl: #99AAB5;
+    --background: #23272A;
+    --base-txt: #99AAB5;
+    --sub-txt: #7289DA;
+    --main-cl: #7289DA;
+    --comp-cl: #99AAB5;
 }
+
 ::-webkit-input-placeholder {
     opacity: 1 !important;
 }
@@ -17,106 +19,107 @@
     opacity: 1 !important;
 }
 body, html {
-  background-color: var(--background) !important;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-	padding: 0px;
-  padding: 0px;
+    background-color: var(--background) !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    padding: 0px;
 }
 div#grid {
-  background-color: var(--background);
-  display: fixed;
-	padding-left: 3vw;
-	position: center;
-	width: 95vw;
-	height: 90vh;
-	top: 10vh;
+    background-color: var(--background);
+    display: fixed;
+    padding-left: 3vw;
+    position: center;
+    width: 94vw;
+    height: 95vh;
 }
 div#grid table {
-  background-color: var(--background);
-	font-family: 'menlo', sans-serif;
-	border-collapse: separate;
-	border-spacing: 5px;
-	font-size: 10px;
+    background-color: var(--background);
+    font-family: 'menlo', sans-serif;
+    border-collapse: separate;
+    border-spacing: 5px;
+    font-size: 10px;
 }
 
 div#grid table tr td {
-  background-color: var(--background);
-	height: 25vh;
-	width: 200vw;
+    background-color: var(--background);
+    height: 25vh;
+    width: 100vw;
 }
 
 div#grid table tr td a {
-	transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
-	background-color: var(--background);
-	color: var(--base-txt);
-	text-decoration: none;
-	position: relative;
-	display: block;
-	padding: 4px;
-	height: 12vh;
-	width: 18vw;
+    transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
+    background-color: var(--background);
+    color: var(--base-txt);
+    text-decoration: none;
+    position: relative;
+    display: block;
+    padding: 2px;
+    height: 12vh;
+    width: 18vw;
 }
 
 div#grid h3 {
-  padding-left: 45%;
-  font-size: 13px;
+    padding-left: 45%;
+    font-size: 13px;
 }
 
 div#grid p {
-  padding-left: 45%;
-	font-size: 10px;
-  color: var(--sub-txt);
+    padding-left: 45%;
+    font-size: 10px;
+    color: var(--sub-txt);
 }
+
 .button img {
-  display: fixed;
-	padding-right: 60%;
+    display: fixed;
+    padding-right: 60%;
 }
 
 div#grid table tr td a img {
-	position: absolute;
-	opacity: 1;
-	right: 1px;
-	z-index: 0;
-	top: 5px;
+    position: absolute;
+    opacity: 1;
+    right: 1px;
+    z-index: 0;
+    top: 5px;
 }
+
 div#grid table tr td a:focus img, div#grid table tr td a:hover img {
-	-webkit-filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
-	filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
+    -webkit-filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl)) !important;
+    filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
 }
 
 div#grid table tr td a:focus, div#grid table tr td a:hover {
-	box-shadow: 3px 3px 0 var(--main-cl), -3px -3px 0 var(--comp-cl);
-	outline: 0;
+    box-shadow: 3px 3px 0 var(--main-cl), -3px -3px 0 var(--comp-cl);
+    outline: 0;
 }
 
 footer form input[type="text"] {
-	background-color: var(--background);
-  color: var(--sub-txt);
-	border: 0;
-	border-bottom: 2px solid var(--comp-cl);
-  border-left: 2px solid var(--main-cl);
-	font-size: 20px;
-	position: fixed;
-	display: flex;
-	outline: none;
-	padding: 5px;
-	z-index: 1;
-	bottom: 2vh;
-	width: 90%;
-	left: 5%;
+    background-color: var(--background);
+    color: var(--sub-txt);
+    border: 0;
+    border-bottom: 2px solid var(--comp-cl);
+    border-left: 2px solid var(--main-cl);
+    font-size: 14px;
+    position: fixed;
+    display: flex;
+    outline: none;
+    padding: 5px;
+    z-index: 1;
+    bottom: 2vh;
+    width: 90%;
+    left: 5%;
 }
 
 footer form input[type="text"]:focus {
-	border-bottom: 4px solid var(--comp-cl);
-  border-left:  4px solid var(--main-cl);
-	color: var(--base-txt);
-	outline: none;
+    border-bottom: 4px solid var(--comp-cl);
+    border-left:  4px solid var(--main-cl);
+    color: var(--base-txt);
+    outline: none;
+    font-size: 20px;
 }
 
 input::-webkit-input-placeholder{
-  color:var(--base-txt);
+    color:var(--base-txt);
 }
 /*
   Short and Narrow device settings
@@ -137,23 +140,23 @@ input::-webkit-input-placeholder{
 }
 
 @media only screen and (max-width: 650px) { /* For narrowish devices */
-  div#grid {
-  	padding: 0vw;
-  	position: center;
-  	width: 96vw;
-  	height: 90vh;
-  	top: 10vh;
-  }
-  div#grid table tr td a{
-  	height: 12vh;
-  	width: 20vw;
-  	padding-top: 5%;
-  }
-  div#grid table tr td {
-  	height: 20vh;
-  	width: 22vw;
-  	padding-top: 5%;
-  }
+    div#grid {
+        padding: 0vw;
+        position: center;
+        width: 96vw;
+        height: 90vh;
+        top: 10vh;
+    }
+    div#grid table tr td a{
+        height: 12vh;
+        width: 20vw;
+        padding-top: 5%;
+    }
+    div#grid table tr td {
+        height: 20vh;
+        width: 22vw;
+        padding-top: 5%;
+    }
 }
 
 @media only screen and (max-width: 550px) and (min-height: 400px) { /* For narrow devices

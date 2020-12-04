@@ -1,0 +1,94 @@
+default_tiles = {
+    "blank_tile" : {
+        "url": "#",
+        "title" : "",
+        "subtitle": "",
+        "img": "",
+        "type": "blank",
+        "user": "local",
+        "position":0
+    },
+    "back_tile" : {
+        "url": "home",
+        "title": "Back",
+        "subtitle": "To the Future",
+        "img": "~back--v2",
+        "type": "page",
+        "user": "local",
+        "position": 1
+    },
+    "next_tile" : {
+        "url": "home",
+        "title": "Next",
+        "subtitle": "Page",
+        "img": "~forward",
+        "type": "page",
+        "user": "local",
+        "position": 1
+    },
+    "login_tile" : {
+        "url": "#",
+        "title": "Bad Token",
+        "subtitle": "!login user pass",
+        "img": "~error",
+        "type": "tile",
+        "user": "local",
+        "position" : 1
+    },
+    "register_tile" : {
+        "url": "#",
+        "title": "New User?",
+        "subtitle": "!register user pass",
+        "img": "~console",
+        "type": "tile",
+        "user": "local",
+        "position" : 2
+    },
+    "helper_tile" : {
+        "url": "https://github.com/Boettner-eric/Tiles#getting-started",
+        "title": "Want Help?",
+        "subtitle": "Click Here",
+        "img": "~repository",
+        "type": "tile",
+        "user": "local",
+        "position" : 3
+    },
+    "server_tile" : {
+        "url": "https://github.com/Boettner-eric/Tiles",
+        "title": "Server Offline",
+        "subtitle": "Check Connection",
+        "img": "~tv-off",
+        "type": "tile",
+        "user": "local",
+        "position": 1
+    },
+    "reload_tile" : {
+        "url": "!reload",
+        "title": "Reload?",
+        "subtitle": "!reload",
+        "img": "~network-cable",
+        "type": "command",
+        "user": "local",
+        "position": 2
+    },
+    "themes" : {
+        "url": "themes",
+        "title": "Themes",
+        "subtitle": "Color Schemes",
+        "img": "~technology-items",
+        "type": "page",
+        "page":"home",
+        "user": "",
+        "position": 2
+    },
+    "search" : {
+        "url": "search",
+        "title": "Search",
+        "subtitle": "Engines",
+        "img": "~search--v1",
+        "type": "page",
+        "page":"home",
+        "user": "",
+        "position": 1
+    }
+}
