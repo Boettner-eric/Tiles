@@ -57,7 +57,7 @@ Command | Parameters | Description
 ```
 
 ### Themes
-* Since this version of tiles customization focused I omitted the default themes.
+* Since this version of tiles is customization focused I omitted the default themes.
 * To add them to your page I included commands for most of the old themes here. (just copy and paste each line into the search bar)
 
 ```
