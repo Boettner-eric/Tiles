@@ -23,6 +23,23 @@ A keyboard-centric, feature rich, responsive design homepage.
 * Database model for storing multiple user configurations
 * Updated structure and security
 
+## Setup
+* `!register username password`
+* Customize page configuration and user settings with commands
+
+### Getting Started
+- On first login a user's page will only include the theme and search folders.
+- To make the process easier for a first time user I added the following commands for a default configuration.
+- Copy and paste each command into the search bar and hit enter to see its effect.
+
+```javascript
+!register username password // create a new user
+!search www.google.com/search?q= Google Search ~google-logo // create a tile for google on current page
+!folder Media Streaming ~3d-glasses // adds a media page
+!theme Gogh Blue-Green-Yellow ~field #0375B4 #007849 #FECE00 #FFFFFF #FFFFFF // adds a new theme
+!set theme Gogh // sets new theme as main theme
+!set grid 4 3 // sets a 4x3 grid for tiles
+```
 ### Commands
 Command | Parameters | Description
 --- | --- | --- |
@@ -31,8 +48,8 @@ Command | Parameters | Description
 !login | `username` `password` | login to existing profile
 !logout | | logout current user
 !set | `theme` | sets default color scheme for user
- | `grid` `width` `height` | change the dimensions of the page grid
- | `font` `font-name` | change the users default font
+... | `grid` `width` `height` | change the dimensions of the page grid
+... | `font` `font-name` | change the users default font
 !tile | `url` `title` `subtitle` `~img` | adds a tile to current page
 !folder | `title` `subtitle` `~img` | adds a folder tile to current page
 !theme | `title` `subtitle` `~img` `colors` | adds a new color scheme to themes folder
@@ -96,23 +113,6 @@ themes | `\` | opens theme menu
 enter | `[enter]` | go to tile / exit search
 esc | `[esc]` | close search, return to homepage
 
-
-## Setup
-* `!register username password`
-* Customize page configuration and user settings with commands
-
-### Getting Started
-- On first login a user's page will only include the theme and search folders.
-- To make the process easier for a first time user I added the following commands for a default configuration.
-
-```javascript
-!register username password // create a new user
-!search www.google.com/search?q= Google Search ~google-logo // create a tile for google on current page
-!folder Media Streaming ~3d-glasses // adds a media page
-!theme Gogh Blue-Green-Yellow ~field #0375B4 #007849 #FECE00 #FFFFFF #FFFFFF // adds a new theme
-!set theme Gogh // sets new theme as main theme
-!set grid 4 3 // sets a 4x3 grid for tiles
-```
 
 ## Hosting Notes
 - The server is set to be most responsive from 8-24 PST.
