@@ -14,11 +14,11 @@ A keyboard-centric, feature rich, responsive design homepage.
 ## Features
 * Keyboard navigation
 * Mobile support
-* Simple commands for page customization
+* Console style commands for page customization
 * Support for custom color schemes
-* Live tile search and search engine integration
+* Tile search and search engine integration
 
-### Version 2.0
+### Recent Changes
 * Backend using Node/MongoDB and Heroku hosting
 * Database model for storing multiple user configurations
 * Updated structure and security
@@ -54,7 +54,7 @@ Command | Parameters | Description
 !folder | `title` `subtitle` `~img` | adds a folder tile to current page
 !theme | `title` `subtitle` `~img` `colors` | adds a new color scheme to themes folder
 !search | `url` `title` `subtitle` `~img` | adds a new search tile
-!edit | `title` `field`=`value` | change any field of a tile
+!edit | `title` `field``=```value` | change any field of a tile
 !delete | `title` | deletes tile from user's page
 !swap | `title` `title` | swaps position of two tiles on page (works best if first tile is earlier on page)
 

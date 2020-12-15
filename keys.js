@@ -37,7 +37,6 @@ async function login(username, password) {
 async function user_init() {
     var user_res = await api_get("users", "data", "")
     if (user_res.error || !user_res) {
-        console.log(user_res.error);
         console.log("Server Offline");
         generate_table(4,3); // make user profile set width and height
         set_tile(default_tiles["server_tile"]);
@@ -150,25 +149,15 @@ async function get_page(page_id) {
     return pages[page_id.replace(" next","")];
 };
 
-async function page_gen(page_id, terms=null) {
+async function page_gen(page_id) {
     document.title = page_id;
-    if (page_id.includes("search_")) {
-        if (terms[0] != "?") {
-            var page = await api_get("tiles", "search", terms + "/1");
-        } else {
-            var page = await get_page("search");
-            for (let x =0; x < page.length; x++) {
-                page[x].subtitle = "\"" + terms.replace("?","") + "\"";
-            };
-        };
-    } else {
-        var page = await get_page(page_id);
-    };
+    var page = await get_page(page_id);
+    console.log(page);
     if (page_id != "home") {
         var back_tile = default_tiles["back_tile"];
-        if (back[0] == page_id) { // if page is the same (!delete, !tile, etc)
+        if (back[0] == page_id) { // if page is the same as last page (!delete, !tile, etc)
             back.splice(0,1);// just pop off current page
-        } else if (back.indexOf(page_id) != -1) {
+        } else if (back.indexOf(page_id) != -1) { // if the page has already been visited
             back.splice(0,2);// get rid of loop of last two
         };
         back_tile.url = back[0]; // go to top of stack
@@ -203,6 +192,19 @@ async function page_gen(page_id, terms=null) {
     };
     result = 1;
     document.getElementById("1").focus();
+};
+
+async function search(terms) {
+    if (terms[0] != "?") {
+        pages["search_"] = await api_get("tiles", "search", terms);
+    } else {
+        var page = await get_page("search");
+        for (let x = 0; x < page.length; x++) {
+            page[x].subtitle = "\"" + terms.replace("?","") + "\"";
+        };
+        pages["search_"] = page;
+    };
+    page_gen("search_"); // generate search page
 };
 
 // background-color/image main-color complementary-color sub-text main-text
@@ -458,7 +460,7 @@ document.onkeydown = function(e) {
             } else if (current[0].includes("!") && user != {}) { // custom command prefix
                 commands(current);
             } else {
-                page_gen("search_", current);
+                search(current);
             };
         };
         return true;
