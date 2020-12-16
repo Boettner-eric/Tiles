@@ -124,7 +124,7 @@ function set_tile(tile, position) { // optional position for changing position w
         document.getElementById(num).href = "#";
         document.getElementById(num).onclick = function() { return false; }; // do nothing
     } else if (tile.type == "search") {
-        document.getElementById(num).href = tile.url + tile.subtitle.replaceAll("\"","");
+        document.getElementById(num).href = tile.url + tile.terms;
         document.getElementById(num).onclick = function() { return true; };
     } else { // normal tile
         document.getElementById(num).href = tile.url;
@@ -200,7 +200,7 @@ async function search(terms) {
     } else {
         var page = await get_page("search");
         for (let x = 0; x < page.length; x++) {
-            page[x].subtitle = "\"" + terms.replace("?","") + "\"";
+            page[x].terms = terms.replace("?","");
         };
         pages["search_"] = page;
     };
