@@ -28,19 +28,21 @@ default_tiles = {
     },
     "login_tile" : {
         "url": "#",
-        "title": "Bad Token",
-        "subtitle": "!login user pass",
-        "img": "~error",
-        "type": "tile",
+        "title": "Login",
+        "subtitle": "Click Here",
+        "img": "~password-check",
+        "type": "info",
+        "form": "form-login",
         "user": "local",
         "position" : 1
     },
     "register_tile" : {
         "url": "#",
-        "title": "New User?",
-        "subtitle": "!register user pass",
-        "img": "~console",
-        "type": "tile",
+        "title": "Register",
+        "subtitle": "New User",
+        "img": "~key",
+        "form": "form-register",
+        "type": "info",
         "user": "local",
         "position" : 2
     },
@@ -90,5 +92,13 @@ default_tiles = {
         "page":"home",
         "user": "",
         "position": 1
-    }
+    },
+    "theme" : {
+        "title": "Gogh",
+        "subtitle": "Blue Green Yellow",
+        "page": "themes",
+        "img": "~field",
+        "position": 2,
+        "type": "theme",
+        "theme": ["#23272A", "#2C2F33", "#7289DA", "#7289DA", "#99AAB5"]}
 }

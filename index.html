@@ -6,16 +6,119 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <div class = "header">
+        <button id="add-btn" title="Add Tile" onclick="open_form('form-add')">
+            <img width=20 src= "https://img.icons8.com/color/48/000000/add.png"/><span class="subtitle">Add Tile</span>
+        </button>
+        <button id="edit-btn" title="Edit" onclick="open_form('form-edit')">
+            <img width=20 src= "https://img.icons8.com/color/48/000000/edit.png"/><span class="subtitle">Edit</span>
+        </button>
+        <button id="login-btn" title="Login" onclick="open_form('form-login')">
+            <img width=20 src= "https://img.icons8.com/color/48/000000/password-check.png"/><span class="subtitle">Login</span>
+        </button>
+        <button id="settings-btn" title="Settings" onclick="open_form('form-settings')">
+            <img width=20 src= "https://img.icons8.com/color/48/000000/settings.png"/><span class="subtitle">Settings</span>
+        </button>
+        <button  id="git-btn" onclick="location.href='http://github.com/Boettner-eric/Tiles'">
+            <img width=20 src= "https://img.icons8.com/color/48/000000/repository.png"/><span class="subtitle">Github</span>
+        </button>
+    </div>
     <div id="grid">
         <table>
         </table>
     </div>
+    <div class="modal">
+        <div class="modal-content">
+            <form action=none id="form-add" onsubmit="return false;" autocomplete="off">
+                <h3 id="form-add-title">Add Tile</h3>
+                <p> Type <select id="tile-type">
+                    <option value="tile">tile</option>
+                    <option value="page">page</option>
+                    <option value="theme">theme</option>
+                    <option value="search">search</option>
+                </select></p>
+                <p> Title <input id="tile-title" type="text" placeholder="ex. Github"></p>
+                <p> Subtitle <input id="tile-subtitle" type="text" placeholder="Open Source"></p>
+                <p> Url <input id="tile-url" type="text" placeholder="https://github.com/"></p>
+                <p> Icon <input id="tile-icon" type="text" onchange="icon_find(this)" placeholder="github"></p>
+                <p> Page <select id="tile-page">
+                    <option value="error">error</option>
+                </select></p>
+                <p style="font-size: 8px"> * Leave url blank for pages and themes </p>
+               <button onclick="submit_form('form-add')"> Submit </button>
+            </form>
+            <form action="login.php" id="form-theme" onSubmit="return false;">
+                <h3>Theme</h3>
+                <p> Background <input id="back-color" type="color"></p>
+                <p> Top <input id="main-color" type="color"></p>
+                <p> Bottom <input id="comp-color" type="color"></p>
+                <p> Text <input id="text-color" type="color"></p>
+                <p> Subtext <input id="text-sub" type="color"></p>
+               <button type="submit" onclick="submit_form('form-theme')"> Submit </button>
+            </form>
+            <form action="login.php" id="form-login" onSubmit="return false;">
+                <h3> Login </h3>
+                <p> Username <input id="username" type="text" placeholder="username" autocomplete="username"></p>
+                <label for="current-password"></label>
+                <p> Password  <input name="password" placeholder="******" type="password" /></p>
+                <p id="new-user"> New User?<button onclick="open_form('form-register')">Sign up</button></p>
+                <button type="submit" onclick="submit_form('form-login')"> Submit </button>
+            </form>
+            <form action="login.php" id="form-register" onSubmit="return false;">
+                <h3>Register</h3>
+                <p> Username <input id="username" type="text" placeholder="username" autocomplete="username"></p>
+                <p> Password <input id="new-password" type="password" placeholder="******" autocomplete="new-password"></p>
+                <button type="submit" onclick="submit_form('form-register')"> Submit </button>
+            </form>
+            <form action=none id="form-settings" autocomplete="off" onSubmit="return false;">
+                <h3>Settings</h3>
+                <p> Height <select id="height">
+                     <option value="3">3</option>
+                     <option value="4">4</option>
+                     <option value="5">5</option>
+                </select></p>
+                <p> Width <select id="width">
+                     <option value="3">3</option>
+                     <option value="4">4</option>
+                     <option value="5">5</option>
+                </select></p>
+                <p> Api <input id="user-api" type="url"></p>
+                <p> Font <input id="user-font" type="text" onchange="set_font(this.value)"></p>
+                <p> Theme <select id="user-theme" onchange="set_theme(find_tile(this.value,pages.themes).theme)">
+                     <option value="error">Error</option>
+                </select></p>
+                <button onclick="submit_form('form-settings')"> Submit </button>
+            </form>
+            <form action=none id="form-edit" autocomplete="off" onSubmit="return false;">
+                <h3>Edit Tile</h3>
+                <p> Tile <select id="edit-tile" onchange="update_edit(this.value)">
+                    <option value="error">error</option>
+                </select></p>
+                <p> Title <input id="edit-title" type="text"></p>
+                <p> Subtitle <input id="edit-subtitle" type="text"></p>
+                <p> Url <input id="edit-url" type="text"></p>
+                <p> Icon <input id="edit-img" type="text" onchange="icon_find(this)"></p>
+                <p> Position <select id="edit-position">
+                    <option value="error"></option>
+                </select></p>
+                <p> Page <select id="edit-page">
+                    <option value="error">error</option>
+                </select></p>
+                <button onclick="submit_form('form-edit')"> Submit </button>
+            </form>
+        </div>
+    </div>
     <footer>
-        <form action=none>
+        <form id="search-form" action=none>
              <input type="text" name="q" placeholder="search" id="search" autocomplete="off">
         </form>
     </footer>
 </body>
-<script type="text/javascript" src="keys.js"></script>
-<script type="text/javascript" src="tiles.json"></script>
+<script type="text/javascript" src="js/keys.js"></script>
+<script type="text/javascript" src="js/forms.js"></script>
+<script type="text/javascript" src="js/commands.js"></script>
+<script type="text/javascript" src="js/networking.js"></script>
+<script type="text/javascript" src="js/pages.js"></script>
+<script type="text/javascript" src="js/tiles.js"></script>
+<script type="text/javascript" src="js/tiles.json"></script>
 </html>

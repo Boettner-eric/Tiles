@@ -19,13 +19,29 @@ A keyboard-centric, feature rich, responsive design homepage.
 * Tile search and search engine integration
 
 ### Recent Changes
-* Backend using Node/MongoDB and Heroku hosting
-* Database model for storing multiple user configurations
-* Updated structure and security
+* Forms! Custom form interfaces for user input (replaces most commands)
+* Better server/client communication
+* Faster searching
+* General Optimizations
 
 ## Setup
 * `!register username password`
 * Customize page configuration and user settings with commands
+
+### Keyboard Shortcuts
+
+Function | Key | Description
+--- | --- | ---
+up | `k` / `up` | up one tile
+down | `j` / `down` | down one tile
+left | `h` / `left` | left one tile
+right | `l` / `right` | right one tile
+hop | `1...0`, `-`, `+` | hop to any tile #
+search | `[space]` | starts live search
+api search | `/` | searches external sources
+themes | `\` | opens theme menu
+enter | `[enter]` | go to tile / exit search
+esc | `[esc]` | close search, return to homepage
 
 ### Getting Started
 - On first login a user's page will only include the theme and search folders.
@@ -97,21 +113,6 @@ Command | Parameters | Description
 !theme Blues Blue-Grey ~sapphire #25274D #2E9CCA #29648A #ffffff #AAABB8
 ```
 * The format for themes is `background/image, main color, complementary color, title text, subtitle text`
-
-### Keyboard Shortcuts
-
-Function | Key | Description
---- | --- | ---
-up | `k` / `up` | up one tile
-down | `j` / `down` | down one tile
-left | `h` / `left` | left one tile
-right | `l` / `right` | right one tile
-hop | `1...0`, `-`, `+` | hop to any tile #
-search | `[space]` | starts live search
-api search | `/` | searches external sources
-themes | `\` | opens theme menu
-enter | `[enter]` | go to tile / exit search
-esc | `[esc]` | close search, return to homepage
 
 
 ## Hosting Notes
