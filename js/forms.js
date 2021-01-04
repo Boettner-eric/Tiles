@@ -21,7 +21,7 @@ const open_form = (id) => {
     user_settings.elements['user-font'].placeholder = user.font;
     user_settings.elements['user-api'].placeholder = user.api;
   } else if (id === 'form-edit') {
-    update_select('edit-tile', ['select tile'].concat(pages[document.title]));
+    update_select('edit-tile', ['select tile'].concat(pages[back[0]]));
     update_select('edit-page', Object.keys(pages));
   }
 };
@@ -40,14 +40,14 @@ const update_select = (id, page) => {
 
 const update_edit = (title) => {
   const form = document.getElementById('form-edit');
-  const tile = find_tile(title, pages[document.title]);
+  const tile = find_tile(title, pages[back[0]]);
   if (tile) {
     form.elements['edit-title'].placeholder = tile.title;
     form.elements['edit-subtitle'].placeholder = tile.subtitle;
     form.elements['edit-img'].placeholder = tile.img.replace(user.api, '');
     form.elements['edit-url'].placeholder = tile.url;
     form.elements['edit-page'].value = tile.page;
-    const pos_array = document.title === 'home' ?
+    const pos_array = back[0] === 'home' ?
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] :
       [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     update_select('edit-position', pos_array);
@@ -106,7 +106,7 @@ const submit_form = (id) => {
       user_update();
       break;
     } case 'form-edit': {
-      const tile = find_tile(fields['edit-tile'].value, pages[document.title]);
+      const tile = find_tile(fields['edit-tile'].value, pages[back[0]]);
       if (fields['edit-theme'].value) {
         tile.theme = value.split(',');
       }

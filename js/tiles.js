@@ -23,7 +23,7 @@ const new_tile = async (type, url, title, sub, img, page, theme=null) => {
   if (type === 'theme') tile.theme = theme;
   api_set('tiles', 'new', tile); // don't await this update
   tile_page.push(tile); // replicate it locally instead
-  if (page === document.title) { // only reload if tile is on current page
+  if (page === back[0]) { // only reload if tile is on current page
     if (position <= (width*height) || page.includes('next')) {
       set_tile(tile);
     } else if (position === (width*height)+1) { // add new page

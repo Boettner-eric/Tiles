@@ -119,7 +119,7 @@ document.onkeydown = (e) => {
   if (result && result <= numTiles) {
     document.getElementById(String(result)).focus();
     if (result !== 1 && ![9, 37, 72, 39, 76, 40, 74, 38, 75].includes(key) &&
-      document.title === 'themes') {
+      back[0] === 'themes') {
       document.getElementById(String(result)).click(); // change theme
     }
   }

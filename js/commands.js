@@ -18,11 +18,10 @@ const commands = async (current) => {
       register(terms[1], terms[2]);
     }
   } else if (user.username) { // only allow logged in users to edit pages
-    const page_id = document.title;
-    const page = pages[page_id.replace(' next', '')];
-    let position = page_id === 'home' ? (page.length !== 0 ?
+    const page = pages[back[0].replace(' next', '')];
+    let position = back[0] === 'home' ? (page.length !== 0 ?
       page.length+1 : 1) : page.length+2;
-    position = page_id.includes(' next') ? position + 1 : position;
+    position = back[0].includes(' next') ? position + 1 : position;
     if (current.includes('set')) {
       if (current.includes('theme')) {
         const tile = find_tile(terms[2], pages.themes);
@@ -57,7 +56,7 @@ const commands = async (current) => {
         alert('usage: !tile (1)url (2)title (3)subtitle (4)~img');
       } else {
         new_tile('tile', terms[1], terms[2],
-          terms[3], terms[4], page_id, position);
+          terms[3], terms[4], back[0], position);
       }
     } else if (current.includes('!search')) { // !search url title subtitle img
       if (terms.length < 5) {
@@ -70,7 +69,7 @@ const commands = async (current) => {
         alert('usage: !folder (1)title (2)subtitle (3)img');
       } else {
         new_tile('page', terms[1], terms[1],
-          terms[2], terms[3], page_id, position);
+          terms[2], terms[3], back[0], position);
       }
     } else if (current.includes('!edit')) { // update tiles/pages/themes here
       if (terms.length < 2) {
@@ -83,7 +82,7 @@ const commands = async (current) => {
           for (let i = 2; i< terms.length; i++) {
             [field, value] = terms[i].split('=');
             if (field === 'folder') {
-              delete_tile(tile, page, page_id);
+              delete_tile(tile, page, back[0]);
               const new_page = pages[value.toLowerCase()];
               const new_pos = value === 'home' ? (new_page.length !== 0 ?
                 new_page.length+1 : 1) : new_page.length+2;
@@ -113,7 +112,7 @@ const commands = async (current) => {
         if (!tile) {
           alert('Invalid tile');
         } else if (confirm('Delete ' + tile.title + '?')) {
-          delete_tile(tile, page, page_id);
+          delete_tile(tile, page, back[0]);
         }
       }
     } else if (current.includes('!swap')) {
