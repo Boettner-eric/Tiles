@@ -82,7 +82,7 @@ const commands = async (current) => {
           for (let i = 2; i< terms.length; i++) {
             [field, value] = terms[i].split('=');
             if (field === 'folder') {
-              delete_tile(tile, page, back[0]);
+              delete_tile(tile, back[0]);
               const new_page = pages[value.toLowerCase()];
               const new_pos = value === 'home' ? (new_page.length !== 0 ?
                 new_page.length+1 : 1) : new_page.length+2;
@@ -112,7 +112,7 @@ const commands = async (current) => {
         if (!tile) {
           alert('Invalid tile');
         } else if (confirm('Delete ' + tile.title + '?')) {
-          delete_tile(tile, page, back[0]);
+          delete_tile(tile, back[0]);
         }
       }
     } else if (current.includes('!swap')) {
@@ -140,7 +140,7 @@ const search = async (terms) => {
   if (terms[0] !== '?') {
     pages.search_ = [];
     for (const x in pages) { // each page
-      if (x !== 'search_') {
+      if (x !== 'search_') { // except this one
         for (const y in pages[x]) { // each tile
           if (pages[x][y].page.includes(terms) ||
             pages[x][y].url.includes(terms) ||

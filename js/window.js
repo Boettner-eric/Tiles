@@ -14,7 +14,7 @@ window.onload = async () => {
   const theme = localStorage.getItem('theme');
   if (theme) set_theme(theme.split(','));
   const token = localStorage.getItem('token');
-  if (token === 'null' || token === null) {
+  if (token === 'null' || !token) {
     generate_table(4, 3); // default config
     set_tile(default_tiles.login_tile, 1);
     set_tile(default_tiles.register_tile, 2);
@@ -61,7 +61,8 @@ window.onclick = (e) => {
 document.onkeydown = (e) => {
   const key = e.keyCode;
   const numTiles = width * height;
-  if ( document.activeElement.id === 'search') {
+  if (document.activeElement.id === 'search') {
+    const current = document.getElementById('search').value;
     if (key === 27) { // esc
       document.getElementById('search').value = '';
       page_gen('home');
@@ -69,11 +70,9 @@ document.onkeydown = (e) => {
       document.activeElement.blur();
       document.getElementById('2').focus();
       result = 2;
-      const current = document.getElementById('search').value;
       if (current === '') return true;
       else if (current[0].includes('!') && user !== {}) commands(current);
-      else search(current);
-    }
+    } else if (current.length > 1 && key !== 8) search(current);
     return true;
   } else if (modal.style.display === 'block') {
     if (key === 27) {
@@ -108,7 +107,7 @@ document.onkeydown = (e) => {
       parseInt(result) + height : parseInt(result) - 1;
     if (result < 1) result += numTiles;
   }
-  for (let i = 49; i <= 57; i++) if (key === i) result = i-48;
+  if (key >= 49 && key <= 57) result = key-48;
   if (key === 48) {// 0 -> 10
     result = 10;
   } else if (key === 189) { // - -> 11

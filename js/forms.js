@@ -1,3 +1,5 @@
+const modal = document.querySelector('.modal');
+
 const update_forms = () => { // add info to forms
   update_select('tile-page', Object.keys(pages));
   update_select('user-theme', pages.themes);
@@ -27,13 +29,13 @@ const open_form = (id) => {
 };
 
 /* updates a given select element with array values */
-const update_select = (id, page) => {
+const update_select = (id, options) => {
   const select = document.getElementById(id);
   for (_ in select.options) select.options.remove(0);
-  for (const j in page) {
+  for (const j in options) {
     const option = document.createElement('option');
-    option.text = page[j].title ? page[j].title : page[j];
-    option.value = page[j].title ? page[j].title : page[j];
+    option.text = options[j].title ? options[j].title : options[j];
+    option.value = options[j].title ? options[j].title : options[j];
     select.add(option);
   }
 };
@@ -135,8 +137,6 @@ const submit_form = (id) => {
   document.getElementById(id).reset();
   return false;
 };
-
-const modal = document.querySelector('.modal');
 
 /* exported icon_find */
 const icon_find = (icon) => {

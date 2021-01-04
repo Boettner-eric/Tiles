@@ -104,16 +104,6 @@ const user_update = async () => {
   await api_set('users', 'update', user);
 };
 
-const tiles_update = async (tiles) => { // push updates to server
-  for (const i in tiles) {
-    api_set('tiles', 'edit', tiles[i]);
-    if (tiles[i].position > (width * height)) {
-      tiles[i].position = tiles[i].position - (width * height);
-    }
-    set_tile(tiles[i]);
-  }
-};
-
 const get_pages = async () => {
   const page = await api_get('tiles', 'page', 'all');
   page.reduce((_, it) => {

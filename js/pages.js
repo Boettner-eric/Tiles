@@ -87,6 +87,8 @@ const page_gen = (page_id) => {
   for (let i = blanks; i <= (width * height); i++) {
     set_tile(default_tiles.blank_tile, i); // fill rest of grid with empty tiles
   }
-  result = 1;
-  document.getElementById('1').focus();
+  if (page_id != 'search_') {
+    result = 1;
+    document.getElementById('1').focus();
+  }
 };

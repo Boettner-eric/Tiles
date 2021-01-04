@@ -1,4 +1,3 @@
-
 const find_tile = (title, page) => {
   for (const i in page) {
     if (page[i].title === title.replace('-', ' ')) return page[i];
@@ -33,7 +32,17 @@ const new_tile = async (type, url, title, sub, img, page, theme=null) => {
   return tile;
 };
 
-const delete_tile = async (tile, page, page_id) => {
+const tiles_update = async (tiles) => { // push updates to server
+  for (const i in tiles) {
+    api_set('tiles', 'edit', tiles[i]);
+    if (tiles[i].position <= (width * height) || back[0].includes(' next')) {
+      set_tile(tiles[i]); // if on current page
+    }
+  }
+};
+
+const delete_tile = async (tile, page_id) => {
+  const page = pages[page_id];
   await api_set('tiles', 'delete', tile);
   page.splice(page.indexOf(tile), 1); // get rid of tile in cache
   if (tile.position !== page.length) {
