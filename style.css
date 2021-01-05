@@ -31,7 +31,6 @@ body, html {
 
 #grid table {
     z-index: 1;
-    border-collapse: separate;
     border-spacing: 5px;
     margin-left: 0.5vw;
 }
@@ -87,7 +86,7 @@ body, html {
     outline: 0;
 }
 
-footer form input[type="text"] {
+footer form input {
     background-color: var(--background);
     color: var(--sub-txt);
     border: 0;
@@ -114,16 +113,12 @@ footer form input[type="text"]:focus {
 input::-webkit-input-placeholder{
     color:var(--base-txt);
 }
-/*
-  Short and Narrow device settings
-  - Needs alot of work /testing still
-*/
 
 .header {
     position: absolute;
     display: block;
     right: 10px;
-    z-index: 10;
+    z-index: 5;
 }
 .header button {
     background: var(--background);
@@ -131,7 +126,7 @@ input::-webkit-input-placeholder{
     margin: 0;
 }
 
-.modal {
+.form-background {
     display: none;
     position: fixed;
     padding-top: 100px;
@@ -142,9 +137,10 @@ input::-webkit-input-placeholder{
     height: 100%;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: scroll;
 }
 
-.modal-content {
+.form-content {
     background-color: var(--background);
     color: var(--base-txt);
     width: fit-content;
@@ -153,7 +149,7 @@ input::-webkit-input-placeholder{
     font-size: 14px;
 }
 
-.modal-content input {
+.form-content input {
     background-color: var(--background);
     color: var(--base-txt);
     border: 0;
@@ -170,7 +166,7 @@ input[type="color"] {
     height: 25px;
 }
 
-.modal-content select {
+.form-content select {
     color: var(--base-txt);
     padding: 5px 35px 5px 5px;
     border: 0px;
@@ -184,7 +180,7 @@ input[type="color"] {
     background: url(https://img.icons8.com/color/48/000000/expand-arrow) 96% / 15% no-repeat var(--background);
 }
 
-.modal-content button {
+.form-content button {
     background: var(--background);
     border: 0;
     text-decoration: none;
@@ -204,11 +200,11 @@ input[type="color"] {
     font-size: 12px;
 }
 
-.modal-content p {
+.form-content p {
     text-align: right;
 }
 
-.modal-content h3 {
+.form-content h3 {
     text-align: center;
 }
 
@@ -308,14 +304,21 @@ input[type="color"] {
     select:focus, textarea:focus, input:focus {
         font-size: 16px;
     }
-    .modal {
+    .form-background {
         padding-top: 0px;
+    }
+    .form-content {
+        padding-top: -100px;
     }
 }
 
 @media only screen and (max-height: 400px) { /* For short devices*/
     html, body {
         overflow: hidden;
+    }
+    #grid table {
+        position: absolute;
+        z-index: 10;
     }
     #grid {
         padding: 0vw;
@@ -334,7 +337,16 @@ input[type="color"] {
         height: 19vh;
         padding: 0px;
     }
-    .modal {
+    #grid p {
+        margin-top: -10px;
+    }
+    .form-background {
         padding-top: 0px;
+    }
+    .form-content {
+        padding-top: -100px;
+    }
+    .form-content h3 {
+        margin-top: -10px;
     }
 }

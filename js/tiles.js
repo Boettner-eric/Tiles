@@ -1,3 +1,4 @@
+// functions for tile creation and edits
 const find_tile = (title, page) => {
   for (const i in page) {
     if (page[i].title === title.replace('-', ' ')) return page[i];

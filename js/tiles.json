@@ -31,7 +31,7 @@ default_tiles = {
         "title": "Login",
         "subtitle": "Click Here",
         "img": "~password-check",
-        "type": "info",
+        "type": "form",
         "form": "form-login",
         "user": "local",
         "position" : 1
@@ -42,7 +42,7 @@ default_tiles = {
         "subtitle": "New User",
         "img": "~key",
         "form": "form-register",
-        "type": "info",
+        "type": "form",
         "user": "local",
         "position" : 2
     },

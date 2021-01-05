@@ -1,3 +1,4 @@
+// console commands and search functions
 const commands = async (current) => {
   const terms = current.split(' ');
   if (current.includes('!reload')) {
@@ -138,14 +139,15 @@ const commands = async (current) => {
 
 const search = async (terms) => {
   if (terms[0] !== '?') {
+    terms = terms.toLowerCase();
     pages.search_ = [];
     for (const x in pages) { // each page
       if (x !== 'search_') { // except this one
         for (const y in pages[x]) { // each tile
-          if (pages[x][y].page.includes(terms) ||
-            pages[x][y].url.includes(terms) ||
-            pages[x][y].title.includes(terms) ||
-            pages[x][y].subtitle.includes(terms) ) {
+          if (pages[x][y].page.toLowerCase().includes(terms) ||
+            pages[x][y].url.toLowerCase().includes(terms) ||
+            pages[x][y].title.toLowerCase().includes(terms) ||
+            pages[x][y].subtitle.toLowerCase().includes(terms) ) {
             const tile = JSON.parse(JSON.stringify(pages[x][y]));
             tile.position = pages.search_.length + 2;
             pages.search_.unshift(tile);
@@ -153,6 +155,7 @@ const search = async (terms) => {
         }
       }
     }
+    pages.search_.sort((a, b) => a.position - b.position);
   } else {
     const page = pages.search;
     for (const x in page) page[x].terms = terms.replace('?', '');

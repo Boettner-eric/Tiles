@@ -1,3 +1,4 @@
+// server communication and user login
 const api_get = async (category, type, name) => {
   // tiles: (theme/page/search)
   // users: (data/login/new)
@@ -12,7 +13,7 @@ const api_get = async (category, type, name) => {
   }).then((json) => {
     return json;
   }).catch((error) => {
-    return {error: error};
+    return {'error': error};
   });
   return res;
 };
@@ -59,7 +60,6 @@ const register = async (username, password) => {
     theme: default_tiles.theme,
     api: 'https://img.icons8.com/color/96/000000/',
   };
-  new_user.theme.theme.user = username;
   const res = await api_set('users', 'new', new_user);
   if (res.error) {
     alert('Username taken');

@@ -1,28 +1,25 @@
+// Page generation and formatting
 const set_tile = (tile, position) => { // optional position
   const num = position ? position.toString(): tile.position.toString();
   const tile_url = document.getElementById(num);
+  tile_url.href = '#';
   if (tile.type === 'page') { // tile types
-    tile_url.href = '#';
     tile_url.onclick = () => {
       page_gen(tile.url); return false;
     };
   } else if (tile.type === 'theme') {
-    tile_url.href = '#';
     tile_url.onclick = () => {
       set_theme(tile.theme); return false;
     };
   } else if (tile.type === 'command') { // tiles for running commands
-    tile_url.href = '#';
     tile_url.onclick = () => {
       commands(tile.url); return false;
     };
-  } else if (tile.type === 'info') { // settings, apis, weather, etc
-    tile_url.href = '#';
+  } else if (tile.type === 'form') { // settings, apis, weather, etc
     tile_url.onclick = () => {
       open_form(tile.form); return false;
     };
   } else if (tile.type === 'blank') { // placeholder tiles used in page_gen
-    tile_url.href = '#';
     tile_url.onclick = () => {
       return false;
     };
@@ -39,7 +36,7 @@ const set_tile = (tile, position) => { // optional position
   }
   if (tile.img[0] === '~') { // api shortcut
     document.getElementById('i' + num).width = 48;
-    document.getElementById('i' + num).src = (user.api || 'https://img.icons8.com/color/48/000000/') +
+    document.getElementById('i' + num).src = (user.api || 'https://img.icons8.com/color/96/000000/') +
       tile.img.replace('~', '') + '.png';
   } else {
     document.getElementById('i' + num).width = 0;
@@ -66,8 +63,8 @@ const page_gen = (page_id) => {
   } else {
     back = ['home']; // reset back stack (home has no back button)
   }
-  let blanks = 1;
-  if (page.length > (width * height)) {
+  let blanks = 1; // add case for pages
+  if (page_id === 'home' && page.length > (width * height)) {
     if (page_id.includes(' next')) { // second page
       for (let i = (width * height); i < page.length; i++) {
         set_tile(page[i], page[i].position - (width * height) + 1);
@@ -87,7 +84,7 @@ const page_gen = (page_id) => {
   for (let i = blanks; i <= (width * height); i++) {
     set_tile(default_tiles.blank_tile, i); // fill rest of grid with empty tiles
   }
-  if (page_id != 'search_') {
+  if (page_id != 'search_') { // don't focus while seaching
     result = 1;
     document.getElementById('1').focus();
   }

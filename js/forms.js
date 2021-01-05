@@ -1,4 +1,5 @@
-const modal = document.querySelector('.modal');
+// Changing form display and dynamic form generation
+const form_background = document.querySelector('.form-background');
 
 const update_forms = () => { // add info to forms
   update_select('tile-page', Object.keys(pages));
@@ -6,7 +7,7 @@ const update_forms = () => { // add info to forms
 };
 
 const open_form = (id) => {
-  modal.style.display = 'block';
+  form_background.style.display = 'block';
   for (let i = 0; i < document.getElementsByTagName('form').length; i++) {
     const form = document.getElementsByTagName('form')[i];
     if (form.id !== 'search-form' && form.id !== id) {
@@ -59,7 +60,7 @@ const update_edit = (title) => {
 };
 /* exported submit_form */
 const submit_form = (id) => {
-  modal.style.display = 'none';
+  form_background.style.display = 'none';
   const fields = document.getElementById(id).elements;
   switch (id) {
     case 'form-add': {

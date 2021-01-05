@@ -1,14 +1,15 @@
+// Window events and global variables
 let result = 1; // default to first tile
 /* exported url */
 let url = 'https://tiles-backend.herokuapp.com/';
 /* exported back */
 let back = ['home'];
 /* exported pages */
-let pages = {};
+let pages = { }; // storage for tiles dictionary
 let width = 4;
 let height = 3;
 /* exported user */
-let user = {};
+let user = { }; // user settings
 
 window.onload = async () => {
   const theme = localStorage.getItem('theme');
@@ -49,10 +50,10 @@ const set_font = (font) => {
   document.getElementsByName('q')[0].style.fontFamily = font;
 };
 
-window.onclick = (e) => {
-  if (e.target === modal) modal.style.display = 'none';
+document.onclick = (e) => {
+  if (e.target === form_background) form_background.style.display = 'none';
   if (document.activeElement.id !== 'search' &&
-    modal.style.display !== 'block') {
+    form_background.style.display !== 'block') {
     document.getElementById(result).focus();
     // if user clicks on background keep highlighting tile
   }
@@ -74,9 +75,9 @@ document.onkeydown = (e) => {
       else if (current[0].includes('!') && user !== {}) commands(current);
     } else if (current.length > 1 && key !== 8) search(current);
     return true;
-  } else if (modal.style.display === 'block') {
+  } else if (form_background.style.display === 'block') {
     if (key === 27) {
-      modal.style.display = 'none';
+      form_background.style.display = 'none';
       document.getElementById(result).focus();
     }
     return true;

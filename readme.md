@@ -23,6 +23,7 @@ A keyboard-centric, feature rich, responsive design homepage.
 * Better server/client communication
 * Faster searching
 * General Optimizations
+* Refactoring of JS code
 
 ## Setup
 * `!register username password`
