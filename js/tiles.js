@@ -9,7 +9,7 @@ const find_tile = (title, page) => {
 const new_tile = async (type, url, title, sub, img, page, theme=null) => {
   const tile_page = pages[page];
   if (type == 'search' || type == 'theme') url = type;
-  if (type == 'page') pages[url] = []; // create entry
+  if (type == 'page') pages[url] = []; // create key for new page
   const position = page === 'home' ? tile_page.length+1 : tile_page.length+2;
   const tile = {
     url: url.replace(/ /g, '-').toLowerCase(),
@@ -36,7 +36,8 @@ const new_tile = async (type, url, title, sub, img, page, theme=null) => {
 const tiles_update = async (tiles) => { // push updates to server
   for (const i in tiles) {
     api_set('tiles', 'edit', tiles[i]);
-    if (tiles[i].position <= (width * height) || back[0].includes(' next')) {
+    if (tiles[i].page === back[0] && (tiles[i].position <= (width * height) ||
+     back[0].includes(' next'))) {
       set_tile(tiles[i]); // if on current page
     }
   }

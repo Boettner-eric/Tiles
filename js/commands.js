@@ -1,4 +1,6 @@
 // console commands and search functions
+
+// DEPRECIATED : minor support until forms are fully tested
 const commands = async (current) => {
   const terms = current.split(' ');
   if (current.includes('!reload')) {
@@ -20,8 +22,7 @@ const commands = async (current) => {
     }
   } else if (user.username) { // only allow logged in users to edit pages
     const page = pages[back[0].replace(' next', '')];
-    let position = back[0] === 'home' ? (page.length !== 0 ?
-      page.length+1 : 1) : page.length+2;
+    let position = back[0] === 'home' ? page.length + 1 : page.length + 2;
     position = back[0].includes(' next') ? position + 1 : position;
     if (current.includes('set')) {
       if (current.includes('theme')) {
@@ -85,8 +86,8 @@ const commands = async (current) => {
             if (field === 'folder') {
               delete_tile(tile, back[0]);
               const new_page = pages[value.toLowerCase()];
-              const new_pos = value === 'home' ? (new_page.length !== 0 ?
-                new_page.length+1 : 1) : new_page.length+2;
+              const new_pos = value === 'home' ? new_page.length + 1 :
+                new_page.length + 2;
               const tile = new_tile(tile.type, tile.url, tile.title,
                 tile.subtitle, tile.img, value.toLowerCase(),
                 new_pos, tile.theme);

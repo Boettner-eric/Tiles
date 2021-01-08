@@ -83,14 +83,13 @@ const user_init = async () => {
   } else {
     user = user_res;
     generate_table(user.dimensions[0], user.dimensions[1]); // width and height
-    if (user.theme.theme && user.theme !== 'default' &&
-      localStorage.theme !== null &&
-      JSON.stringify(user.theme) !==
-      JSON.stringify(localStorage.theme.split(','))) {
-      set_theme(user.theme.theme);
-      localStorage.theme = user.theme.theme;
-    }
     await get_pages();
+    const theme = find_tile(user.theme, pages.themes).theme;
+    if (user.theme && user.theme !== 'default' && // changed account
+      JSON.stringify(localStorage.theme.split(',')) !== JSON.stringify(theme)) {
+      set_theme(theme);
+      localStorage.theme = theme;
+    }
     set_font(user.font);
     page_gen('home');
   }
@@ -99,7 +98,7 @@ const user_init = async () => {
 const user_update = async () => {
   if (JSON.stringify(user.theme) !==
     JSON.stringify(localStorage.theme.split(','))) {
-    localStorage.theme = user.theme.theme;
+    localStorage.theme = find_tile(user.theme, pages.themes).theme;
   }
   await api_set('users', 'update', user);
 };

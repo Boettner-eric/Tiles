@@ -73,7 +73,9 @@ document.onkeydown = (e) => {
       result = 2;
       if (current === '') return true;
       else if (current[0].includes('!') && user !== {}) commands(current);
-    } else if (current.length > 1 && key !== 8) search(current);
+    } else if (current.length > 1 && key !== 8 && current[0] !== '!') {
+      search(current);
+    }
     return true;
   } else if (form_background.style.display === 'block') {
     if (key === 27) {
@@ -137,7 +139,7 @@ const generate_table = (w, h) => {
   for (let i = 0; i < h; i++) {
     const row = table.insertRow();
     for (let j=1; j<w+1; j++) {
-      const index= i*(w)+j;
+      const index= (i*w)+j;
       const cell = row.insertCell();
       const img = document.createElement('img');
       img.setAttribute('id', 'i' + index);

@@ -20,10 +20,16 @@ const open_form = (id) => {
     const user_settings = document.getElementById('form-settings');
     user_settings.elements['width'].value = width;
     user_settings.elements['height'].value = height;
-    user_settings.elements['user-theme'].value = user.theme.title;
+    user_settings.elements['user-theme'].value = user.theme;
     user_settings.elements['user-font'].placeholder = user.font;
     user_settings.elements['user-api'].placeholder = user.api;
   } else if (id === 'form-edit') {
+    const edit_form = document.getElementById('form-edit');
+    edit_form.elements['edit-title'].placeholder = '';
+    edit_form.elements['edit-sub'].placeholder = '';
+    edit_form.elements['edit-img'].placeholder = '';
+    edit_form.elements['edit-img'].value = '';
+    edit_form.elements['edit-url'].placeholder = '';
     update_select('edit-tile', ['select tile'].concat(pages[back[0]]));
     update_select('edit-page', Object.keys(pages));
   }
@@ -46,18 +52,21 @@ const update_edit = (title) => {
   const tile = find_tile(title, pages[back[0]]);
   if (tile) {
     form.elements['edit-title'].placeholder = tile.title;
-    form.elements['edit-subtitle'].placeholder = tile.subtitle;
-    form.elements['edit-img'].placeholder = tile.img.replace(user.api, '');
+    form.elements['edit-sub'].placeholder = tile.subtitle;
+    form.elements['edit-img'].value =
+      tile.img.replace(user.api, '').replace('~', '');
+    icon_find(document.getElementById('edit-img'));
     form.elements['edit-url'].placeholder = tile.url;
     form.elements['edit-page'].value = tile.page;
     const pos_array = back[0] === 'home' ?
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] :
       [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     update_select('edit-position', pos_array);
-    // TODO: fix this array usage to reflect page size/indexes
+    // TODO: fix this array to accurately reflect page size/indexes
     form.elements['edit-position'].value = tile.position;
   }
 };
+
 /* exported submit_form */
 const submit_form = (id) => {
   form_background.style.display = 'none';
@@ -66,7 +75,7 @@ const submit_form = (id) => {
     case 'form-add': {
       if (fields[0].value === 'tile') {
         new_tile(fields['tile-type'].value, fields['tile-url'].value,
-          fields['tile-title'].value, fields['tile-subtitle'].value,
+          fields['tile-title'].value, fields['tile-sub'].value,
           '~' + fields['tile-icon'].value, fields['tile-page'].value);
       } else if (fields[0].value === 'theme') {
         open_form('form-theme');
@@ -95,7 +104,7 @@ const submit_form = (id) => {
       return false; // don't reset theme -> error for color input
     } case 'form-settings': {
       if (fields['user-theme'].value) {
-        user.theme = find_tile(fields['user-theme'].value, pages.themes);
+        user.theme = fields['user-theme'].value;
       }
       if (fields['user-api'].value) user.api = fields['user-api'].value;
       if (fields['user-font'].value) set_font(fields['user-font'].value);
@@ -110,24 +119,49 @@ const submit_form = (id) => {
       break;
     } case 'form-edit': {
       const tile = find_tile(fields['edit-tile'].value, pages[back[0]]);
-      if (fields['edit-theme'].value) {
-        tile.theme = value.split(',');
-      }
-      if (fields['edit-position'].value) {
-        tile.position = fields['edit-position'].value;
-        // three cases
-        // out of bounds (cover with check on array)
-        // insert (move further down)
-        // append to end
-      }
-      if (fields['edit-page'].value) {
+      const page = pages[tile.page];
+      if (fields['edit-title'].value) tile.title = fields['edit-title'].value;
+      if (fields['edit-sub'].value) tile.subtitle = fields['edit-sub'].value;
+      if (fields['edit-img'].value) tile.img = '~' + fields['edit-img'].value;
+      // TODO field for changing theme colors -> next version
+      if (fields['edit-page'].value !== tile.page) {
         const new_page = pages[fields['edit-page'].value];
-        const new_pos = value === 'home' ? (new_page.length !== 0 ?
-          new_page.length+1 : 1) : new_page.length+2;
+        const new_pos = fields['edit-page'].value === 'home' ?
+          new_page.length + 1 : new_page.length + 2;
+        for (const i in page) {
+          if (page[i].position >= tile.position) {
+            page[i].position -= 1;
+          } // shift tiles into gap
+        }
+        page.splice(page.indexOf(tile), 1); // get rid of tile in cache
+        set_tile(default_tiles.blank_tile, tile.page === 'home' ?
+          page.length+1: page.length+2);
+        tiles_update(page);
+        new_page.unshift(tile);
         tile.position = new_pos;
         tile.page = fields['edit-page'].value;
-      } else {
-        console.log('Invalid field', field);
+      } else if (fields['edit-position'].value) { // conditional on page
+        const old_pos = tile.position;
+        const new_pos = parseInt(fields['edit-position'].value, 10);
+        // two cases
+        if (pages[back[0]].length < new_pos) {
+          // out of bounds -> place at end of page and fill gap
+          for (const i in page) {
+            if (page[i].position >= old_pos) page[i].position -= 1;
+            // shift tiles into gap
+          }
+          tile.position = pages[back[0]].length + 1;
+        } else {
+          // insert -> fill old gap and create new gap
+          for (const i in page) {
+            if (page[i].position >= old_pos) page[i].position -= 1;
+            // shift tiles into old gap
+            if (page[i].position >= new_pos) page[i].position += 1;
+            // create new gap
+          }
+          tile.position = new_pos;
+        }
+        tiles_update(page);
       }
       tiles_update([tile]);
       break;

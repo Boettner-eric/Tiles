@@ -209,7 +209,11 @@ input[type="color"] {
 }
 
 #tile-icon {
-    background: url(https://img.icons8.com/color/48/000000/github) 96% / 15% no-repeat;
+    background: url(https://img.icons8.com/color/48/000000/icons8) 96% / 15% no-repeat;
+}
+
+#edit-img {
+    background: url(https://img.icons8.com/color/48/000000/icons8) 96% / 15% no-repeat;
 }
 
 .header .subtitle {

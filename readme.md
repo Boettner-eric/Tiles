@@ -1,33 +1,30 @@
 # Tiles
-A keyboard-centric, feature rich, responsive design homepage.
+A keyboard-centric, feature-rich, responsive design homepage.
 
 [![GitHub Issues](https://img.shields.io/github/issues/boettner-eric/tiles.svg?style=flat-square)](https://github.com/boettner-eric/homepage/issues)
-![](https://img.shields.io/github/license/boettner-eric/tiles?style=flat-square)
+![License](https://img.shields.io/github/license/boettner-eric/tiles?style=flat-square)
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg?style=flat-square)
 ![Github last commit](https://img.shields.io/github/last-commit/boettner-eric/tiles.svg?style=flat-square)
-![Website](https://img.shields.io/website/https/boettner-eric.github.io/Tiles/index.html.svg?style=flat-square&down_color=red&down_message=offline&up_color=light%20green&up_message=online)
+![Website](https://img.shields.io/website/https/boettner-eric.github.io/Tiles/index.html.svg?style=flat-square&down_color=red&down_message=offline&up_color=green&up_message=online)
+![Server](https://img.shields.io/website?style=flat-square&down_color=red&down_message=offline&label=server&up_color=green&up_message=online&url=https%3A%2F%2Ftiles-backend.herokuapp.com)
 
-## [**Live Demo**](https://boettner-eric.github.io/Tiles/index.html)
+## [**Live Site**](https://boettner-eric.github.io/Tiles/index.html)
 
 ![Skeletor theme](Screenshots/skeletor.png)
 
 ## Features
 * Keyboard navigation
 * Mobile support
-* Console style commands for page customization
+* Form interface for adding tiles
 * Support for custom color schemes
 * Tile search and search engine integration
 
 ### Recent Changes
-* Forms! Custom form interfaces for user input (replaces most commands)
+* Custom form interfaces for user input (replaces commands)
 * Better server/client communication
 * Faster searching
 * General Optimizations
-* Refactoring of JS code
-
-## Setup
-* `!register username password`
-* Customize page configuration and user settings with commands
+* Refactored of JS code
 
 ### Keyboard Shortcuts
 
@@ -44,51 +41,10 @@ themes | `\` | opens theme menu
 enter | `[enter]` | go to tile / exit search
 esc | `[esc]` | close search, return to homepage
 
-### Getting Started
-- On first login a user's page will only include the theme and search folders.
-- To make the process easier for a first time user I added the following commands for a default configuration.
-- Copy and paste each command into the search bar and hit enter to see its effect.
 
-```javascript
-!register username password // create a new user
-!search www.google.com/search?q= Google Search ~google-logo // create a tile for google on current page
-!folder Media Streaming ~3d-glasses // adds a media page
-!theme Gogh Blue-Green-Yellow ~field #0375B4 #007849 #FECE00 #FFFFFF #FFFFFF // adds a new theme
-!set theme Gogh // sets new theme as main theme
-!set grid 4 3 // sets a 4x3 grid for tiles
-```
-### Commands
-Command | Parameters | Description
---- | --- | --- |
-!reload | | reload user's page (for server errors)
-!register | `username` `password` | create a new user profile
-!login | `username` `password` | login to existing profile
-!logout | | logout current user
-!set | `theme` | sets default color scheme for user
-... | `grid` `width` `height` | change the dimensions of the page grid
-... | `font` `font-name` | change the users default font
-!tile | `url` `title` `subtitle` `~img` | adds a tile to current page
-!folder | `title` `subtitle` `~img` | adds a folder tile to current page
-!theme | `title` `subtitle` `~img` `colors` | adds a new color scheme to themes folder
-!search | `url` `title` `subtitle` `~img` | adds a new search tile
-!edit | `title` `field``=```value` | change any field of a tile
-!delete | `title` | deletes tile from user's page
-!swap | `title` `title` | swaps position of two tiles on page (works best if first tile is earlier on page)
-
-### Command Examples
-```
-!set theme Gogh // changes user's default theme
-
-!set grid 4 3 // changes user's default grid to 4x3 and reloads page
-
-!tile www.google.com Google Search ~google-logo // create a tile for google on current page
-
-!search https://duckduckgo.com/?q= DuckDuckGo Privacy ~duckduckgo // creates a search tile for google
-
-!edit Github subtitle=repos img=~github--v1 // changes icon and subtitle for github tile on current page
-
-!edit Discord theme=#23272A,#2C2F33,#7289DA,#99AAB5,#7289DA // changes color scheme for discord theme (note commas here)
-```
+### Forms
+* Simple popup forms allow for user input
+[screenshot here]
 
 ### Themes
 * Since this version of tiles is customization focused I omitted the default themes.
@@ -115,7 +71,6 @@ Command | Parameters | Description
 ```
 * The format for themes is `background/image, main color, complementary color, title text, subtitle text`
 
-
 ## Hosting Notes
 - The server is set to be most responsive from 8-24 PST.
 - My hosting goes through a sleep schedule so initial response times will be delayed for requests outside of that time range.
@@ -131,7 +86,7 @@ To add an icon for a tile/page/theme:
 
 ![Icons8 search](Screenshots/icon.png)
 
-- Use this name in your command
+- Use this icon name in your command or in the input form
 
     `!tile https://google.com Google Search ~google-logo`
 - Make sure to use the tilde in front of the image name
