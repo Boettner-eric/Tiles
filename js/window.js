@@ -16,16 +16,22 @@ window.onload = async () => {
   if (theme) set_theme(theme.split(','));
   const token = localStorage.getItem('token');
   if (token === 'null' || !token) {
-    generate_table(4, 3); // default config
-    set_tile(default_tiles.login_tile, 1);
-    set_tile(default_tiles.register_tile, 2);
-    set_tile(default_tiles.helper_tile, 3);
-    open_form('form-login');
+    invalid_login();
   } else {
     user_init(); // user preferences
   }
 };
 
+const invalid_login = () => {
+  generate_table(4, 3); // default config
+  set_tile(default_tiles.login_tile, 1);
+  set_tile(default_tiles.register_tile, 2);
+  set_tile(default_tiles.helper_tile, 3);
+  open_form('form-login');
+  document.getElementById('add-btn').disabled = true;
+  document.getElementById('edit-btn').disabled = true;
+  document.getElementById('settings-btn').disabled = true;
+}
 // background-color/image main-color complementary-color sub-text main-text
 const set_theme = (theme) => {
   if (theme[0].includes('http')) { // background image condition

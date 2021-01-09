@@ -139,7 +139,7 @@ const submit_form = (id) => {
         tile.page = fields['edit-page'].value;
         new_page.unshift(tile);
       } else if (fields['edit-position'].value) { // conditional on page
-        const old_pos = tile.position;
+        const old_pos = tile.position; // const doesn't change here
         const new_pos = parseInt(fields['edit-position'].value, 10);
         // two cases
         if (pages[back[0]].length < new_pos) {

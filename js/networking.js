@@ -76,11 +76,11 @@ const user_init = async () => {
   const user_res = await api_get('users', 'data', '');
   if (user_res.error || !user_res) {
     console.log('Server Error: ', user_res.error);
-    generate_table(4, 3); // make user profile set width and height
-    set_tile(default_tiles.login_tile, 1);
-    set_tile(default_tiles.register_tile, 2);
-    set_tile(default_tiles.reload_tile, 3);
+    invalid_login();
   } else {
+    document.getElementById('add-btn').disabled = false;
+    document.getElementById('edit-btn').disabled = false;
+    document.getElementById('settings-btn').disabled = false;
     user = user_res;
     generate_table(user.dimensions[0], user.dimensions[1]); // width and height
     await get_pages();
