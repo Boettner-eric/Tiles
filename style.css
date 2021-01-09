@@ -52,6 +52,14 @@ body, html {
     padding-top: 2px;
 }
 
+#grid table tr td a img {
+    position: absolute;
+    opacity: 1;
+    right: 1px;
+    z-index: 0;
+    top: 5px;
+}
+
 #grid h3 {
     padding-left: 45%;
     font-size: 13px;
@@ -65,15 +73,8 @@ body, html {
 }
 
 .tile-icon {
+    padding-top: 5px;
     padding-right: 60%;
-}
-
-#grid table tr td a img {
-    position: absolute;
-    opacity: 1;
-    right: 1px;
-    z-index: 0;
-    top: 5px;
 }
 
 #grid table tr td a:focus img, #grid table tr td a:hover img {
@@ -120,10 +121,26 @@ input::-webkit-input-placeholder{
     right: 10px;
     z-index: 5;
 }
+
 .header button {
     background: var(--background);
     border: 0;
     margin: 0;
+}
+
+.header .subtitle {
+    visibility: hidden;
+    color: var(--base-txt);
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    top: 25px;
+    margin-left: -40px;
+    width: 60px;
+}
+
+.header button:hover .subtitle, .header a:hover .subtitle {
+    visibility: visible;
 }
 
 .form-background {
@@ -145,7 +162,7 @@ input::-webkit-input-placeholder{
     color: var(--base-txt);
     width: fit-content;
     margin: 0 auto;
-    padding: 20px;
+    padding: 25px;
     font-size: 14px;
 }
 
@@ -162,7 +179,7 @@ input::-webkit-input-placeholder{
 input[type="color"] {
     -webkit-appearance: none;
     border: none;
-    width: 50px;
+    width: 70px;
     height: 25px;
 }
 
@@ -190,6 +207,14 @@ input[type="color"] {
     display: block;
 }
 
+.form-content p {
+    text-align: right;
+}
+
+.form-content h3 {
+    text-align: center;
+}
+
 #new-user button {
     display: inline-block;
     font-size: 12px;
@@ -200,35 +225,12 @@ input[type="color"] {
     font-size: 12px;
 }
 
-.form-content p {
-    text-align: right;
-}
-
-.form-content h3 {
-    text-align: center;
-}
-
 #tile-icon {
     background: url(https://img.icons8.com/color/48/000000/icons8) 96% / 15% no-repeat;
 }
 
 #edit-img {
     background: url(https://img.icons8.com/color/48/000000/icons8) 96% / 15% no-repeat;
-}
-
-.header .subtitle {
-    visibility: hidden;
-    color: var(--base-txt);
-    text-align: center;
-    position: absolute;
-    z-index: 1;
-    top: 25px;
-    margin-left: -40px;
-    width: 60px;
-}
-
-.header button:hover .subtitle, .header a:hover .subtitle {
-    visibility: visible;
 }
 
 @supports (-webkit-overflow-scrolling: touch) {

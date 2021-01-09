@@ -103,9 +103,7 @@ const submit_form = (id) => {
       document.getElementById('form-add').reset();
       return false; // don't reset theme -> error for color input
     } case 'form-settings': {
-      if (fields['user-theme'].value) {
-        user.theme = fields['user-theme'].value;
-      }
+      if (fields['user-theme'].value) user.theme = fields['user-theme'].value;
       if (fields['user-api'].value) user.api = fields['user-api'].value;
       if (fields['user-font'].value) set_font(fields['user-font'].value);
       if (fields.height.value != height || fields.width.value != width) {
@@ -129,7 +127,7 @@ const submit_form = (id) => {
         const new_pos = fields['edit-page'].value === 'home' ?
           new_page.length + 1 : new_page.length + 2;
         for (const i in page) {
-          if (page[i].position >= tile.position) {
+          if (page[i].position >= tile.position && tile !== page[i]) {
             page[i].position -= 1;
           } // shift tiles into gap
         }
@@ -137,14 +135,13 @@ const submit_form = (id) => {
         tiles_update(page);
         set_tile(default_tiles.blank_tile, tile.page === 'home' ?
           page.length+1: page.length+2);
-        new_page.unshift(tile);
         tile.position = new_pos;
         tile.page = fields['edit-page'].value;
+        new_page.unshift(tile);
       } else if (fields['edit-position'].value) { // conditional on page
         const old_pos = tile.position;
         const new_pos = parseInt(fields['edit-position'].value, 10);
         // two cases
-        // TODO fix position gettting duplicated here
         if (pages[back[0]].length < new_pos) {
           // out of bounds -> place at end of page and fill gap
           for (const i in page) {
