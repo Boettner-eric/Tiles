@@ -44,32 +44,27 @@ esc | `[esc]` | close search, return to homepage
 
 ### Forms
 * Simple popup forms allow for user input
-[screenshot here]
+* Forms have smart input fields for logins and icons
+
+![Add Form](Screenshots/forms.png)
 
 ### Themes
 * Since this version of tiles is customization focused I omitted the default themes.
-* To add them to your page I included commands for most of the old themes here. (just copy and paste each line into the search bar)
+* To add them to your page I included the colors for the original themes and the file [themes.txt](themes.txt) contains commands you can copy and paste into the search bar for each theme.
 
-```
-!theme Discord Purple-Black-Grey ~discord-logo #23272A #2C2F33 #7289DA #99AAB5 #7289DA
+Theme | Icons8 | Background | Top | Bottom | Text | Subtext | Credit |
+  --- | --- | --- | --- | --- | --- | --- | --- |
+*Skeletor* | thriller |![S1]|![S3]|![S2]|![S5]|![S4]|[`Syntax`](https://atom.io/themes/skeletor-syntax#color-palette)
+*Switch* | nintendo-switch |![W1]|![W2]|![W3]|![W4]|![W5]|[`Switch`](https://www.nintendo.com/switch/)
+*Gogh* | field |![G1]|![G3]|![G2]|![G4]|![G5]|[`Gogh`](https://colourlex.com/project/van-gogh-starry-night/)
+*Todoist* | leave |![T1]|![T2]|![T3]|![T4]|![T5]|[`Todoist Dark`](https://todoist.com)
+*Discord* | discord-logo |![D1]|![D3]|![D2]|![D5]|![D4]|[`Discord`](https://discordapp.com/branding)
+*Terminal* | console |![E1]|![E2]|![E4]|![E4]|![E5]|`None`
+*Lava* | volcano |![L1]|![L2]|![L1]|![L4]|![L5]|`None`
+*Purple* | purple-man |![P1]|![P3]|![P2]|![P4]|![P5]|`None`
 
-!theme Skeletor Green-Purple-Green ~thriller #2b2836 #93b4ff #bd93f9 #ffffff #84fba2
 
-!theme Terminal Green-Black ~console #282828 #282828 #33FF33 #33FF33 #33FF33
-
-!theme Gogh Blue-Green-Yellow ~field #0375B4 #007849 #FECE00 #FFFFFF #FFFFFF
-
-!theme Todoist Grey-Red-Yellow ~reminders #1f1f1f #fccf1b #cd5650 #ffffff #ffffff
-
-!theme Switch Grey-Red-Blue ~nintendo-switch #414548 #ff4554 #00c3e3 #ffffff #ffffff
-
-!theme Lava Red-Black ~volcano #000000 #D32F2F #DD4132 #99AAB5 #99AAB5
-
-!theme Purple Purple-Red-Blue ~purple-man #6B5B95 #FF383F #223A5E #F0EDE5 #F0EDE5
-
-!theme Blues Blue-Grey ~sapphire #25274D #2E9CCA #29648A #ffffff #AAABB8
-```
-* The format for themes is `background/image, main color, complementary color, title text, subtitle text`
+(table generated from **[placehold.it](https://placehold.it)**)
 
 ## Hosting Notes
 - The server is set to be most responsive from 8-24 PST.
@@ -89,11 +84,11 @@ To add an icon for a tile/page/theme:
 - Use this icon name in your command or in the input form
 
     `!tile https://google.com Google Search ~google-logo`
-- Make sure to use the tilde in front of the image name
+
 
 ## Notes
 * Backend will be open-sourced in the next few weeks.
-* Spaces are replaced by `-` in commands.
+* Spaces are replaced by `-` in commands. (use normal spaces in forms)
     * ex. `!tile url Bon-Apétit Recipes ~cooking`
 * There are still some bugs involving pages longer than the grid
 * If you run into some bug involving blank tiles reload the page and it should resolve.
@@ -109,3 +104,44 @@ To add an icon for a tile/page/theme:
 2. Theme hex colors from multiple brands and themes
 3. Original code from my other [`repo`](https://github.com/Boettner-eric/Homepage) which started as [`Decaux`](https://github.com/Boettner-eric/Decaux) which has been abandoned
 5. Kishlaya's fork for dynamic html generation
+
+[S1]:https://placehold.it/100x50/2b2836/ffffff/?text=2b2836
+[S2]:https://placehold.it/100x50/93b4ff/ffffff/?text=93b4ff
+[S3]:https://placehold.it/100x50/bd93f9/ffffff/?text=bd93f9
+[S4]:https://placehold.it/100x50/84fba2/2b2836/?text=84fba2
+[S5]:https://placehold.it/100x50/ffffff/2b2836/?text=ffffff
+[W1]:https://placehold.it/100x50/414548/ffffff/?text=414548
+[W2]:https://placehold.it/100x50/ff4554/ffffff/?text=ff4554
+[W3]:https://placehold.it/100x50/00c3e3/ffffff/?text=00c3e3
+[W4]:https://placehold.it/100x50/ffffff/414548/?text=ffffff
+[W5]:https://placehold.it/100x50/ffffff/414548/?text=ffffff
+[G1]:https://placehold.it/100x50/0375B4/FFFFFF/?text=0375B4
+[G2]:https://placehold.it/100x50/007849/FFFFFF/?text=007849
+[G3]:https://placehold.it/100x50/FECE00/FFFFFF/?text=FECE00
+[G4]:https://placehold.it/100x50/FFFFFF/0375B4/?text=ffffff
+[G5]:https://placehold.it/100x50/FFFFFF/0375B4/?text=ffffff
+[T1]:https://placehold.it/100x50/1f1f1f/ffffff/?text=1f1f1f
+[T2]:https://placehold.it/100x50/fccf1b/ffffff/?text=fccf1b
+[T3]:https://placehold.it/100x50/cd5650/ffffff/?text=cd5650
+[T4]:https://placehold.it/100x50/ffffff/1f1f1f/?text=ffffff
+[T5]:https://placehold.it/100x50/ffffff/1f1f1f/?text=ffffff
+[E1]:https://placehold.it/100x50/282828/33FF33/?text=282828
+[E2]:https://placehold.it/100x50/282828/33FF33/?text=282828
+[E3]:https://placehold.it/100x50/282828/33FF33/?text=33FF33
+[E4]:https://placehold.it/100x50/33FF33/282828/?text=33FF33
+[E5]:https://placehold.it/100x50/33FF33/282828/?text=33FF33
+[D1]:https://placehold.it/100x50/23272A/99AAB5/?text=23272A
+[D2]:https://placehold.it/100x50/2C2F33/99AAB5/?text=2C2F33
+[D3]:https://placehold.it/100x50/7289DA/99AAB5/?text=7289DA
+[D4]:https://placehold.it/100x50/7289DA/23272A/?text=7289DA
+[D5]:https://placehold.it/100x50/99AAB5/23272A/?text=99AAB5
+[L1]:https://placehold.it/100x50/000000/99AAB5/?text=000000
+[L2]:https://placehold.it/100x50/D32F2F/99AAB5/?text=D32F2F
+[L3]:https://placehold.it/100x50/DD4132/99AAB5/?text=DD4132
+[L4]:https://placehold.it/100x50/99AAB5/000000/?text=99AAB5
+[L5]:https://placehold.it/100x50/99AAB5/000000/?text=99AAB5
+[P1]:https://placehold.it/100x50/6B5B95/F0EDE5/?text=6B5B95
+[P2]:https://placehold.it/100x50/FF383F/F0EDE5/?text=FF383F
+[P3]:https://placehold.it/100x50/223A5E/F0EDE5/?text=223A5E
+[P4]:https://placehold.it/100x50/F0EDE5/6B5B95/?text=F0EDE5
+[P5]:https://placehold.it/100x50/F0EDE5/6B5B95/?text=F0EDE5

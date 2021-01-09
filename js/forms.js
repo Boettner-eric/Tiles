@@ -134,9 +134,9 @@ const submit_form = (id) => {
           } // shift tiles into gap
         }
         page.splice(page.indexOf(tile), 1); // get rid of tile in cache
+        tiles_update(page);
         set_tile(default_tiles.blank_tile, tile.page === 'home' ?
           page.length+1: page.length+2);
-        tiles_update(page);
         new_page.unshift(tile);
         tile.position = new_pos;
         tile.page = fields['edit-page'].value;
@@ -144,6 +144,7 @@ const submit_form = (id) => {
         const old_pos = tile.position;
         const new_pos = parseInt(fields['edit-position'].value, 10);
         // two cases
+        // TODO fix position gettting duplicated here
         if (pages[back[0]].length < new_pos) {
           // out of bounds -> place at end of page and fill gap
           for (const i in page) {

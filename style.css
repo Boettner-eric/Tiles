@@ -341,8 +341,14 @@ input[type="color"] {
         height: 19vh;
         padding: 0px;
     }
+    #grid h3 {
+        margin-top: 8px;
+    }
     #grid p {
         margin-top: -10px;
+    }
+    .tile-icon {
+        margin-top: -5px;
     }
     .form-background {
         padding-top: 0px;
