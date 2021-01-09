@@ -94,10 +94,10 @@ default_tiles = {
         "position": 1
     },
     "theme" : {
-        "title": "Gogh",
-        "subtitle": "Blue Green Yellow",
+        "title": "Discord",
+        "subtitle": "Grey Purple",
         "page": "themes",
-        "img": "~field",
+        "img": "~discord-logo",
         "position": 2,
         "type": "theme",
         "theme": ["#23272A", "#2C2F33", "#7289DA", "#7289DA", "#99AAB5"]}

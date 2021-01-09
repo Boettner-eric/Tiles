@@ -1,11 +1,6 @@
 // Changing form display and dynamic form generation
 const form_background = document.querySelector('.form-background');
 
-const update_forms = () => { // add info to forms
-  update_select('tile-page', Object.keys(pages));
-  update_select('user-theme', pages.themes);
-};
-
 const open_form = (id) => {
   form_background.style.display = 'block';
   for (let i = 0; i < document.getElementsByTagName('form').length; i++) {
@@ -16,15 +11,17 @@ const open_form = (id) => {
       form.style.display = 'block';
     }
   }
+  document.getElementById(id).elements[0].focus();
   if (id === 'form-settings') {
-    const user_settings = document.getElementById('form-settings');
+    const user_settings = document.getElementById(id);
+    update_select('user-theme', pages.themes);
     user_settings.elements['width'].value = width;
     user_settings.elements['height'].value = height;
     user_settings.elements['user-theme'].value = user.theme;
     user_settings.elements['user-font'].placeholder = user.font;
     user_settings.elements['user-api'].placeholder = user.api;
   } else if (id === 'form-edit') {
-    const edit_form = document.getElementById('form-edit');
+    const edit_form = document.getElementById(id);
     edit_form.elements['edit-title'].placeholder = '';
     edit_form.elements['edit-sub'].placeholder = '';
     edit_form.elements['edit-img'].placeholder = '';
@@ -32,6 +29,8 @@ const open_form = (id) => {
     edit_form.elements['edit-url'].placeholder = '';
     update_select('edit-tile', ['select tile'].concat(pages[back[0]]));
     update_select('edit-page', Object.keys(pages));
+  } else if (id === 'form-add') {
+    update_select('tile-page', Object.keys(pages));
   }
 };
 

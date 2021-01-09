@@ -31,7 +31,8 @@ const invalid_login = () => {
   document.getElementById('add-btn').disabled = true;
   document.getElementById('edit-btn').disabled = true;
   document.getElementById('settings-btn').disabled = true;
-}
+};
+
 // background-color/image main-color complementary-color sub-text main-text
 const set_theme = (theme) => {
   if (theme[0].includes('http')) { // background image condition

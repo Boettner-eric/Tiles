@@ -57,7 +57,8 @@ const register = async (username, password) => {
     username: username,
     password: password,
     dimensions: [4, 3],
-    theme: default_tiles.theme,
+    font: 'menlo',
+    theme: default_tiles.theme.title,
     api: 'https://img.icons8.com/color/96/000000/',
   };
   const res = await api_set('users', 'new', new_user);
@@ -69,6 +70,8 @@ const register = async (username, password) => {
     new_tile('page', 'search', 'Search', 'engines', '~search', 'home');
     new_tile('page', 'themes', 'Themes', 'Color Scheme',
       '~technology-items', 'home');
+    new_tile('theme', '#', 'Discord', 'Grey', '~discord-logo', 'themes',
+      default_tiles.theme.theme);
   }
 };
 
@@ -110,5 +113,4 @@ const get_pages = async () => {
   }, {});
   for (const i in pages) pages[i].sort((a, b) => a.position - b.position);
   if (!Object.keys(pages).length) pages['home'] = [];
-  update_forms(); // update whenever pages are updated
 };

@@ -48,8 +48,8 @@ const set_tile = (tile, position) => { // optional position
 
 const page_gen = (page_id) => {
   document.title = page_id;
-  let page = pages[page_id.replace(' next', '')];
-  if (!pages[page_id.replace(' next', '')]) page = [];
+  if (!pages[page_id.replace(' next', '')]) pages[page_id] = [];
+  const page = pages[page_id.replace(' next', '')];
   if (page_id !== 'home') {
     const back_tile = default_tiles.back_tile;
     if (back[0] === page_id) { // if page is the same as last page
