@@ -1,5 +1,5 @@
 # Tiles
-A keyboard-centric, feature-rich, responsive design homepage.
+A keyboard-centric, feature-rich, responsive design based homepage.
 
 [![GitHub Issues](https://img.shields.io/github/issues/boettner-eric/tiles.svg?style=flat-square)](https://github.com/boettner-eric/homepage/issues)
 ![License](https://img.shields.io/github/license/boettner-eric/tiles?style=flat-square)

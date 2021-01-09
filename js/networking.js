@@ -88,8 +88,9 @@ const user_init = async () => {
     generate_table(user.dimensions[0], user.dimensions[1]); // width and height
     await get_pages();
     const theme = find_tile(user.theme, pages.themes).theme;
-    if (user.theme && user.theme !== 'default' && // changed account
-      JSON.stringify(localStorage.theme.split(',')) !== JSON.stringify(theme)) {
+    if (!localStorage.theme || (user.theme && user.theme !== 'default' &&
+      JSON.stringify(localStorage.theme.split(',')) !== JSON.stringify(theme))
+    ) {
       set_theme(theme);
       localStorage.theme = theme;
     }
