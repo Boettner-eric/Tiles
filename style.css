@@ -67,13 +67,13 @@ body, html {
 }
 
 #grid p {
+    margin-top: -5px;
     padding-left: 45%;
     font-size: 10px;
     color: var(--sub-txt);
 }
 
 .tile-icon {
-    padding-top: 5px;
     padding-right: 60%;
 }
 
@@ -286,7 +286,10 @@ input[type="color"] {
     #grid table {
         margin-left: 0vw;
     }
-
+    #grid table tr td {
+        padding-right: 0.5vw;
+        padding-left: 0.5vw;
+    }
     #grid table tr td a img {
         position: relative;
     }
