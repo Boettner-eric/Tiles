@@ -66,6 +66,17 @@ document.onclick = (e) => {
   }
 };
 
+// on key up to ensure it gets current key
+document.onkeyup = (e) => {
+  const key = e.keyCode;
+  if (document.activeElement.id === 'search') {
+    const current = document.getElementById('search').value;
+    if (current.length > 1 && key !== 8 && current[0] !== '!') {
+      search(current);
+    }
+  }
+};
+
 document.onkeydown = (e) => {
   const key = e.keyCode;
   const numTiles = width * height;
@@ -80,8 +91,6 @@ document.onkeydown = (e) => {
       result = 2;
       if (current === '') return true;
       else if (current[0].includes('!') && user !== {}) commands(current);
-    } else if (current.length > 1 && key !== 8 && current[0] !== '!') {
-      search(current);
     }
     return true;
   } else if (form_background.style.display === 'block') {
@@ -95,7 +104,7 @@ document.onkeydown = (e) => {
     document.getElementById('search').focus();
     return false; // ignore space in search field
   } else if (key === 220) { // '\' key -> theme menu
-    page_gen('themes');
+    page_gen('themes', '~technology-items');
   } else if (key === 13) {
     return true;
   } else if (key === 191) { // '/' -> calls external search

@@ -2,16 +2,6 @@
 const form_background = document.querySelector('.form-background');
 
 const open_form = (id) => {
-  form_background.style.display = 'block';
-  for (let i = 0; i < document.getElementsByTagName('form').length; i++) {
-    const form = document.getElementsByTagName('form')[i];
-    if (form.id !== 'search-form' && form.id !== id) {
-      form.style.display = 'none';
-    } else if (form.id === id) {
-      form.style.display = 'block';
-    }
-  }
-  document.getElementById(id).elements[0].focus();
   if (id === 'form-settings') {
     const user_settings = document.getElementById(id);
     update_select('user-theme', pages.themes);
@@ -32,6 +22,16 @@ const open_form = (id) => {
   } else if (id === 'form-add') {
     update_select('tile-page', Object.keys(pages));
   }
+  form_background.style.display = 'block';
+  for (let i = 0; i < document.getElementsByTagName('form').length; i++) {
+    const form = document.getElementsByTagName('form')[i];
+    if (form.id !== 'search-form' && form.id !== id) {
+      form.style.display = 'none';
+    } else if (form.id === id) {
+      form.style.display = 'block';
+    }
+  }
+  document.getElementById(id).elements[0].focus();
 };
 
 /* updates a given select element with array values */

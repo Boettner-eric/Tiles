@@ -253,6 +253,9 @@ input[type="color"] {
     select:focus, textarea:focus, input:focus {
         font-size: 16px;
     }
+    .header button:hover .subtitle, .header a:hover .subtitle {
+        visibility: hidden;
+    }
 }
 
 @media only screen and (max-width: 650px) { /* For narrowish devices */

@@ -162,5 +162,5 @@ const search = async (terms) => {
     for (const x in page) page[x].terms = terms.replace('?', '');
     pages.search_ = page;
   }
-  page_gen('search_'); // generate search page
+  page_gen('search_', '~search'); // generate search page
 };

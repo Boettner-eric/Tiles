@@ -44,7 +44,8 @@ const tiles_update = async (tiles) => { // push updates to server
 };
 
 const delete_tile = async (tile, page_id) => {
-  const page = pages[page_id];
+  const page = pages[page_id.replace(' next', '')];
+  if (!page) return 'error';
   await api_set('tiles', 'delete', tile);
   page.splice(page.indexOf(tile), 1); // get rid of tile in cache
   if (tile.position !== page.length) {
@@ -55,9 +56,5 @@ const delete_tile = async (tile, page_id) => {
     }
     tiles_update(page);
   }
-  if (tile.position <= (width * height) ||
-    ((page_id.includes('next') && page.length > (width * height)))) {
-    set_tile(default_tiles.blank_tile, tile.page === 'home' ?
-      page.length+1: page.length+2);
-  }
+  page_gen(page_id.replace(' next', ''));
 };

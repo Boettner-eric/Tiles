@@ -5,7 +5,7 @@ const set_tile = (tile, position) => { // optional position
   tile_url.href = '#';
   if (tile.type === 'page') { // tile types
     tile_url.onclick = () => {
-      page_gen(tile.url); return false;
+      page_gen(tile.url, tile.img); return false;
     };
   } else if (tile.type === 'theme') {
     tile_url.onclick = () => {
@@ -46,8 +46,11 @@ const set_tile = (tile, position) => { // optional position
   document.getElementById('s' + num).innerHTML = tile.subtitle;
 };
 
-const page_gen = (page_id) => {
-  document.title = page_id;
+const page_gen = (page_id, icon) => {
+  icon = (icon === undefined || icon === '~back--v2') ? '~tiles': icon;
+  document.title = 'Tiles - ' + page_id;
+  const link = document.querySelector('link[rel~="icon"]');
+  link.href = user.api + icon.slice(1); // adds icon to header
   if (!pages[page_id.replace(' next', '')]) pages[page_id] = [];
   const page = pages[page_id.replace(' next', '')];
   if (page_id !== 'home') {
@@ -64,14 +67,15 @@ const page_gen = (page_id) => {
     back = ['home']; // reset back stack (home has no back button)
   }
   let blanks = 1; // add case for pages
-  if (page_id === 'home' && page.length > (width * height)) {
+  const page_size = page_id === 'home' ? (width * height): (width * height) - 1;
+  if (page.length > page_size) {
     if (page_id.includes(' next')) { // second page
-      for (let i = (width * height); i < page.length; i++) {
-        set_tile(page[i], page[i].position - (width * height) + 1);
+      for (let i = page_size; i < page.length; i++) {
+        set_tile(page[i], i - page_size + 2);
       }
-      blanks = Math.abs((width * height) - page.length) + 2;
+      blanks = Math.abs(page_size - page.length) + 2;
     } else { // first page
-      for (let i = 0; i < (width * height) - 1; i++) set_tile(page[i]);
+      for (let i = 0; i < page_size - 1; i++) set_tile(page[i]);
       const next_tile = default_tiles.next_tile;
       next_tile.url = page_id + ' next';
       set_tile(next_tile, (width * height));
@@ -79,7 +83,7 @@ const page_gen = (page_id) => {
     }
   } else { // pages with less than or equal to numTiles tiles
     for (const i in page) set_tile(page[i]);
-    blanks = page.length+2;
+    blanks = page.length + 2;
   }
   for (let i = blanks; i <= (width * height); i++) {
     set_tile(default_tiles.blank_tile, i); // fill rest of grid with empty tiles
