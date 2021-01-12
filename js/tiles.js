@@ -24,7 +24,7 @@ const new_tile = async (type, url, title, sub, img, page, theme=null) => {
   api_set('tiles', 'new', tile); // don't await this update
   tile_page.push(tile); // replicate it locally instead
   if (page === back[0]) { // only reload if tile is on current page
-    if (position <= (width*height) || page.includes('next')) {
+    if (position <= (width * height) || page.includes('next')) {
       set_tile(tile);
     } else if (position === (width*height)+1) { // add new page
       page_gen(page);
@@ -36,8 +36,8 @@ const new_tile = async (type, url, title, sub, img, page, theme=null) => {
 const tiles_update = async (tiles) => { // push updates to server
   for (const i in tiles) {
     api_set('tiles', 'edit', tiles[i]);
-    if (tiles[i].page === back[0] && (tiles[i].position <= (width * height) ||
-     back[0].includes(' next'))) {
+    if (tiles[i].page === back[0].replace(' next', '') &&
+      (tiles[i].position <= (width * height) || back[0].includes(' next'))) {
       set_tile(tiles[i]); // if on current page
     }
   }

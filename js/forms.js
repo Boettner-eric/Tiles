@@ -17,7 +17,8 @@ const open_form = (id) => {
     edit_form.elements['edit-img'].placeholder = '';
     edit_form.elements['edit-img'].value = '';
     edit_form.elements['edit-url'].placeholder = '';
-    update_select('edit-tile', ['select tile'].concat(pages[back[0]]));
+    update_select('edit-tile',
+      ['select tile'].concat(pages[back[0].replace(' next', '')]));
     update_select('edit-page', Object.keys(pages));
   } else if (id === 'form-add') {
     update_select('tile-page', Object.keys(pages));
@@ -44,11 +45,17 @@ const update_select = (id, options) => {
     option.value = options[j].title ? options[j].title : options[j];
     select.add(option);
   }
+  document.getElementById(id).value = options[0];
+};
+
+// https://stackoverflow.com/questions/8069315/create-array-of-all-integers-between-two-numbers-inclusive-in-javascript-jquer/8069367
+const range = (start, end) => {
+  return Array(end - start + 1).fill().map((_, idx) => start + idx);
 };
 
 const update_edit = (title) => {
   const form = document.getElementById('form-edit');
-  const tile = find_tile(title, pages[back[0]]);
+  const tile = find_tile(title, pages[back[0].replace(' next', '')]);
   if (tile) {
     form.elements['edit-title'].placeholder = tile.title;
     form.elements['edit-sub'].placeholder = tile.subtitle;
@@ -58,10 +65,8 @@ const update_edit = (title) => {
     form.elements['edit-url'].placeholder = tile.url;
     form.elements['edit-page'].value = tile.page;
     const pos_array = back[0] === 'home' ?
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] :
-      [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      range(1, pages[tile.page].length) : range(2, pages[tile.page].length);
     update_select('edit-position', pos_array);
-    // TODO: fix this array to accurately reflect page size/indexes
     form.elements['edit-position'].value = tile.position;
   }
 };
@@ -115,7 +120,8 @@ const submit_form = (id) => {
       user_update();
       break;
     } case 'form-edit': {
-      const tile = find_tile(fields['edit-tile'].value, pages[back[0]]);
+      const tile = find_tile(fields['edit-tile'].value,
+        pages[back[0].replace(' next', '')]);
       const page = pages[tile.page];
       if (fields['edit-title'].value) tile.title = fields['edit-title'].value;
       if (fields['edit-sub'].value) tile.subtitle = fields['edit-sub'].value;
@@ -132,14 +138,17 @@ const submit_form = (id) => {
         }
         page.splice(page.indexOf(tile), 1); // get rid of tile in cache
         tiles_update(page);
-        set_tile(default_tiles.blank_tile, tile.page === 'home' ?
-          page.length+1: page.length+2);
+        if (tile.position !== (width * height) + 1) { // bend page around corner
+          set_tile(default_tiles.blank_tile, tile.page === 'home' ?
+            page.length+1: page.length+2);
+        }
         tile.position = new_pos;
         tile.page = fields['edit-page'].value;
         new_page.unshift(tile);
       } else if (fields['edit-position'].value) { // conditional on page
         const old_pos = tile.position; // const doesn't change here
         const new_pos = parseInt(fields['edit-position'].value, 10);
+        // TODO add logic for next / refactor back array for longer pages
         // two cases
         if (pages[back[0]].length < new_pos) {
           // out of bounds -> place at end of page and fill gap
