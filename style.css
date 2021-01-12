@@ -263,6 +263,11 @@ input[type="color"] {
         padding: 0;
         position: absolute;
     }
+    #grid table tr td {
+        padding-right: 1vw;
+        padding-left: 1vw;
+        width: 21vw;
+    }
     .tile-icon {
         padding-right: 55%;
     }
