@@ -150,13 +150,13 @@ const submit_form = (id) => {
         const new_pos = parseInt(fields['edit-position'].value, 10);
         // TODO add logic for next / refactor back array for longer pages
         // two cases
-        if (pages[back[0]].length < new_pos) {
+        if (page.length < new_pos) {
           // out of bounds -> place at end of page and fill gap
           for (const i in page) {
             if (page[i].position >= old_pos) page[i].position -= 1;
             // shift tiles into gap
           }
-          tile.position = pages[back[0]].length + 1;
+          tile.position = page.length + 1;
         } else {
           // insert -> fill old gap and create new gap
           for (const i in page) {

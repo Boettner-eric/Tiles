@@ -86,6 +86,7 @@ const user_init = async () => {
     document.getElementById('settings-btn').disabled = false;
     user = user_res;
     generate_table(user.dimensions[0], user.dimensions[1]); // width and height
+    pages = {};
     await get_pages();
     const theme = find_tile(user.theme, pages.themes).theme;
     if (!localStorage.theme || (user.theme && user.theme !== 'default' &&
