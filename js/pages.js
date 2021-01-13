@@ -1,11 +1,11 @@
 // Page generation and formatting
-const set_tile = (tile, position) => { // optional position
+const set_tile = (tile, position, next) => { // optional position
   const num = position ? position.toString(): tile.position.toString();
   const tile_url = document.getElementById(num);
   tile_url.href = '#';
   if (tile.type === 'page') { // tile types
     tile_url.onclick = () => {
-      page_gen(tile.url, tile.img); return false;
+      page_gen(tile.url, tile.img, next); return false;
     };
   } else if (tile.type === 'theme') {
     tile_url.onclick = () => {
@@ -37,7 +37,10 @@ const set_tile = (tile, position) => { // optional position
   if (tile.img[0] === '~') { // api shortcut
     document.getElementById('i' + num).width = 48;
     document.getElementById('i' + num).src = (user.api || 'https://img.icons8.com/color/96/000000/') +
-      tile.img.replace('~', '') + '.png';
+      tile.img.slice(1) + '.png';
+  } else if (tile.img) { // custom images by url
+    document.getElementById('i' + num).width = 48;
+    document.getElementById('i' + num).src = tile.img;
   } else {
     document.getElementById('i' + num).width = 0;
     document.getElementById('i' + num).src = '';
@@ -46,39 +49,43 @@ const set_tile = (tile, position) => { // optional position
   document.getElementById('s' + num).innerHTML = tile.subtitle;
 };
 
-const page_gen = (page_id, icon) => {
-  icon = (icon === undefined || icon === '~back--v2') ? '~tiles': icon;
+// NOTE: transition from next bool to index int for longer pages
+// const page_gen = (page_id, icon, index) => {
+// change logic for next page to utalize indices for range of pages
+const page_gen = (page_id, icon, next) => {
+  // NOTE: tab icons are not supported for safari or opera
+  icon = (!icon || icon === '~back--v2') ? '~tiles' : icon;
   document.title = 'Tiles - ' + page_id;
-  const link = document.querySelector('link[rel~="icon"]');
-  link.href = user.api + icon.slice(1); // adds icon to header
-  if (!pages[page_id.replace(' next', '')]) pages[page_id] = [];
-  const page = pages[page_id.replace(' next', '')];
-  if (page_id !== 'home') {
+  document.querySelector('link[rel~="icon"]').href = user.api + icon.slice(1);
+  if (!pages[page_id]) pages[page_id] = [];
+  const page = pages[page_id];
+  if (page_id !== 'home' || next) {
     const back_tile = default_tiles.back_tile;
-    if (back[0] === page_id) { // if page is the same as last page
+    if (back[0] === page_id && !next) { // the page is the same as last page
       back.splice(0, 1); // just pop off current page
-    } else if (back.indexOf(page_id) !== -1) { // if the page has been visited
-      back.splice(0, 2); // get rid of loop of last two
-    }
+    } else if (back.indexOf(page_id) !== -1 && !next) { // the page was visited
+      back.splice(0, 2); // get rid of loop
+      // back.splice(0, back.indexOf(page_id)+1);
+    } // TODO check this with more tests
     back_tile.url = back[0]; // go to top of stack
-    back.unshift(page_id); // add current page to stack
+    if (!next) back.unshift(page_id); // add current page to stack (not next)
     set_tile(back_tile);
   } else {
     back = ['home']; // reset back stack (home has no back button)
   }
   let blanks = 1; // add case for pages
   const page_size = page_id === 'home' ? (width * height): (width * height) - 1;
-  if (page.length > page_size) {
-    if (page_id.includes(' next')) { // second page
-      for (let i = page_size; i < page.length; i++) {
-        set_tile(page[i], i - page_size + 2);
+  if (page.length > page_size) { // split larger pages into two halves
+    if (next) { // second page
+      for (let i = page_size-1; i < page.length; i++) {
+        set_tile(page[i], i - page_size + 3); // back, next, 0->1 = 3
       }
-      blanks = Math.abs(page_size - page.length) + 2;
+      blanks = Math.abs(page_size - page.length) + 3;
     } else { // first page
       for (let i = 0; i < page_size - 1; i++) set_tile(page[i]);
       const next_tile = default_tiles.next_tile;
-      next_tile.url = page_id + ' next';
-      set_tile(next_tile, (width * height));
+      next_tile.url = page_id;
+      set_tile(next_tile, (width * height), true);
       blanks = (width * height) + 1; // no blanks
     }
   } else { // pages with less than or equal to numTiles tiles

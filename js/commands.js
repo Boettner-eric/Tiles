@@ -21,9 +21,8 @@ const commands = async (current) => {
       register(terms[1], terms[2]);
     }
   } else if (user.username) { // only allow logged in users to edit pages
-    const page = pages[back[0].replace(' next', '')];
-    let position = back[0] === 'home' ? page.length + 1 : page.length + 2;
-    position = back[0].includes(' next') ? position + 1 : position;
+    const page = pages[back[0]];
+    const position = back[0] === 'home' ? page.length + 1 : page.length + 2;
     if (current.includes('set')) {
       if (current.includes('theme')) {
         const tile = find_tile(terms[2], pages.themes);

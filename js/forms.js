@@ -18,10 +18,11 @@ const open_form = (id) => {
     edit_form.elements['edit-img'].value = '';
     edit_form.elements['edit-url'].placeholder = '';
     update_select('edit-tile',
-      ['select tile'].concat(pages[back[0].replace(' next', '')]));
+      ['select tile'].concat(pages[back[0]]));
     update_select('edit-page', Object.keys(pages));
   } else if (id === 'form-add') {
     update_select('tile-page', Object.keys(pages));
+    document.getElementById('tile-page').value = back[0];
   }
   form_background.style.display = 'block';
   for (let i = 0; i < document.getElementsByTagName('form').length; i++) {
@@ -55,7 +56,7 @@ const range = (start, end) => {
 
 const update_edit = (title) => {
   const form = document.getElementById('form-edit');
-  const tile = find_tile(title, pages[back[0].replace(' next', '')]);
+  const tile = find_tile(title, pages[back[0]]);
   if (tile) {
     form.elements['edit-title'].placeholder = tile.title;
     form.elements['edit-sub'].placeholder = tile.subtitle;
@@ -68,6 +69,7 @@ const update_edit = (title) => {
       range(1, pages[tile.page].length) : range(2, pages[tile.page].length);
     update_select('edit-position', pos_array);
     form.elements['edit-position'].value = tile.position;
+    form.elements['edit-position'].placeholder = tile.position;
   }
 };
 
@@ -121,7 +123,7 @@ const submit_form = (id) => {
       break;
     } case 'form-edit': {
       const tile = find_tile(fields['edit-tile'].value,
-        pages[back[0].replace(' next', '')]);
+        pages[back[0]]);
       const page = pages[tile.page];
       if (fields['edit-title'].value) tile.title = fields['edit-title'].value;
       if (fields['edit-sub'].value) tile.subtitle = fields['edit-sub'].value;
