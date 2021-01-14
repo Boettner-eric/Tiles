@@ -8,6 +8,7 @@ let back = ['home'];
 let pages = { }; // storage for tiles dictionary
 let width = 4;
 let height = 3;
+let num_tiles = 0;
 /* exported user */
 let user = { }; // user settings
 
@@ -79,7 +80,6 @@ document.onkeyup = (e) => {
 
 document.onkeydown = (e) => {
   const key = e.keyCode;
-  const numTiles = width * height;
   if (document.activeElement.id === 'search') {
     const current = document.getElementById('search').value;
     if (key === 27) { // esc
@@ -113,18 +113,18 @@ document.onkeydown = (e) => {
     return false;
   } else if ( key === 38 || key === 75) { // Up, go back (width) blocks
     result = parseInt(result) - width;
-    if (result < 1) result += numTiles;
+    if (result < 1) result += num_tiles;
   } else if ( key === 40 || key === 74) { // Down, go forward (width) blocks
     result = parseInt(result) + width;
-    if (result > numTiles) result -= numTiles;
+    if (result > num_tiles) result -= num_tiles;
   } else if ( key === 39 || key === 76 || key === 9) { // Right, go forward
-    result = result === numTiles ?
-      parseInt(result) - (numTiles-1) : parseInt(result) + 1;
-    if (result > numTiles) result -= numTiles;
+    result = result === num_tiles ?
+      parseInt(result) - (num_tiles-1) : parseInt(result) + 1;
+    if (result > num_tiles) result -= num_tiles;
   } else if ( key === 37 || key === 72) { // Left, go back 1 block or reset row
-    result = result === (numTiles+1) ?
+    result = result === (num_tiles+1) ?
       parseInt(result) + height : parseInt(result) - 1;
-    if (result < 1) result += numTiles;
+    if (result < 1) result += num_tiles;
   }
   if (key >= 49 && key <= 57) result = key-48;
   if (key === 48) {// 0 -> 10
@@ -134,7 +134,7 @@ document.onkeydown = (e) => {
   } else if (key === 187) { // = -> 12
     result = 12;
   }
-  if (result && result <= numTiles) {
+  if (result && result <= num_tiles) {
     document.getElementById(String(result)).focus();
     if (result !== 1 && ![9, 37, 72, 39, 76, 40, 74, 38, 75].includes(key) &&
       back[0] === 'themes') {
@@ -146,31 +146,37 @@ document.onkeydown = (e) => {
 const generate_table = (w, h) => {
   width = w;
   height = h;
-  const table = document.querySelector('table');
-  if (table.rows.length !== 0) {
-    const x = table.rows.length;
-    for (let i = 0; i < x; i++) table.deleteRow(0);
-    // clear existing table
-  }
-  for (let i = 0; i < h; i++) {
-    const row = table.insertRow();
-    for (let j=1; j<w+1; j++) {
-      const index= (i*w)+j;
-      const cell = row.insertCell();
+  // Adjust number of divs in container
+  const flex_container = document.getElementById('flex_container');
+  if ((h * w) > num_tiles) { // add divs to fill in gap
+    for (let i = num_tiles+1; i <= (h * w); i++) {
       const img = document.createElement('img');
-      img.setAttribute('id', 'i' + index);
+      img.setAttribute('id', 'i' + i);
       img.setAttribute('class', 'tile-icon');
       const h3 = document.createElement('h3');
-      h3.setAttribute('id', 't' + index);
+      h3.setAttribute('id', 't' + i);
       const p = document.createElement('p');
-      p.setAttribute('id', 's' + index);
-      const anchor = document.createElement('a');
-      anchor.setAttribute('href', '#');
-      anchor.setAttribute('id', index);
-      anchor.appendChild(img);
-      anchor.appendChild(h3);
-      anchor.appendChild(p);
-      cell.appendChild(anchor);
+      p.setAttribute('id', 's' + i);
+      const div = document.createElement('a');
+      div.setAttribute('id', i.toString());
+      div.setAttribute('class', 'tile');
+      div.appendChild(img);
+      div.appendChild(h3);
+      div.appendChild(p);
+      flex_container.appendChild(div);
     }
+  } else if ((h * w) < num_tiles) { // get rid of divs in page
+    const children = flex_container.childNodes;
+    for (let i=0; i < num_tiles - (h * w); i++) {
+      children[children.length - 1].remove();
+    }
+  } // do nothing if equal
+  num_tiles = (h * w);
+  const x = Math.round(98 / (w+1)).toString();
+  const y = Math.round(80 / (h+4)).toString(); // wierd math here tbh
+  const elems = document.getElementsByClassName('tile');
+  for (let i=0; i< elems.length; i++) {
+    elems[i].style.width = x + 'vw';
+    elems[i].style.height = y + 'vh';
   }
 };

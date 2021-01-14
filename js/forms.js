@@ -140,6 +140,7 @@ const submit_form = (id) => {
         }
         page.splice(page.indexOf(tile), 1); // get rid of tile in cache
         tiles_update(page);
+        page_gen(tile.page);
         if (tile.position !== (width * height) + 1) { // bend page around corner
           set_tile(default_tiles.blank_tile, tile.page === 'home' ?
             page.length+1: page.length+2);
@@ -170,8 +171,10 @@ const submit_form = (id) => {
           tile.position = new_pos;
         }
         tiles_update(page);
+        page_gen(tile.page);
       }
       tiles_update([tile]);
+      set_tile(tile);
       break;
     } default: {
       alert('bad form');

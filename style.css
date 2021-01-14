@@ -29,64 +29,71 @@ body, html {
     overflow: hidden;
 }
 
-#grid table {
+/* Tile Flexbox Styles */
+.flex-container {
+    margin-top: 10px;
     z-index: 1;
-    border-spacing: 5px;
+    display: flex;
+    height: 80vh;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tile {
     margin-left: 0.5vw;
-}
-
-#grid table tr td {
-    height: 25vh;
-    width: 20vw;
-    padding-right: 2vw;
-    padding-left: 2vw;
-}
-
-#grid table tr td a {
+    margin-right: 0.5vw;
     transition: .2s text-shadow, .2s box-shadow, .2s border-bottom;
     text-decoration: none;
     position: relative;
     display: block;
-    height: 12vh;
-    width: inherit;
     padding-top: 2px;
 }
 
-#grid table tr td a img {
+.tile img {
     position: absolute;
-    opacity: 1;
-    right: 1px;
-    z-index: 0;
-    top: 5px;
+    right: 60%;
+    top: 10%;
 }
 
-#grid h3 {
-    padding-left: 45%;
+.tile h3 {
+    position: absolute;
+    left: 45%;
     font-size: 13px;
     color: var(--base-txt);
 }
 
-#grid p {
-    margin-top: -5px;
-    padding-left: 45%;
+.tile p {
+    position: absolute;
+    left: 45%;
+    top: 40%;
     font-size: 10px;
     color: var(--sub-txt);
 }
 
-.tile-icon {
-    padding-right: 60%;
-}
-
-#grid table tr td a:focus img, #grid table tr td a:hover img {
+/* Hover and Focus Styles */
+.tile:focus img, .tile:hover img {
     -webkit-filter: drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
     filter:drop-shadow(3px 3px 0 var(--main-cl)) drop-shadow(-3px -3px 0 var(--comp-cl));
 }
 
-#grid table tr td a:focus, #grid table tr td a:hover {
+.tile:focus, .tile:hover {
     box-shadow: 3px 3px 0 var(--main-cl), -3px -3px 0 var(--comp-cl);
     outline: 0;
 }
 
+.header button:hover .subtitle, .header a:hover .subtitle {
+    visibility: visible;
+}
+
+footer form input[type="text"]:focus {
+    border-bottom: 4px solid var(--comp-cl);
+    border-left:  4px solid var(--main-cl);
+    color: var(--base-txt);
+    font-size: 20px;
+}
+
+/* Footer Settings */
 footer form input {
     background-color: var(--background);
     color: var(--sub-txt);
@@ -104,17 +111,11 @@ footer form input {
     left: 2.5vw;
 }
 
-footer form input[type="text"]:focus {
-    border-bottom: 4px solid var(--comp-cl);
-    border-left:  4px solid var(--main-cl);
-    color: var(--base-txt);
-    font-size: 20px;
-}
-
 input::-webkit-input-placeholder{
-    color:var(--base-txt);
+    color: var(--base-txt);
 }
 
+/* Header Styles */
 .header {
     position: absolute;
     display: block;
@@ -128,8 +129,7 @@ input::-webkit-input-placeholder{
     margin: 0;
 }
 
-button:disabled,
-button[disabled]{
+button:disabled, button[disabled] {
   color: #666666;
   opacity: 0.2;
 }
@@ -145,14 +145,11 @@ button[disabled]{
     width: 60px;
 }
 
-.header button:hover .subtitle, .header a:hover .subtitle {
-    visibility: visible;
-}
-
+/* Form Settings */
 .form-background {
     display: none;
     position: fixed;
-    padding-top: 100px;
+    padding-top: 50px;
     left: 0;
     top: 0;
     z-index: 10;
@@ -192,8 +189,8 @@ input[type="color"] {
 .form-content select {
     color: var(--base-txt);
     padding: 5px 35px 5px 5px;
-    border: 0px;
-    width: 116px;
+    border: 0;
+    width: 118px !important;
     border-bottom: 3px solid var(--comp-cl);
     border-left: 3px solid var(--main-cl);
     -webkit-appearance: none;
@@ -239,135 +236,68 @@ input[type="color"] {
     background: url(https://img.icons8.com/color/48/000000/icons8) 96% / 15% no-repeat;
 }
 
-@supports (-webkit-overflow-scrolling: touch) {
-    #grid table tr td a:focus,#grid table tr td a:hover {
+/* Device Support */
+@media only screen and (max-width: 550px) and (min-height: 400px) {
+    /* For narrow devices
+    - ios display settings
+    - small windows
+    */
+    .flex-container {
+        margin-top: 0px;
+    }
+    .tile {
+        display: inline-block;
+        text-align: center;
+        justify-content: center;
+    }
+    .tile img {
+        position: relative;
+        right: 0%;
+        top: 0%;
+    }
+    .tile h3 {
+        position: relative;
+        left: 0%;
+    }
+    .tile p {
+        position: relative;
+        left: 0%;
+        top: 0px;
+    }
+    .tile:focus, .tile:hover {
+        box-shadow: 0px 0px 0 var(--main-cl), 0px 0px 0 var(--comp-cl);
+        outline: 0;
+    }
+    .tile:focus img, .tile:hover img {
         -webkit-filter: none;
         filter:none;
+    }
+    select:focus, textarea:focus, input:focus {
+        font-size: 16px;
+    }
+    .form-background {
+        padding-top: 0px;
+    }
+    .form-content {
+        padding-top: -100px;
+    }
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+    .tile:focus, .tile:hover {
+        -webkit-filter: none;
+        filter :none;
         box-shadow: none;
         outline: 0;
     }
-    #grid table tr td a:focus img, #grid table tr td a:hover img {
+    .tile:focus img, .tile:hover img {
         -webkit-filter: none;
-        filter:none;
+        filter: none;
     }
     select:focus, textarea:focus, input:focus {
         font-size: 16px;
     }
     .header button:hover .subtitle, .header a:hover .subtitle {
         visibility: hidden;
-    }
-}
-
-@media only screen and (max-width: 650px) { /* For narrowish devices */
-    #grid {
-        padding: 0;
-        position: absolute;
-    }
-    #grid table tr td {
-        padding-right: 1vw;
-        padding-left: 1vw;
-        width: 21vw;
-    }
-    .tile-icon {
-        padding-right: 55%;
-    }
-    #grid h3 {
-        padding-left: 50%;
-    }
-    #grid p {
-        padding-left: 50%;
-    }
-}
-
-@media only screen and (max-width: 550px) and (min-height: 400px) { /* For narrow devices
-    - ios display settings
-    - small windows
-    */
-    #grid table {
-        margin-left: 0vw;
-    }
-
-    #grid table tr td a img {
-        position: relative;
-    }
-    #grid table tr td a {
-        display: inline-block;
-        text-align: center;
-    }
-    .tile-icon {
-        padding: 0;
-    }
-    #grid h3 {
-        padding-left: 0;
-        font-size: 13px;
-    }
-    #grid p {
-        padding-left: 0;
-        font-size: 10px;
-    }
-    #grid {
-        padding: 0;
-    }
-    #grid table tr td a:focus, #grid table tr td a:hover {
-        box-shadow: 0px 0px 0 var(--main-cl), 0px 0px 0 var(--comp-cl);
-        outline: 0;
-    }
-    #grid table tr td a:focus img, #grid table tr td a:hover img {
-        -webkit-filter: none;
-        filter:none;
-    }
-    select:focus, textarea:focus, input:focus {
-        font-size: 16px;
-    }
-    .form-background {
-        padding-top: 0px;
-    }
-    .form-content {
-        padding-top: -100px;
-    }
-}
-
-@media only screen and (max-height: 400px) { /* For short devices*/
-    html, body {
-        overflow: hidden;
-    }
-    #grid table {
-        position: absolute;
-        z-index: 10;
-    }
-    #grid {
-        padding: 0vw;
-        padding-top: 22px;
-        width: 98vw;
-        height: 100vh;
-    }
-    #grid table tr td a {
-        width: 23vw;
-        height: 20vh;
-        padding: 0px;
-        padding-top: 0.5px;
-    }
-    #grid table tr td {
-        width: 23vw;
-        height: 19vh;
-        padding: 0px;
-    }
-    #grid h3 {
-        margin-top: 8px;
-    }
-    #grid p {
-        margin-top: -10px;
-    }
-    .tile-icon {
-        margin-top: -5px;
-    }
-    .form-background {
-        padding-top: 0px;
-    }
-    .form-content {
-        padding-top: -100px;
-    }
-    .form-content h3 {
-        margin-top: -10px;
     }
 }

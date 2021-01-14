@@ -103,6 +103,7 @@ const commands = async (current) => {
             }
           } // add to cache and remove old tile here
           tiles_update([tile]);
+          set_tile(tile);
         }
       }
     } else if (current.includes('!delete')) {
@@ -128,6 +129,8 @@ const commands = async (current) => {
           console.log(a.position, b.position);
           [a.position, b.position] = [b.position, a.position];
           tiles_update([a, b]); // swaping over pages needs a reload for now
+          set_tile(a);
+          set_tile(b);
         }
       }
     } else if (current.includes('!help')) {

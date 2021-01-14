@@ -34,13 +34,7 @@ const new_tile = async (type, url, title, sub, img, page, theme=null) => {
 };
 
 const tiles_update = async (tiles) => { // push updates to server
-  for (const i in tiles) {
-    api_set('tiles', 'edit', tiles[i]);
-    if (tiles[i].page === back[0].replace(' next', '') &&
-      (tiles[i].position <= (width * height) || back[0].includes(' next'))) {
-      set_tile(tiles[i]); // if on current page
-    }
-  }
+  for (const i in tiles) api_set('tiles', 'edit', tiles[i]);
 };
 
 const delete_tile = async (tile, page) => {
