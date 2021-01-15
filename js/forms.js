@@ -66,7 +66,7 @@ const update_edit = (title) => {
     form.elements['edit-url'].placeholder = tile.url;
     form.elements['edit-page'].value = tile.page;
     const pos_array = back[0] === 'home' ?
-      range(1, pages[tile.page].length) : range(2, pages[tile.page].length);
+      range(1, pages[tile.page].length+1) : range(2, pages[tile.page].length+1);
     update_select('edit-position', pos_array);
     form.elements['edit-position'].value = tile.position;
     form.elements['edit-position'].placeholder = tile.position;
@@ -141,13 +141,9 @@ const submit_form = (id) => {
         page.splice(page.indexOf(tile), 1); // get rid of tile in cache
         tiles_update(page);
         page_gen(tile.page);
-        if (tile.position !== (width * height) + 1) { // bend page around corner
-          set_tile(default_tiles.blank_tile, tile.page === 'home' ?
-            page.length+1: page.length+2);
-        }
         tile.position = new_pos;
         tile.page = fields['edit-page'].value;
-        new_page.unshift(tile);
+        new_page.push(tile);
       } else if (fields['edit-position'].value) { // conditional on page
         const old_pos = tile.position; // const doesn't change here
         const new_pos = parseInt(fields['edit-position'].value, 10);
@@ -174,7 +170,7 @@ const submit_form = (id) => {
         page_gen(tile.page);
       }
       tiles_update([tile]);
-      set_tile(tile);
+      if (fields['edit-page'].value == back[0]) set_tile(tile);
       break;
     } default: {
       alert('bad form');

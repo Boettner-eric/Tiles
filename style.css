@@ -238,7 +238,7 @@ input[type="color"] {
 }
 
 /* Device Support */
-@media only screen and (max-width: 650px) and (min-height: 400px) {
+@media only screen and (max-width: 550px) and (min-height: 400px) {
     /* For narrow touch screen devices */
     .flex-container {
         margin-top: -10px;
