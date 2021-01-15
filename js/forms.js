@@ -65,8 +65,8 @@ const update_edit = (title) => {
     icon_find(document.getElementById('edit-img'));
     form.elements['edit-url'].placeholder = tile.url;
     form.elements['edit-page'].value = tile.page;
-    const pos_array = back[0] === 'home' ?
-      range(1, pages[tile.page].length+1) : range(2, pages[tile.page].length+1);
+    const pos_array = tile.page === 'home' ?
+      range(1, pages[tile.page].length) : range(2, pages[tile.page].length+1);
     update_select('edit-position', pos_array);
     form.elements['edit-position'].value = tile.position;
     form.elements['edit-position'].placeholder = tile.position;

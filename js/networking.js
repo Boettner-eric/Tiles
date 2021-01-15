@@ -116,3 +116,11 @@ const get_pages = async () => {
   for (const i in pages) pages[i].sort((a, b) => a.position - b.position);
   if (!Object.keys(pages).length) pages['home'] = [];
 };
+
+// Debugging function
+const timer = async (fn, args) => {
+  const before = performance.now();
+  await fn(args);
+  const after = performance.now();
+  return 'function took ' + (after - before) + ' ms.';
+};

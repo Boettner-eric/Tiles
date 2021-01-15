@@ -272,9 +272,6 @@ input[type="color"] {
 }
 
 @media only screen and (max-height: 400px) { /* For short devices*/
-    html, body {
-        overflow: hidden;
-    }
     .form-background {
         padding-top: 0px;
     }

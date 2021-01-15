@@ -28,10 +28,10 @@ const invalid_login = () => {
   set_tile(default_tiles.login_tile, 1);
   set_tile(default_tiles.register_tile, 2);
   set_tile(default_tiles.helper_tile, 3);
-  open_form('form-login');
   document.getElementById('add-btn').disabled = true;
   document.getElementById('edit-btn').disabled = true;
   document.getElementById('settings-btn').disabled = true;
+  open_form('form-login');
 };
 
 // background-color/image main-color complementary-color sub-text main-text
@@ -55,7 +55,7 @@ const set_font = (font) => {
   for (let i = 1; i <= (width * height); i++) {
     document.getElementById(i.toString()).style.fontFamily = font;
   }
-  document.getElementsByName('q')[0].style.fontFamily = font;
+  document.getElementById('search-form').style.fontFamily = font;
 };
 
 document.onclick = (e) => {
