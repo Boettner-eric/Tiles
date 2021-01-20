@@ -90,7 +90,7 @@ const page_gen = (page_id, icon, next) => {
     }
   } else { // pages with less than or equal to numTiles tiles
     for (const i in page) set_tile(page[i]);
-    blanks = page.length + 2;
+    blanks = page.length + (page_id === 'home' ? 1 : 2);
   }
   for (let i = blanks; i <= (width * height); i++) {
     set_tile(default_tiles.blank_tile, i); // fill rest of grid with empty tiles
