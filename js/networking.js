@@ -76,6 +76,7 @@ const register = async (username, password) => {
 };
 
 const user_init = async () => {
+  pages = {};
   const user_res = await api_get('users', 'data', '');
   if (user_res.error || !user_res) {
     console.log('Server Error: ', user_res.error);

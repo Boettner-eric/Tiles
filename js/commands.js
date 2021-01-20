@@ -13,6 +13,7 @@ const commands = async (current) => {
   } else if (current.includes('!logout')) {
     user = {};
     localStorage.token = '';
+    page_gen('');
     user_init();
   } else if (current.includes('register')) {
     if (terms.length < 3) {
