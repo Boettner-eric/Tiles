@@ -1,5 +1,5 @@
 # Tiles
-A keyboard-centric, feature-rich, responsive design based homepage.
+A keyboard-centric, feature-rich, responsive design homepage.
 
 [![GitHub Issues](https://img.shields.io/github/issues/boettner-eric/tiles.svg?style=flat-square)](https://github.com/boettner-eric/homepage/issues)
 ![License](https://img.shields.io/github/license/boettner-eric/tiles?style=flat-square)
@@ -21,6 +21,7 @@ A keyboard-centric, feature-rich, responsive design based homepage.
 
 ### Recent Changes
 * Custom form interfaces for user input (replaces commands)
+* Login improvements (autofill support)
 * Better server/client communication
 * Faster searching
 * General Optimizations
@@ -111,7 +112,7 @@ To add an icon for a tile/page/theme:
 1. Icons from [Icons 8](https://icons8.com)
 2. Theme hex colors from multiple brands and themes
 3. Original code from my other [`repo`](https://github.com/Boettner-eric/Homepage) which started as [`Decaux`](https://github.com/Boettner-eric/Decaux) which has been abandoned
-5. Kishlaya's fork for dynamic html generation
+5. [Kishlaya's fork](https://github.com/kishlaya/Tiles) for dynamic html generation
 
 [S1]:https://placehold.it/100x50/2b2836/ffffff/?text=2b2836
 [S2]:https://placehold.it/100x50/93b4ff/ffffff/?text=93b4ff
