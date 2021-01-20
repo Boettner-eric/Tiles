@@ -66,7 +66,15 @@ Theme | Icons8 | Background | Top | Bottom | Text | Subtext | Credit |
 
 (table generated from **[placehold.it](https://placehold.it)**)
 
-## Hosting Notes
+### Custom sized grid
+* Tiles now supports custom sized grids which can be set in the settings form
+
+![2x6 grid](Screenshots/2x6.png)
+
+![5x2 grid](Screenshots/5x2.png)
+
+
+### Hosting Notes
 - The server is set to be most responsive from 8-24 PST.
 - My hosting goes through a sleep schedule so initial response times will be delayed for requests outside of that time range.
 - Maintenance will occur during these evening periods.

@@ -111,6 +111,8 @@ const user_update = async () => {
 const get_pages = async () => {
   const page = await api_get('tiles', 'page', 'all');
   page.reduce((_, it) => {
+    const img = new Image();
+    img.src = user.api + it.img.slice(1) + '.png';
     pages[it.page] ? pages[it.page].unshift(it) : pages[it.page] = [it];
   }, {});
   for (const i in pages) pages[i].sort((a, b) => a.position - b.position);

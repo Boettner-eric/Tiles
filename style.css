@@ -49,6 +49,7 @@ body, html {
     position: relative;
     display: block;
     padding-top: 2px;
+    height: 11vh;
     min-height: 55px; /* for fitting image */
 }
 
@@ -241,7 +242,6 @@ input[type="color"] {
 @media only screen and (max-width: 550px) and (min-height: 400px) {
     /* For narrow touch screen devices */
     .flex-container {
-        margin-top: -10px;
         height: 70vh;
     }
     .form-background {
@@ -254,6 +254,7 @@ input[type="color"] {
         display: inline-block;
         text-align: center;
         justify-content: center;
+        height: 17vh;
     }
     .tile img {
         position: relative;

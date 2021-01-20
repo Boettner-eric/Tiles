@@ -173,10 +173,8 @@ const generate_table = (w, h) => {
   } // do nothing if equal
   num_tiles = (h * w);
   const x = Math.round(98 / (w+1)).toString();
-  const y = Math.round(80 / (h+4)).toString(); // wierd math here tbh
   const elems = document.getElementsByClassName('tile');
   for (let i=0; i< elems.length; i++) {
     elems[i].style.width = x + 'vw';
-    elems[i].style.height = y + 'vh';
   }
 };
